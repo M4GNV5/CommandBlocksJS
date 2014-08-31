@@ -49,6 +49,9 @@ namespace CommandBlocksJS
 					case "--output":
 						writeToWorld = false;
 					break;
+					case "--help":
+						Console.WriteLine(help);
+						return 0;
 				}
 			}
 
@@ -63,7 +66,6 @@ namespace CommandBlocksJS
 				Directory.CreateDirectory(tempDir);
 			}
 
-			//TODO try catch?!
 			ExecuteScript(script);
 			if (writeToWorld)
 			{

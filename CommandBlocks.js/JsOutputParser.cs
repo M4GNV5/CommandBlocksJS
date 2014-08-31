@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Collections.Generic;
 
 using Substrate;
 using Substrate.Core;
@@ -15,6 +16,8 @@ namespace CommandBlocksJS
 		private MinecraftDirection direction;
 		private int sidewards = 2;
 
+		private Dictionary<string, IntVector3> filePositions;
+
 		public JsOutputParser (string worldDirectory, IntVector3 position, MinecraftDirection direction)
 		{
 			if (!Directory.Exists(worldDirectory))
@@ -24,18 +27,29 @@ namespace CommandBlocksJS
 			this.blockManager = world.GetBlockManager();
 			this.position = position;
 			this.direction = direction;
+
+			this.filePositions = new Dictionary<string, IntVector3> ();
 		}
 
 		public void ParseDirectory(string directory)
 		{
 			if (!Directory.Exists(directory))
 				throw new System.IO.DirectoryNotFoundException ();
+				
+			string[] files = Directory.GetFiles(directory);
+			foreach (string file in files)
+			{
+				string name = Path.GetFileNameWithoutExtension(file);
+				filePositions.Add(name, position);
+				UpdatePosition(() => position.X += sidewards, () => position.X -= sidewards, () => position.Z += sidewards, () => position.Z -= sidewards);
+			}
 
-			foreach (string file in Directory.GetFiles(directory))
+			foreach (string file in files)
 			{
 				string source = File.ReadAllText(file).Trim();
+				string name = Path.GetFileNameWithoutExtension(file);
+				position = filePositions [name];
 				ParseFile(source);
-				UpdatePosition(() => position.X += sidewards, () => position.X -= sidewards, () => position.Z += sidewards, () => position.Z -= sidewards);
 			}
 		}
 
@@ -94,6 +108,13 @@ namespace CommandBlocksJS
 						ParseCall(call.Trim());
 						UpdatePosition(() => position.Z++, () => position.Z--, () => position.X++, () => position.X--);
 					}
+				break;
+				case 'e': //e for E xecute
+					AlphaBlock _cblock = new AlphaBlock (137);
+					TileEntityControl _te = _cblock.GetTileEntity() as TileEntityControl; //unsafe
+					IntVector3 ePosition = filePositions [source.Substring(1)];
+					_te.Command = "setblock " + ePosition.X + " " + ePosition.Y + " " + ePosition.Z + " minecraft:redstone_block replace";
+					blockManager.SetBlock(position.X, position.Y, position.Z, _cblock);
 				break;
 			}
 		}
