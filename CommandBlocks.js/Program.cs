@@ -8,6 +8,7 @@ namespace CommandBlocksJS
 	public class MainClass
 	{
 		public const string help = "";
+		public static readonly string tempDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "output");
 
 		public static int Main (string[] args)
 		{
@@ -54,8 +55,7 @@ namespace CommandBlocksJS
 						return 0;
 				}
 			}
-
-			string tempDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "output");
+				
 			if (Directory.Exists(tempDir))
 			{
 				Console.WriteLine("Error: output directory already exists!");
@@ -81,8 +81,11 @@ namespace CommandBlocksJS
 		public static void ExecuteScript(string scriptPath)
 		{
 			string basePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "base.js");
-			string code = File.ReadAllText(basePath) + File.ReadAllText(scriptPath);
+			string baseLibs = File.ReadAllText(basePath);
+			string userCode = File.ReadAllText(scriptPath);
+			string code = baseLibs.Replace("%code", userCode);
 			JavascriptContext context = new JavascriptContext ();
+			context.SetParameter("fs", new JsFileAPI (basePath));
 			context.Run(code);
 		}
 	}

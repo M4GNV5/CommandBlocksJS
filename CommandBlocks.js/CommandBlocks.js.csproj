@@ -43,6 +43,7 @@
     <Compile Include="MinecraftDirection.cs" />
     <Compile Include="IntVector3.cs" />
     <Compile Include="JsOutputParser.cs" />
+    <Compile Include="JsFileAPI.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
