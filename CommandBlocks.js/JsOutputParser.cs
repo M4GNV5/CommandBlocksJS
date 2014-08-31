@@ -14,7 +14,6 @@ namespace CommandBlocksJS
 		private readonly IBlockManager blockManager;
 		private IntVector3 position;
 		private MinecraftDirection direction;
-		private int sidewards = 2;
 
 		private Dictionary<string, IntVector3> filePositions;
 
@@ -36,21 +35,42 @@ namespace CommandBlocksJS
 			if (!Directory.Exists(directory))
 				throw new System.IO.DirectoryNotFoundException ();
 				
-			string[] files = Directory.GetFiles(directory);
-			foreach (string file in files)
+			Dictionary<string, string> files = new Dictionary<string, string> ();
+
+			foreach (string file in Directory.GetFiles(directory))
 			{
+				string content = File.ReadAllText(file);
+				files.Add(file, content);
+
 				string name = Path.GetFileNameWithoutExtension(file);
 				filePositions.Add(name, position);
-				UpdatePosition(() => position.X += sidewards, () => position.X -= sidewards, () => position.Z += sidewards, () => position.Z -= sidewards);
+
+				int sidewards = GetMaxSidewards(content);
+
+				UpdatePosition(() => position.Z -= sidewards, () => position.Z += sidewards, () => position.Z -= sidewards, () => position.Z += sidewards);
 			}
 
-			foreach (string file in files)
+			foreach (string file in files.Keys)
 			{
-				string source = File.ReadAllText(file).Trim();
+				string source = files [file];
 				string name = Path.GetFileNameWithoutExtension(file);
 				position = filePositions [name];
 				ParseFile(source);
 			}
+			world.Save();
+		}
+		public int GetMaxSidewards(string source)
+		{
+			int sidewards = 2;
+			foreach (string call in source.Split(';'))
+			{
+				string[] splittedCall = call.Split(':');
+				if (splittedCall.Length + 1 > sidewards)
+				{
+					sidewards = splittedCall.Length + 1;
+				}
+			}
+			return sidewards;
 		}
 
 		private void ParseFile(string source)
@@ -93,28 +113,38 @@ namespace CommandBlocksJS
 					blockManager.SetBlock(position.X, position.Y, position.Z, cblock);
 				break;
 				case 'b': //b for B lock
-					string[] blockInfo = source.Substring(1).Split(':');
+					string[] blockInfo = source.Substring(1).Split('_');
 					int id = Convert.ToInt32(blockInfo [0]); //unsafe
 					int data = Convert.ToInt32(blockInfo [1]); //unsafe
 					PlaceBlock(id, data);
 				break;
 				case 's': //s for S idewards
 					string[] calls = source.Substring(1).Split(':');
-					if (calls.Length + 2 > sidewards)
-						sidewards = calls.Length + 2;
 
+					IntVector3 oldPos = position;
+					direction++;
 					foreach (string call in calls)
 					{
 						ParseCall(call.Trim());
-						UpdatePosition(() => position.Z++, () => position.Z--, () => position.X++, () => position.X--);
+						UpdatePosition(() => position.X--, () => position.X++, () => position.Z--, () => position.Z++);
 					}
+					direction--;
+					position = oldPos;
 				break;
 				case 'e': //e for E xecute
-					AlphaBlock _cblock = new AlphaBlock (137);
-					TileEntityControl _te = _cblock.GetTileEntity() as TileEntityControl; //unsafe
+					AlphaBlock _cblock;
+					TileEntityControl _te;
 					IntVector3 ePosition = filePositions [source.Substring(1)];
-					_te.Command = "setblock " + ePosition.X + " " + ePosition.Y + " " + ePosition.Z + " minecraft:redstone_block replace";
+
+					_cblock = new AlphaBlock (137);
+					_te = _cblock.GetTileEntity() as TileEntityControl; //unsafe
+					_te.Command = "setblock " + ePosition.X + " " + ePosition.Y + " " + ePosition.Z + " minecraft:redstone_block 0 replace";
 					blockManager.SetBlock(position.X, position.Y, position.Z, _cblock);
+
+					_cblock = new AlphaBlock (137);
+					_te = _cblock.GetTileEntity() as TileEntityControl; //unsafe
+					_te.Command = "setblock " + ePosition.X + " " + ePosition.Y + " " + ePosition.Z + " minecraft:air 0 replace";
+					blockManager.SetBlock(position.X, position.Y+1, position.Z, _cblock);
 				break;
 			}
 		}

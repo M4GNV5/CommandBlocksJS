@@ -1,17 +1,5 @@
 ﻿//region classes and extension methods
-Object.prototype.hasOwnValue = function(val)
-{
-    for(var prop in this)
-    {
-        if(this.hasOwnProperty(prop) && this[prop] == val)
-        {
-            return true;   
-        }
-    }
-    return false;
-};
-
-var OutputHandler = function()
+var OutputHandler = new function()
 {
 	this.output = [];
 	this.functions = [];
@@ -60,13 +48,18 @@ function comparator()
 function command(text)
 {
 	text = text || 'say CommandBlocks.js error invalid call "command();"';
-	OutputHandler.addToCurrent('c'+text+';');
+	OutputHandler.addToCurrent('r;c'+text+';');
+}
+function validateSync(command)
+{
+	command = command || 'say CommandBlocks.js error invalid call "validateSync();"';
+	OutputHandler.addToCurrent('r;c'+command+';c;');
 }
 function block(id, data)
 {
 	id = id || 1;
 	data = data || 0;
-	OutputHandler.addToCurrent('c'+text+';');
+	OutputHandler.addToCurrent('b'+id+'_'+data+';');
 }
 function testfor(statement, callback)
 {
@@ -79,7 +72,7 @@ function testforblock(statement, callback)
 function validate(command, callback)
 {
 	var callbackID = OutputHandler.addFunction(callback);
-	OutputHandler.addToCurrent('c'+command+';so:e'+callbackID);
+	OutputHandler.addToCurrent('r;sc'+command+':o:e'+callbackID+';');
 }
 //enregion
 
@@ -91,10 +84,12 @@ function main()
 //endregion
 
 //region main code
+OutputHandler.addToCurrent('w;w;');
 while(OutputHandler.current < OutputHandler.functions.length)
 {
 	OutputHandler.functions[OutputHandler.current]();
 	fs.writeFile(OutputHandler.current+'.txt', OutputHandler.output[OutputHandler.current]);
 	OutputHandler.current++;
+	OutputHandler.addToCurrent('w;w;');
 }
 //endregion

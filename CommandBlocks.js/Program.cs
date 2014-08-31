@@ -22,7 +22,7 @@ namespace CommandBlocksJS
 
 			for (int i = 0; i < args.Length; i++)
 			{
-				switch (args [i])
+				switch (args [i].ToLower())
 				{
 					case "--script": case "-s":
 						i++;
@@ -44,10 +44,10 @@ namespace CommandBlocksJS
 						i++;
 						direction = (MinecraftDirection)Convert.ToInt32(args [i]);
 					break;
-					case "--keepTemp":
+					case "--keeptemp":
 						keepTemp = true;
 					break;
-					case "--output":
+					case "--nooutput":
 						writeToWorld = false;
 					break;
 					case "--help":
@@ -83,9 +83,9 @@ namespace CommandBlocksJS
 			string basePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "base.js");
 			string baseLibs = File.ReadAllText(basePath);
 			string userCode = File.ReadAllText(scriptPath);
-			string code = baseLibs.Replace("%code", userCode);
+			string code = baseLibs.Replace("%code%", userCode);
 			JavascriptContext context = new JavascriptContext ();
-			context.SetParameter("fs", new JsFileAPI (basePath));
+			context.SetParameter("fs", new JsFileAPI (tempDir));
 			context.Run(code);
 		}
 	}
