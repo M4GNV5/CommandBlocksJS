@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CommandBlocks.js
+namespace CommandBlocksJS
 {
 	public struct IntVector3
 	{

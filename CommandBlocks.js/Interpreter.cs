@@ -4,11 +4,11 @@ using System.IO;
 using Substrate;
 using Substrate.TileEntities;
 
-namespace CommandBlocks.js
+namespace CommandBlocksJS
 {
 	public class Interpreter
 	{
-		private AnvilWorld world;
+		private readonly AnvilWorld world;
 		private IntVector3 position;
 		private MinecraftDirection direction;
 		private int sidewards = 2;
@@ -25,66 +25,34 @@ namespace CommandBlocks.js
 			foreach (string file in Directory.GetFiles(folder))
 			{
 				InterpreteFunction(File.ReadAllText(file));
-				switch (direction)
-				{
-					case MinecraftDirection.xMinus:
-						position.X += sidewards;
-					break;
-					case MinecraftDirection.xPlus:
-						position.X -= sidewards;
-					break;
-					case MinecraftDirection.zMinus:
-						position.Z += sidewards;
-					break;
-					case MinecraftDirection.zPlus:
-						position.Z -= sidewards;
-					break;
-				}
+				UpdatePosition(() => position.X += sidewards, () => position.X -= sidewards, () => position.Z += sidewards, () => position.Z -= sidewards);
 			}
 		}
 
-		public void InterpreteFunction(string source)
+		private void InterpreteFunction(string source)
 		{
 			foreach (string call in source.Split(';'))
 			{
 				InterpreteCall(call.Trim());
-				switch (direction)
-				{
-					case MinecraftDirection.xMinus:
-						position.X--;
-					break;
-					case MinecraftDirection.xPlus:
-						position.X++;
-					break;
-					case MinecraftDirection.zMinus:
-						position.Z--;
-					break;
-					case MinecraftDirection.zPlus:
-						position.Z++;
-					break;
-				}
+				UpdatePosition(() => position.X--, () => position.X++, () => position.Z--, () => position.Z++);
 			}
 		}
 
-		public void InterpreteCall(string source)
+		private void InterpreteCall(string source)
 		{
 			switch (source[0])
 			{
 				case 'w': //w for redstone W ire
-					world.GetBlockManager().SetID(position.X, position.Y, position.Z, 55);
-					world.GetBlockManager().SetData(position.X, position.Y, position.Z, 0);
+					PlaceBlock(55, 0);
 				break;
 				case 't': //t for redstone T orch
-					world.GetBlockManager().SetID(position.X, position.Y, position.Z, 75);
-					world.GetBlockManager().SetData(position.X, position.Y, position.Z, ((int)direction == 4) ? (int)direction++ : 1);
+					PlaceBlock(75, ((int)direction == 4) ? (int)direction++ : 1);
 				break;
 				case 'r': //r for redstone R epeater
-					world.GetBlockManager().SetID(position.X, position.Y, position.Z, 93);
-					world.GetBlockManager().SetData(position.X, position.Y, position.Z, (int)direction);
+					PlaceBlock(93, (int)direction);
 				break;
 				case 'o': //o for analog O utput (comparator)
-					world.GetBlockManager().SetID(position.X, position.Y, position.Z, 149);
-					world.GetBlockManager().SetData(position.X, position.Y, position.Z, (int)direction);
+					PlaceBlock(149, (int)direction);
 				break;
 				case 'c': //c for C ommandblock
 					AlphaBlock cblock = new AlphaBlock (137);
@@ -96,8 +64,7 @@ namespace CommandBlocks.js
 					string[] blockInfo = source.Substring(1).Split(':');
 					int id = Convert.ToInt32(blockInfo [0]); //unsafe
 					int data = Convert.ToInt32(blockInfo [1]); //unsafe
-					world.GetBlockManager().SetID(position.X, position.Y, position.Z, id);
-					world.GetBlockManager().SetData(position.X, position.Y, position.Z, data);
+					PlaceBlock(id, data);
 				break;
 				case 's': //s for S idewards
 					string[] calls = source.Substring(1).Split(':');
@@ -107,22 +74,33 @@ namespace CommandBlocks.js
 					foreach (string call in calls)
 					{
 						InterpreteCall(call.Trim());
-						switch (direction)
-						{
-							case MinecraftDirection.xMinus:
-								position.Z++;
-							break;
-							case MinecraftDirection.xPlus:
-								position.Z--;
-							break;
-							case MinecraftDirection.zMinus:
-								position.X++;
-							break;
-							case MinecraftDirection.zPlus:
-								position.X--;
-							break;
-						}
+						UpdatePosition(() => position.Z++, () => position.Z--, () => position.X++, () => position.X--);
 					}
+				break;
+			}
+		}
+
+		private void PlaceBlock(int id, int data)
+		{
+			world.GetBlockManager().SetID(position.X, position.Y, position.Z, id);
+			world.GetBlockManager().SetData(position.X, position.Y, position.Z, data);
+		}
+
+		private void UpdatePosition(Action xMinus, Action xPlus, Action zMinus, Action zPlus)
+		{
+			switch (direction)
+			{
+				case MinecraftDirection.xMinus:
+					xMinus();
+				break;
+				case MinecraftDirection.xPlus:
+					xPlus();
+				break;
+				case MinecraftDirection.zMinus:
+					zMinus();
+				break;
+				case MinecraftDirection.zPlus:
+					zPlus();
 				break;
 			}
 		}

@@ -3,7 +3,7 @@ using System.IO;
 
 using Noesis.Javascript;
 
-namespace CommandBlocks.js
+namespace CommandBlocksJS
 {
 	public class MainClass
 	{
