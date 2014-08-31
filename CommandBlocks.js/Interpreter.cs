@@ -2,6 +2,7 @@
 using System.IO;
 
 using Substrate;
+using Substrate.Core;
 using Substrate.TileEntities;
 
 namespace CommandBlocksJS
@@ -9,6 +10,7 @@ namespace CommandBlocksJS
 	public class Interpreter
 	{
 		private readonly AnvilWorld world;
+		private readonly IBlockManager blockManager;
 		private IntVector3 position;
 		private MinecraftDirection direction;
 		private int sidewards = 2;
@@ -16,6 +18,7 @@ namespace CommandBlocksJS
 		public Interpreter (string path, IntVector3 position, MinecraftDirection direction)
 		{
 			this.world = AnvilWorld.Create(path);
+			this.blockManager = world.GetBlockManager();
 			this.position = position;
 			this.direction = direction;
 		}
@@ -24,16 +27,24 @@ namespace CommandBlocksJS
 		{
 			foreach (string file in Directory.GetFiles(folder))
 			{
-				InterpreteFunction(File.ReadAllText(file));
+				string source = File.ReadAllText(file).Trim();
+				InterpreteFunction(source);
 				UpdatePosition(() => position.X += sidewards, () => position.X -= sidewards, () => position.Z += sidewards, () => position.Z -= sidewards);
 			}
 		}
 
 		private void InterpreteFunction(string source)
 		{
+			if (string.IsNullOrEmpty(source))
+				return;
+
 			foreach (string call in source.Split(';'))
 			{
-				InterpreteCall(call.Trim());
+				call = call.Trim();
+				if (string.IsNullOrEmpty(call))
+					continue;
+				InterpreteCall(call);
+
 				UpdatePosition(() => position.X--, () => position.X++, () => position.Z--, () => position.Z++);
 			}
 		}
@@ -46,19 +57,20 @@ namespace CommandBlocksJS
 					PlaceBlock(55, 0);
 				break;
 				case 't': //t for redstone T orch
-					PlaceBlock(75, ((int)direction == 4) ? (int)direction++ : 1);
+					int torchDirection = ((int)direction == 4) ? (int)direction++ : 1;
+					PlaceBlock(75, torchDirection);
 				break;
 				case 'r': //r for redstone R epeater
-					PlaceBlock(93, (int)direction);
+					PlaceBlock(93, direction);
 				break;
 				case 'o': //o for analog O utput (comparator)
-					PlaceBlock(149, (int)direction);
+					PlaceBlock(149, direction);
 				break;
 				case 'c': //c for C ommandblock
 					AlphaBlock cblock = new AlphaBlock (137);
 					TileEntityControl te = cblock.GetTileEntity() as TileEntityControl; //unsafe
 					te.Command = source.Substring(1);
-					world.GetBlockManager().SetBlock(position.X, position.Y, position.Z, cblock);
+					blockManager.SetBlock(position.X, position.Y, position.Z, cblock);
 				break;
 				case 'b': //b for B lock
 					string[] blockInfo = source.Substring(1).Split(':');
@@ -80,10 +92,14 @@ namespace CommandBlocksJS
 			}
 		}
 
+		private void PlaceBlock(int id, MinecraftDirection direction)
+		{
+			PlaceBlock(id, (int)direction);
+		}
 		private void PlaceBlock(int id, int data)
 		{
-			world.GetBlockManager().SetID(position.X, position.Y, position.Z, id);
-			world.GetBlockManager().SetData(position.X, position.Y, position.Z, data);
+			blockManager.SetID(position.X, position.Y, position.Z, id);
+			blockManager.SetData(position.X, position.Y, position.Z, data);
 		}
 
 		private void UpdatePosition(Action xMinus, Action xPlus, Action zMinus, Action zPlus)
