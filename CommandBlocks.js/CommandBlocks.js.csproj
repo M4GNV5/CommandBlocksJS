@@ -31,10 +31,10 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="Noesis.Javascript">
-      <HintPath>bin\Debug\Noesis.Javascript.dll</HintPath>
+      <HintPath>..\..\Noesis.Javascript.dll</HintPath>
     </Reference>
     <Reference Include="Substrate">
-      <HintPath>bin\Debug\Substrate.dll</HintPath>
+      <HintPath>..\..\Substrate.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -46,7 +46,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <None Include="README.md" />
     <None Include="base.js" />
   </ItemGroup>
 </Project>
