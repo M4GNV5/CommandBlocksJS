@@ -28,10 +28,10 @@ namespace CommandBlocksJS
 
 		public void ParseDirectory(string directory)
 		{
-			if (!Directory.Exists(folder))
+			if (!Directory.Exists(directory))
 				throw new System.IO.DirectoryNotFoundException ();
 
-			foreach (string file in Directory.GetFiles(folder))
+			foreach (string file in Directory.GetFiles(directory))
 			{
 				string source = File.ReadAllText(file).Trim();
 				ParseFile(source);
@@ -46,8 +46,8 @@ namespace CommandBlocksJS
 
 			foreach (string call in source.Split(';'))
 			{
-				call = call.Trim();
-				if (string.IsNullOrEmpty(call))
+				string _call = call.Trim();
+				if (string.IsNullOrEmpty(_call))
 					continue;
 				ParseCall(call);
 

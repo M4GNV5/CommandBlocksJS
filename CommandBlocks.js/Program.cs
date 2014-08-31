@@ -67,8 +67,8 @@ namespace CommandBlocksJS
 			ExecuteScript(script);
 			if (writeToWorld)
 			{
-				Interpreter inte = new Interpreter (world, position, direction);
-				inte.ParseDirectory(tempDir);
+				JsOutputParser parser = new JsOutputParser (world, position, direction);
+				parser.ParseDirectory(tempDir);
 			}
 			if (!keepTemp)
 				Directory.Delete(tempDir, true);
