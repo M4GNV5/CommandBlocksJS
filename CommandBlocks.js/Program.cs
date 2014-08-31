@@ -68,7 +68,7 @@ namespace CommandBlocksJS
 			if (writeToWorld)
 			{
 				Interpreter inte = new Interpreter (world, position, direction);
-				inte.Interprete(tempDir);
+				inte.ParseDirectory(tempDir);
 			}
 			if (!keepTemp)
 				Directory.Delete(tempDir, true);

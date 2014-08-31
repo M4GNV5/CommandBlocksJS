@@ -7,7 +7,7 @@ using Substrate.TileEntities;
 
 namespace CommandBlocksJS
 {
-	public class Interpreter
+	public class JsOutputParser
 	{
 		private readonly AnvilWorld world;
 		private readonly IBlockManager blockManager;
@@ -15,28 +15,31 @@ namespace CommandBlocksJS
 		private MinecraftDirection direction;
 		private int sidewards = 2;
 
-		public Interpreter (string path, IntVector3 position, MinecraftDirection direction)
+		public JsOutputParser (string worldDirectory, IntVector3 position, MinecraftDirection direction)
 		{
-			if (!Directory.Exists(path))
+			if (!Directory.Exists(worldDirectory))
 				throw new System.IO.DirectoryNotFoundException ("The given world was not found!");
 
-			this.world = AnvilWorld.Create(path);
+			this.world = AnvilWorld.Create(worldDirectory);
 			this.blockManager = world.GetBlockManager();
 			this.position = position;
 			this.direction = direction;
 		}
 
-		public void Interprete(string folder)
+		public void ParseDirectory(string directory)
 		{
+			if (!Directory.Exists(folder))
+				throw new System.IO.DirectoryNotFoundException ();
+
 			foreach (string file in Directory.GetFiles(folder))
 			{
 				string source = File.ReadAllText(file).Trim();
-				InterpreteFunction(source);
+				ParseFile(source);
 				UpdatePosition(() => position.X += sidewards, () => position.X -= sidewards, () => position.Z += sidewards, () => position.Z -= sidewards);
 			}
 		}
 
-		private void InterpreteFunction(string source)
+		private void ParseFile(string source)
 		{
 			if (string.IsNullOrEmpty(source))
 				return;
@@ -46,13 +49,13 @@ namespace CommandBlocksJS
 				call = call.Trim();
 				if (string.IsNullOrEmpty(call))
 					continue;
-				InterpreteCall(call);
+				ParseCall(call);
 
 				UpdatePosition(() => position.X--, () => position.X++, () => position.Z--, () => position.Z++);
 			}
 		}
 
-		private void InterpreteCall(string source)
+		private void ParseCall(string source)
 		{
 			switch (source[0])
 			{
@@ -88,7 +91,7 @@ namespace CommandBlocksJS
 
 					foreach (string call in calls)
 					{
-						InterpreteCall(call.Trim());
+						ParseCall(call.Trim());
 						UpdatePosition(() => position.Z++, () => position.Z--, () => position.X++, () => position.X--);
 					}
 				break;

@@ -41,8 +41,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MinecraftDirection.cs" />
-    <Compile Include="Interpreter.cs" />
     <Compile Include="IntVector3.cs" />
+    <Compile Include="JsOutputParser.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
