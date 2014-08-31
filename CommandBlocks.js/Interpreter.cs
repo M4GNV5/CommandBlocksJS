@@ -17,6 +17,9 @@ namespace CommandBlocksJS
 
 		public Interpreter (string path, IntVector3 position, MinecraftDirection direction)
 		{
+			if (!Directory.Exists(path))
+				throw new System.IO.DirectoryNotFoundException ("The given world was not found!");
+
 			this.world = AnvilWorld.Create(path);
 			this.blockManager = world.GetBlockManager();
 			this.position = position;
