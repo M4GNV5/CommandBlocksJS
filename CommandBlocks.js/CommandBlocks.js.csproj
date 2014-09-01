@@ -36,6 +36,9 @@
     <Reference Include="Substrate">
       <HintPath>..\..\Substrate.dll</HintPath>
     </Reference>
+    <Reference Include="CommandLine">
+      <HintPath>..\..\CommandLine.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />

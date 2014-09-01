@@ -1,60 +1,51 @@
 ﻿using System;
 using System.IO;
 
+using CommandLine;
+using CommandLine.Text;
 using Noesis.Javascript;
 
 namespace CommandBlocksJS
 {
 	public class MainClass
 	{
+		private sealed class Options
+		{
+			[Option('s', "script", MetaValue = "FILE", Required = true, HelpText = "Script file that will be processed to commandblocks.")]
+			public string ScriptFile {get; set;}
+
+			[Option('w', "world", Required = true, HelpText = "The Directory of the world the commandblocks will be built in.")]
+			public string WorldDirectory { get; set; }
+
+			[Option('p', "position", Required = true, HelpText = "The start-position where to build the commandblocks.")]
+			public string Position { get; set; }
+
+			[Option('d', "direction", DefaultValue = 0, HelpText = "The direction to build the commandblocks.")]
+			public int Direction { get; set; }
+
+			[Option("keeptemp", DefaultValue = false, HelpText = "Keep temporary Files true/false.")]
+			public bool KeepTemp { get; set; }
+
+			[Option("output", DefaultValue = true, HelpText = "Write Script to World true/false.")]
+			public bool Output { get; set; }
+		}
+
 		public const string help = "";
 		public static readonly string tempDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "output");
 
-		public static int Main (string[] args)
+		public static int Main (string[] args) //example: -s myscript.js -w ./myworld -p 1.4.16 -d 1
 		{
-			string script = null;
-			string world = null;
-			IntVector3 position = new IntVector3();
-			MinecraftDirection direction = MinecraftDirection.xPlus;
+			Options options = new Options ();
+			Parser cmdParser = new Parser ();
+			cmdParser.ParseArguments(args, options);
 
-			bool keepTemp = false;
-			bool writeToWorld = true;
+			IntVector3 position = new IntVector3 ();
+			string[] pos = options.Position.Split('_', '-', '|', ' ', '.', ',', ';', ':');
+			position.X = Convert.ToInt32(pos [0]);
+			position.Y = Convert.ToInt32(pos [1]);
+			position.Z = Convert.ToInt32(pos [2]);
 
-			for (int i = 0; i < args.Length; i++)
-			{
-				switch (args [i].ToLower())
-				{
-					case "--script": case "-s":
-						i++;
-						script = args [i];
-					break;
-					case "--world": case "-w":
-						i++;
-						world = args [i];
-					break;
-					case "--position": case "-p":
-						i++;
-						position.X = Convert.ToInt32(args [i]);
-						i++;
-						position.Y = Convert.ToInt32(args [i]);
-						i++;
-						position.Z = Convert.ToInt32(args [i]);
-					break;
-					case "--direction": case "-d":
-						i++;
-						direction = (MinecraftDirection)Convert.ToInt32(args [i]);
-					break;
-					case "--keeptemp":
-						keepTemp = true;
-					break;
-					case "--nooutput":
-						writeToWorld = false;
-					break;
-					case "--help":
-						Console.WriteLine(help);
-						return 0;
-				}
-			}
+			MinecraftDirection direction = (MinecraftDirection)options.Direction;
 				
 			if (Directory.Exists(tempDir))
 			{
@@ -66,13 +57,13 @@ namespace CommandBlocksJS
 				Directory.CreateDirectory(tempDir);
 			}
 
-			ExecuteScript(script);
-			if (writeToWorld)
+			ExecuteScript(options.ScriptFile);
+			if (options.Output)
 			{
-				JsOutputParser parser = new JsOutputParser (world, position, direction);
+				JsOutputParser parser = new JsOutputParser (options.WorldDirectory, position, direction);
 				parser.ParseDirectory(tempDir);
 			}
-			if (!keepTemp)
+			if (!options.KeepTemp)
 				Directory.Delete(tempDir, true);
 
 			return 0;
