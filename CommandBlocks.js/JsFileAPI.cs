@@ -18,11 +18,6 @@ namespace CommandBlocksJS
 			string path = Path.Combine(basePath, name);
 			File.WriteAllText(path, contents);
 		}
-
-		public void write(string text)
-		{
-			Console.WriteLine(text);
-		}
 	}
 }
 

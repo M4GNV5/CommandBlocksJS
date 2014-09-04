@@ -74,6 +74,11 @@ function validate(command, callback)
 	var callbackID = OutputHandler.addFunction(callback);
 	OutputHandler.addToCurrent('r;sc'+command+':o:e'+callbackID+';');
 }
+function call(func)
+{
+	var funcId = OutputHandler.addFunction(func);
+	OutputHandler.addToCurrent('r;e'+funcId+';');
+}
 //enregion
 
 //region usercode

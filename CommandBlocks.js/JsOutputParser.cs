@@ -94,20 +94,20 @@ namespace CommandBlocksJS
 			switch (source[0])
 			{
 				case 'w': //w for redstone W ire
-					PlaceBlock(55, 0);
+					PlaceBlock(BlockType.REDSTONE_WIRE, 0);
 				break;
 				case 't': //t for redstone T orch
 					int torchDirection = ((int)direction == 4) ? (int)direction++ : 1;
-					PlaceBlock(75, torchDirection);
+					PlaceBlock(BlockType.REDSTONE_TORCH_OFF, torchDirection);
 				break;
 				case 'r': //r for redstone R epeater
-					PlaceBlock(93, direction);
+					PlaceBlock(BlockType.REDSTONE_REPEATER_OFF, direction);
 				break;
 				case 'o': //o for analog O utput (comparator)
-					PlaceBlock(149, direction);
+					PlaceBlock(BlockType.REDSTONE_COMPARATOR_INACTIVE, direction);
 				break;
 				case 'c': //c for C ommandblock
-					AlphaBlock cblock = new AlphaBlock (137);
+					AlphaBlock cblock = new AlphaBlock (BlockType.COMMAND_BLOCK);
 					TileEntityControl te = cblock.GetTileEntity() as TileEntityControl; //unsafe
 					te.Command = source.Substring(1);
 					blockManager.SetBlock(position.X, position.Y, position.Z, cblock);
@@ -136,12 +136,12 @@ namespace CommandBlocksJS
 					TileEntityControl _te;
 					IntVector3 ePosition = filePositions [source.Substring(1)];
 
-					_cblock = new AlphaBlock (137);
+					_cblock = new AlphaBlock (BlockType.COMMAND_BLOCK);
 					_te = _cblock.GetTileEntity() as TileEntityControl; //unsafe
 					_te.Command = "setblock " + ePosition.X + " " + ePosition.Y + " " + ePosition.Z + " minecraft:redstone_block 0 replace";
 					blockManager.SetBlock(position.X, position.Y, position.Z, _cblock);
 
-					_cblock = new AlphaBlock (137);
+					_cblock = new AlphaBlock (BlockType.COMMAND_BLOCK);
 					_te = _cblock.GetTileEntity() as TileEntityControl; //unsafe
 					_te.Command = "setblock " + ePosition.X + " " + ePosition.Y + " " + ePosition.Z + " minecraft:air 0 replace";
 					blockManager.SetBlock(position.X, position.Y+1, position.Z, _cblock);
@@ -155,6 +155,17 @@ namespace CommandBlocksJS
 		}
 		private void PlaceBlock(int id, int data)
 		{
+			int blockBelow = blockManager.GetID(position.X, position.Y - 1, position.Z);
+			if (blockBelow == BlockType.AIR
+			   || blockBelow == BlockType.WATER
+			   || blockBelow == BlockType.STATIONARY_WATER
+			   || blockBelow == BlockType.LAVA
+			   || blockBelow == BlockType.STATIONARY_LAVA)
+			{
+				blockManager.SetID(position.X, position.Y - 1, position.Z, BlockType.STONE);
+				blockManager.SetData(position.X, position.Y - 1, position.Z, 0);
+			}
+
 			blockManager.SetID(position.X, position.Y, position.Z, id);
 			blockManager.SetData(position.X, position.Y, position.Z, data);
 		}

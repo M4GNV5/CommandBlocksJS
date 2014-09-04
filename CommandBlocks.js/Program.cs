@@ -35,38 +35,45 @@ namespace CommandBlocksJS
 
 		public static int Main (string[] args) //example: -s myscript.js -w ./myworld -p 1.4.16 -d 1
 		{
-			Options options = new Options ();
-			Parser cmdParser = new Parser ();
-			cmdParser.ParseArguments(args, options);
-
-			IntVector3 position = new IntVector3 ();
-			string[] pos = options.Position.Split('_', '-', '|', ' ', '.', ',', ';', ':');
-			position.X = Convert.ToInt32(pos [0]);
-			position.Y = Convert.ToInt32(pos [1]);
-			position.Z = Convert.ToInt32(pos [2]);
-
-			MinecraftDirection direction = (MinecraftDirection)options.Direction;
-				
-			if (Directory.Exists(tempDir))
+			try
 			{
-				Console.WriteLine("Error: output directory already exists!");
-				return 1;
-			}
-			else
-			{
-				Directory.CreateDirectory(tempDir);
-			}
+				Options options = new Options ();
+				Parser cmdParser = new Parser ();
+				cmdParser.ParseArguments(args, options);
 
-			ExecuteScript(options.ScriptFile);
-			if (options.Output)
-			{
-				JsOutputParser parser = new JsOutputParser (options.WorldDirectory, position, direction);
-				parser.ParseDirectory(tempDir);
-			}
-			if (!options.KeepTemp)
-				Directory.Delete(tempDir, true);
+				IntVector3 position = new IntVector3 ();
+				string[] pos = options.Position.Split('_', '-', '|', ' ', '.', ',', ';', ':');
+				position.X = Convert.ToInt32(pos [0]);
+				position.Y = Convert.ToInt32(pos [1]);
+				position.Z = Convert.ToInt32(pos [2]);
 
-			return 0;
+				MinecraftDirection direction = (MinecraftDirection)options.Direction;
+					
+				if (Directory.Exists(tempDir))
+				{
+					Console.WriteLine("Error: output directory already exists!");
+					return 1;
+				}
+				else
+				{
+					Directory.CreateDirectory(tempDir);
+				}
+
+				ExecuteScript(options.ScriptFile);
+				if (options.Output)
+				{
+					JsOutputParser parser = new JsOutputParser (options.WorldDirectory, position, direction);
+					parser.ParseDirectory(tempDir);
+				}
+				if (!options.KeepTemp)
+					Directory.Delete(tempDir, true);
+				return 0;
+			}
+			catch(Exception e)
+			{
+				Console.WriteLine("An Error of type {0} occured! Please create an issue on Github!", e.GetType());
+				return -1;
+			}
 		}
 
 		public static void ExecuteScript(string scriptPath)
