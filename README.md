@@ -26,8 +26,8 @@ function gameStart(timer)
 		//broadcast timer
 		command("say Game starts in "+i+" seconds!");
 
-		//1 repeater delays 0.2 seconds --> 5 repeater 1 second
-		delay(5);
+		//1 repeater delays 0.1 seconds => 10 repeater delay 1 second
+		delay(10);
 	}
 
 	command("say Game will start now!");
