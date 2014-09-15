@@ -51,7 +51,7 @@ torch | - | places a redstone torch (can be used with block to create an inverte
 delay | timer | places `<length>` repeaters
 comparator | - | places a comparator
 command | text | places a commadblock with `<text>` as command
-validateSync | text | places a commandblock with <text> as command and captures its output with a comparator
+validateSync | text | places a commandblock with `<text>` as command and captures its output with a comparator
 block | id, data | places a block with `<id>` and `[data]`
 testfor | statement, callback | places a testfor command and executes the callback asynchronously if the output is true
 testforblock | statement, callback | places a testforblock command and executes the callback asynchronously if the output is true
