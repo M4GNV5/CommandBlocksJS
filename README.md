@@ -30,11 +30,11 @@ function gameStart(timer)
 		delay(5);
 	}
 
-	command("Game will start now!");
+	command("say Game will start now!");
 
 	//this will build 'gamelogic' as a standalone procdure
 	//you should always use 'call(function);' if a function is used 2 times or more
-	call(gameLogic);
+	call(gamelogic);
 }
 
 function gamelogic()
