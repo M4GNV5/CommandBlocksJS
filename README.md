@@ -44,7 +44,19 @@ function gamelogic()
 ```
 
 ##Documentation
-Function | Arguments | Explanation
+###Commandline Arguments
+Example: `-s myscript.js -w ./myworld -p 1.4.16 -d 1`
+
+Short | Long | Type | Description
+--- | --- | --- | ---
+s | script | String | Path to the script file
+w | world | String | Path to the world directory
+p | position | String | startposition e.g. 42.1337.-248
+d | direction | Integer | direction to build
+- | keeptemp | Boolean | keep temporary files
+- | output | Boolean | write output to world
+###Functions
+Function | Arguments | Description
 --- | --- | ---
 wire | length | places `<length>` blocks of redstone wire
 torch | - | places a redstone torch (can be used with block to create an inverter)
