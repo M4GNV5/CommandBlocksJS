@@ -77,7 +77,7 @@ function validate(command, callback)
 function call(func)
 {
 	var funcId = OutputHandler.addFunction(func);
-	OutputHandler.addToCurrent('r;e'+funcId+';');
+	OutputHandler.addToCurrent('r;sw:r:e'+funcId+';');
 }
 //enregion
 
