@@ -52,6 +52,7 @@ namespace CommandBlocksJS
 				if (Directory.Exists(tempDir))
 				{
 					Console.WriteLine("Error: output directory already exists!");
+					Console.ReadKey();
 					return 1;
 				}
 				else
@@ -71,7 +72,9 @@ namespace CommandBlocksJS
 			}
 			catch(Exception e)
 			{
-				Console.WriteLine("An Error of type {0} occured! Please create an issue on Github!", e.GetType());
+				Console.WriteLine("An Error of type {0} occured!", e.GetType());
+				Console.WriteLine("Error Message: {0}", e.Message);
+				Console.ReadKey();
 				return -1;
 			}
 		}
