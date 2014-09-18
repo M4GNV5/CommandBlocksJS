@@ -47,9 +47,15 @@
     <Compile Include="IntVector3.cs" />
     <Compile Include="JsOutputParser.cs" />
     <Compile Include="JsFileAPI.cs" />
+    <Compile Include="JsScriptExecutor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <None Include="base.js" />
+    <None Include="JavascriptFiles\base.js" />
+    <None Include="JavascriptFiles\util.js" />
+    <None Include="JavascriptFiles\vanillaCommands.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="JavascriptFiles\" />
   </ItemGroup>
 </Project>

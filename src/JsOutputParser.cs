@@ -91,6 +91,9 @@ namespace CommandBlocksJS
 
 		private void ParseCall(string source)
 		{
+			if (source.Length < 1)
+				return;
+
 			switch (source[0])
 			{
 				case 'w': //w for redstone W ire

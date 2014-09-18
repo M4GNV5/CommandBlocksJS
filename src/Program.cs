@@ -23,6 +23,9 @@ namespace CommandBlocksJS
 			[Option('d', "direction", DefaultValue = 0, HelpText = "The direction to build the commandblocks.")]
 			public int Direction { get; set; }
 
+			[Option('l', "lib", DefaultValue = "./libs", HelpText = "Javascript files (.js) in this directory will be used as Library")]
+			public string LibPath { get; set; }
+
 			[Option("keeptemp", DefaultValue = false, HelpText = "Keep temporary Files true/false.")]
 			public bool KeepTemp { get; set; }
 
@@ -35,11 +38,14 @@ namespace CommandBlocksJS
 
 		public static int Main (string[] args) //example: -s myscript.js -w ./myworld -p 1.4.16 -d 1
 		{
+			args = "CommandBlocks.js.exe -s test.js -w ./pvm -p 1.4.16 -d 1".Split(' ');
 			try
 			{
 				Options options = new Options ();
 				Parser cmdParser = new Parser ();
-				cmdParser.ParseArguments(args, options);
+
+				if(!cmdParser.ParseArguments(args, options))
+					throw new ArgumentException("Invalid Commandline parameter!");
 
 				IntVector3 position = new IntVector3 ();
 				string[] pos = options.Position.Split('_', '-', '|', ' ', '.', ',', ';', ':');
@@ -60,7 +66,8 @@ namespace CommandBlocksJS
 					Directory.CreateDirectory(tempDir);
 				}
 
-				ExecuteScript(options.ScriptFile);
+				new JsScriptExecutor().Run(options.LibPath, options.ScriptFile);
+
 				if (options.Output)
 				{
 					JsOutputParser parser = new JsOutputParser (options.WorldDirectory, position, direction);
@@ -75,19 +82,14 @@ namespace CommandBlocksJS
 				Console.WriteLine("An Error of type {0} occured!", e.GetType());
 				Console.WriteLine("Error Message: {0}", e.Message);
 				Console.ReadKey();
+
+				if (Directory.Exists(tempDir))
+				{
+					Directory.Delete(tempDir, true);
+				}
+
 				return -1;
 			}
-		}
-
-		public static void ExecuteScript(string scriptPath)
-		{
-			string basePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "base.js");
-			string baseLibs = File.ReadAllText(basePath);
-			string userCode = File.ReadAllText(scriptPath);
-			string code = baseLibs.Replace("%code%", userCode);
-			JavascriptContext context = new JavascriptContext ();
-			context.SetParameter("fs", new JsFileAPI (tempDir));
-			context.Run(code);
 		}
 	}
 }
