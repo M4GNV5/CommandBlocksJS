@@ -38,7 +38,6 @@ namespace CommandBlocksJS
 
 		public static int Main (string[] args) //example: -s myscript.js -w ./myworld -p 1.4.16 -d 1
 		{
-			args = "CommandBlocks.js.exe -s test.js -w ./pvm -p 1.4.16 -d 1".Split(' ');
 			try
 			{
 				Options options = new Options ();
