@@ -104,7 +104,11 @@ namespace CommandBlocksJS
 					PlaceBlock(BlockType.REDSTONE_TORCH_OFF, torchDirection);
 				break;
 				case 'r': //r for redstone R epeater
-					PlaceBlock(BlockType.REDSTONE_REPEATER_OFF, direction);
+					int delay;
+					int blockData = (int)direction;
+					if (int.TryParse(source.Substring(1), out delay))
+						blockData = delay * 4 + blockData;
+					PlaceBlock(BlockType.REDSTONE_REPEATER_ON, blockData); //ids changed 92 is now off and 94 on
 				break;
 				case 'o': //o for analog O utput (comparator)
 					PlaceBlock(BlockType.REDSTONE_COMPARATOR_INACTIVE, direction);

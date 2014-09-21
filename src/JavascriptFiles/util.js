@@ -22,6 +22,16 @@ function testforblock(statement, callback)
 {
 	validate('testforblock '+statement, callback);
 }
+function testforScore(name, max, min, callback)
+{
+	testfor("@a[score_"+name+"="+max+",score_"+name+"_min="+min+"]", callback);
+}
+function timer(timer, callback)
+{
+	var mainFunc = function() { callback(); call(timerFunc); };
+	var timerFunc = function() { delay(timer); call(mainFunc); };
+	call(mainFunc);
+}
 
 var Selector = new function()
 {

@@ -54,6 +54,7 @@
     <None Include="JavascriptFiles\base.js" />
     <None Include="JavascriptFiles\util.js" />
     <None Include="JavascriptFiles\vanillaCommands.js" />
+    <None Include="JavascriptFiles\events.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="JavascriptFiles\" />

@@ -1,76 +1,40 @@
-﻿//region say & tellraw
-function tellraw(data, options)
+﻿//region chat
+function tellraw(target, message)
 {
-	say(data, options);
+	target = target || "@a";
+	message = message || "CommandBlocksJS error invalid call 'tellraw();'";
+	command('tellraw '+target+' {"text":"'+message+'"}');
 }
-function say(data, options)
+function say(message)
 {
-	options = options || {};
-	options.selector = options.selector || "@a";
-	options.useTellraw = options.useTellraw || true;
+	message = message || "CommandBlocksJS error invalid call 'say();'";
+	command("say "+message);
+}
 
-	if(!options.useTellraw)
-	{
-		command("say "+data);
-		return;
-	}
+function Formatting()
+{
+	this.black = '§0';
+	this.darkBlue = '§1';
+	this.darkGreen = '§2';
+	this.darkAqua = '§3';
+	this.darkRed = '§4';
+	this.darkPurple = '§5';
+	this.gold = '§6';
+	this.gray = '§7';
+	this.darkGray = '§8';
+	this.blue = '§9';
+	this.green = '§a';
+	this.aqua = '§b';
+	this.red = '§c';
+	this.lightPurple = '§d';
+	this.yellow = '§e';
+	this.white = '§f';
 
-	data = data || "CommandBlocksJS error invalid call 'say();'";
-	if(typeof data != 'object' && typeof data != 'array')
-		data = [{text: data}];
-	else if(typeof data == 'object')
-		data = [data];
+	this.obfuscated = '§k';
+	this.bold = '§l';
+	this.strikethrough = '§m';
+	this.underlined = '§n';
 
-	var cmd = 'tellraw '+options.selector+' {"text":"", "extra":[';
-	cmd += parseObjectToJson(data[0]);
-
-	for(var i = 1; i < data.length; i++)
-	{
-		cmd += ','+parseObjectToJson(data[i]);
-	}
-
-	for(var key in options)
-	{
-		if(key != "selector" && key != "useTellraw")
-			cmd += ','+'"'+key+'":'+options[key];
-	}
-
-	cmd += ']}';
-
-	command(cmd);
+	this.reset = '§r';
 }
 //enregion
-
-//region execute
-function execute(selector, cmd, position, detect)
-{
-	selector = selector || '@a';
-	cmd = cmd || "say CommandBlocksJS error invalid call 'execute();'";
-
-	position = position || "~ ~ ~";
-	detect = detect || false;
-
-	if(detect === false)
-	{
-		command("execute "+selector+" "+position+" "+cmd);
-	}
-	else
-	{
-		command("execute "+selector+" "+position+" detect "+detect+" "+cmd);
-	}
-}
-//endregion
-
-function parseObjectToJson(obj)
-{
-	var json = '{';
-	for(var key in obj)
-	{
-		if(json != '{')
-			json += ',';
-		json += '"'+key+'":"'+obj[key]+'"';
-	}
-	json += '}';
-
-	return json;
-}
