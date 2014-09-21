@@ -48,9 +48,13 @@ function torch()
 }
 function delay(time)
 {
-	time = time || 1;
-	for(var i = 0; i < time; i++)
-		OutputHandler.addToCurrent('r;');
+	time = time || 0;
+	while(time >= 0)
+	{
+		var delay = (time > 3) ? 3 : (time == 0) ? 0 : time-1;
+		OutputHandler.addToCurrent('r'+delay+';');
+		time -= (time > 3) ? delay+1 : delay+2;
+	}
 }
 function comparator()
 {
@@ -60,7 +64,7 @@ function command(text, placeRepeater)
 {
 	text = text || "say CommandBlocksJS error invalid call 'command();'";
 	if(placeRepeater !== false)
-		OutputHandler.addToCurrent('r;');
+		delay();
 	OutputHandler.addToCurrent('c'+text+';');
 }
 function block(id, data)
@@ -86,8 +90,8 @@ function sidewards(func)
 function call(func, placeRepeater)
 {
 	var funcId = OutputHandler.addFunction(func);
-	if(placeRepeater)
-		OutputHandler.addToCurrent('r;');
+	if(placeRepeater !== false)
+		delay();
 	OutputHandler.addToCurrent('e'+funcId+';');
 }
 //enregion

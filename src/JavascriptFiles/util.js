@@ -29,7 +29,7 @@ function testforScore(name, max, min, callback)
 function timer(timer, callback)
 {
 	var mainFunc = function() { callback(); call(timerFunc); };
-	var timerFunc = function() { delay(timer); call(mainFunc); };
+	var timerFunc = function() { delay(timer); call(mainFunc, false); };
 	call(mainFunc);
 }
 
@@ -82,7 +82,7 @@ function PlayerArray(name, selector)
 	if(typeof selector != 'undefined')
 		command("scoreboard players set "+selector+" "+this.name+" 1");
 
-	this.getPlayer = function()
+	this.getPlayer = function(name)
 	{
 		return "@a[score_"+this.name+"_min=1]";
 	}
@@ -92,6 +92,7 @@ function PlayerArray(name, selector)
 	}
 	this.removePlayer = function(selector)
 	{
+		selector = selector || this.getPlayer();
 		command("scoreboard players set "+selector+" "+this.name+" 0");
 	}
 }

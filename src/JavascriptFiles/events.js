@@ -1,73 +1,87 @@
 ﻿function Event(name)
 {
 	this.name = name.toLowerCase();
-	this.listener = [];
+	this.listener = false;
 
-	this.addListener = function(func)
+	this.setListener = function(func)
 	{
 		if(typeof func == 'undefined')
 			throw "Cannot add Listener to Event '"+name+"' Listener is undefined!";
-		this.listener.push(func);
+		this.listener = func;
 	}
 	this.dispatch = function(arg)
 	{
-		for(var i = 0; i < this.listener.length; i++)
-		{
-			call(function() { this.listener[i](arg); });
-		}
+		if(this.listener)
+			this.listener(arg);
 	}
 }
 
 var EventHandler = new function()
 {
-	//this.events = {};
-	/*this.events['onplayermove'] = new ScoreChangeEvent('onplayermove', 'movecm', 'stat.walkOneCm');
-	this.events['onplayercrouch'] = new ScoreChangeEvent('onplayercrouch', 'crouchcm', 'stat.crouchOneCm');
-	this.events['onplayerswim'] = new ScoreChangeEvent('onplayerswim', 'swimcm', 'stat.swimOneCm');
-	this.events['onplayersprint'] = new ScoreChangeEvent('onplayersprint', 'sprintcm', 'stat.sprintOneCm');*/
+	this.events = {};
 
-	this.addEventListener = function(name, listener)
+	this.events['onmove'] = new ScoreChangeEvent('onmove', 'movecm', 'stat.walkOneCm');
+	this.events['oncrouch'] = new ScoreChangeEvent('oncrouch', 'crouchcm', 'stat.crouchOneCm');
+	this.events['onswim'] = new ScoreChangeEvent('onswim', 'swimcm', 'stat.swimOneCm');
+	this.events['onsprint'] = new ScoreChangeEvent('onsprint', 'sprintcm', 'stat.sprintOneCm');
+
+	this.events['ondeath'] = new ScoreChangeEvent('ondeath', 'deathCount');
+	this.events['onkill'] = new ScoreChangeEvent('ondeath', 'deathCount');
+	this.events['onentitykill'] = new ScoreChangeEvent('onentitykill', 'totalKillCount');
+
+	this.getPlayer = function(name)
 	{
-		/*name = name.toLowerCase();
+		if(typeof this.events[name] == 'undefined')
+			throw "Cant get Players of event '"+name+"'' it does nto exist!";
+		return this.events[name].players;
+	}
+	this.setEventListener = function(name, listener)
+	{
+		name = name.toLowerCase();
 		if(typeof EventHandler.events[name] == 'undefined')
 			throw "Cannot add Listener to Event '"+name+"' it does not exist!";
-		EventHandler.events[name].addListener(listener);*/
+		EventHandler.events[name].setListener(listener);
 	}
 	this.dispatch = function(name, arg)
 	{
-		/*name = name.toLowerCase();
+		name = name.toLowerCase();
 		if(typeof this.events[name] == 'undefined')
 			throw "Cannot dispatch Event '"+name+"' it does not exist!";
-		this.events[name].dispatch(arg);*/
+		this.events[name].dispatch(arg);
 	}
 }
 	
 
-function ScoreChangeEvent(name, objective, objectiveType, triggerOnValue)
+function ScoreChangeEvent(name, objective, objectiveType, triggerOnValue, refreshTimer)
 {
 	triggerOnValue = triggerOnValue || 1;
+	refreshTimer = refreshTimer || 9;
+	objectiveType = objectiveType || objective;
 
 	this.base = new Event(name);
+	this.name = this.base.name;
+	this.objective = objective;
 
-	this.reference = "@a[score_"+name+"_min="+triggerOnValue+"]";
+	var reference = "@a[score_"+objective+"_min="+triggerOnValue+"]";
 
 	this.checkForChange = function()
 	{
-		testfor(this.reference, function()
+		var player = new PlayerArray(name+'P', reference);
+		testfor(reference, function()
 			{
-				this.base.dispatch(this.reference);
-				command("scoreboard players set "+this.reference+" "+this.base.name+" 0");
+				EventHandler.dispatch(name.toLowerCase(), player);
 			});
+		command("scoreboard players set "+reference+" "+objective+" 0");
 	}
 
-	this.addListener = function(func)
+	this.setListener = function(func)
 	{
-		if(this.base.listener.length == 0)
+		if(!this.base.listener)
 		{
 			command("scoreboard objectives add "+objective+" "+objectiveType);
-			timer(5, this.checkForChange);
+			timer(refreshTimer, this.checkForChange);
 		}
-		this.base.addListener(func);
+		this.base.setListener(function(player) { func(player); player.removePlayer(); });
 	}
 	this.dispatch = function(arg)
 	{
