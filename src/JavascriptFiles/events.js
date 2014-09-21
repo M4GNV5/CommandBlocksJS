@@ -29,12 +29,6 @@ var EventHandler = new function()
 	this.events['onkill'] = new ScoreChangeEvent('ondeath', 'deathCount');
 	this.events['onentitykill'] = new ScoreChangeEvent('onentitykill', 'totalKillCount');
 
-	this.getPlayer = function(name)
-	{
-		if(typeof this.events[name] == 'undefined')
-			throw "Cant get Players of event '"+name+"'' it does nto exist!";
-		return this.events[name].players;
-	}
 	this.setEventListener = function(name, listener)
 	{
 		name = name.toLowerCase();
@@ -66,7 +60,7 @@ function ScoreChangeEvent(name, objective, objectiveType, triggerOnValue, refres
 
 	this.checkForChange = function()
 	{
-		var player = new PlayerArray(name+'P', reference);
+		var player = new PlayerArray(name+'EP', reference);
 		testfor(reference, function()
 			{
 				EventHandler.dispatch(name.toLowerCase(), player);
@@ -74,6 +68,10 @@ function ScoreChangeEvent(name, objective, objectiveType, triggerOnValue, refres
 		command("scoreboard players set "+reference+" "+objective+" 0");
 	}
 
+	this.getSelector = function()
+	{
+		return reference;
+	}
 	this.setListener = function(func)
 	{
 		if(!this.base.listener)

@@ -37,6 +37,11 @@ var Formatting = new function()
 
 	this.reset = '§r';
 }
+
+String.prototype.format = function(formatting)
+{
+	return formatText(this, formatting);
+};
 function formatText(text, formatting)
 {
 	text = text || "CommandblockJS Error: No text givent to formatText function!";
@@ -49,17 +54,18 @@ function formatText(text, formatting)
 	}
 	return text.trim();
 }
-//enregion
+//endregion
 
 
 
 //region scoreboard
-function Score(name, type)
+function Score(name, type, displayName)
 {
 	if(typeof name == 'undefined')
 		throw 'Error cant create Score without name';
+	displayName = displayName || name;
 	if(typeof type != 'undefined')
-		command("scoreboard objectives add "+name+" "+name+" "+type);
+		command("scoreboard objectives add "+name+" "+type+" "+displayName);
 
 	this.set = function(player, value)
 	{
@@ -77,7 +83,7 @@ function Score(name, type)
 	{
 		command("scoreboard players reset "+player+" "+name);
 	}
-	this.setdisplay = function(slot)
+	this.setDisplay = function(slot)
 	{
 		command("scoreboard objectives setdisplay "+slot+" "+name);
 	}
@@ -92,12 +98,27 @@ function Score(name, type)
 	{
 		command("scoreboard players operation "+player+" "+name+" "+operation+" "+otherPlayer+" "+otherObjective);
 	}
+
+	this.getSelector = function(min, max)
+	{
+		if(typeof max == 'undefined')
+			return "@a[score_"+name+"_min="+min+"]";
+		else
+			return "@a[score_"+name+"_min="+min+",score_"+name+"="+max+"]"
+	}
+	this.getPlayer = function(min, max)
+	{
+		var reference = this.getSelector(min, max);
+		return new PlayerArray(name+'SP', reference);
+	}
 }
 function Team(name, addTeam)
 {
 	addTeam = addTeam || true;
 	if(addTeam !== false)
 		command("scoreboard teams add "+name);
+
+	this.name = name;
 
 	this.empty = function()
 	{
@@ -115,5 +136,15 @@ function Team(name, addTeam)
 	{
 		command("scoreboard teams option "+name+" "+option+" "+value);
 	}
+
+	this.getSelector = function()
+	{
+		return "@a[team="+name+"]";
+	}
+	this.getPlayer = function()
+	{
+		var reference = this.getSelector();
+		return new PlayerArray(name+'TP', reference);
+	}
 }
-//enregion
+//endregion

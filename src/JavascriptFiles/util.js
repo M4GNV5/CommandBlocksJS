@@ -43,7 +43,7 @@ var Selector = new function()
 	{
 		return this.getSelector('r', attributes);
 	}
-	this.allPlayers = function(attributes)
+	this.allPlayer = function(attributes)
 	{
 		return this.getSelector('a', attributes);
 	}
@@ -82,7 +82,7 @@ function PlayerArray(name, selector)
 	if(typeof selector != 'undefined')
 		command("scoreboard players set "+selector+" "+this.name+" 1");
 
-	this.getPlayer = function(name)
+	this.getSelector = function(name)
 	{
 		return "@a[score_"+this.name+"_min=1]";
 	}
@@ -92,7 +92,16 @@ function PlayerArray(name, selector)
 	}
 	this.removePlayer = function(selector)
 	{
-		selector = selector || this.getPlayer();
+		selector = selector || this.getSelector();
 		command("scoreboard players set "+selector+" "+this.name+" 0");
+	}
+
+	this.getScore = function()
+	{
+		return new Score(this.name);
+	}
+	this.getTeam = function(teamname)
+	{
+		return new Team(this.name, true);
 	}
 }
