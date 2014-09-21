@@ -26,7 +26,7 @@ var EventHandler = new function()
 	this.events['onsprint'] = new ScoreChangeEvent('onsprint', 'sprintcm', 'stat.sprintOneCm');
 
 	this.events['ondeath'] = new ScoreChangeEvent('ondeath', 'deathCount');
-	this.events['onkill'] = new ScoreChangeEvent('ondeath', 'deathCount');
+	this.events['onkill'] = new ScoreChangeEvent('ondeath', 'playerKillCount');
 	this.events['onentitykill'] = new ScoreChangeEvent('onentitykill', 'totalKillCount');
 
 	this.setEventListener = function(name, listener)
