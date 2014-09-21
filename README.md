@@ -1,6 +1,9 @@
 #CommandBlocksJS
 CommandBlocksJS allows you to translate Javascript code to minecraft CommandBlocks
 
+##Documentation
+moved to the [Wiki](https://github.com/M4GV5/CommandBlocksJS/wiki)
+
 ##Example
 ```javascript
 testfor("@a", function() //only start if players are online
@@ -42,34 +45,6 @@ function gamelogic()
 	//TODO implement your game logic here!
 }
 ```
-
-##Documentation
-###Commandline Arguments
-Example: `-s myscript.js -w ./myworld -p 1.4.16 -d 1`
-
-Short | Long | Type | Description
---- | --- | --- | ---
-s | script | String | Path to the script file
-w | world | String | Path to the world directory
-p | position | String | startposition e.g. 42.1337.-248
-d | direction | Integer | direction to build
-- | keeptemp | Boolean | keep temporary files
-- | output | Boolean | write output to world
-###Functions
-Function | Arguments | Description
---- | --- | ---
-wire | length | places `<length>` blocks of redstone wire
-torch | - | places a redstone torch (can be used with block to create an inverter)
-delay | timer | places `<length>` repeaters
-comparator | - | places a comparator
-command | text | places a commadblock with `<text>` as command
-validateSync | text | places a commandblock with `<text>` as command and captures its output with a comparator
-block | id, data | places a block with `<id>` and `[data]`
-testfor | statement, callback | places a testfor command and executes the callback asynchronously if the output is true
-testforblock | statement, callback | places a testforblock command and executes the callback asynchronously if the output is true
-validate | command, callback | executes the callback asynchronously if output is true
-call | function | calls a function asynchronously
-
 
 ##License
 CommandBlocksJS is published under the 4 clause BSD license what means you can use source and binary for everything but your project needs to include the following clause: "This product includes software developed by Jakob Löw (M4GNV5)."
