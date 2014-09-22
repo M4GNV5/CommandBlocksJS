@@ -13,22 +13,32 @@ say("Welcome to this map created by <yourName>"); //broadcast message
 
 //set up scoreboard objective
 var timePlayed = new Score("timePlayed", "dummy", "Time Played");
-
 //set scoreboard objective display
 timePlayed.setDisplay("sidebar");
 
-timer(60, function() //timer function
+//timer helper scoreboard
+var timerHelper = new Score("timerHelper", "dummy");
+//set scoreboard objective display
+timerHelper.setDisplay("list");
+
+timer(10, function() //timer function
 {
-	timePlayed.add(Selector.allPlayer(), 1); //add 1 to all players online
+	timerHelper.add(Selector.allPlayer(), 1);
+	testfor(timerHelper.getSelector(60), function()
+	{
+		timePlayed.add(Selector.allPlayer(), 1); //add 1 to all players online
+		timerHelper.set(timerHelper.getSelector(58), 0);
+	});
 });
 
 
 
 //set event whenever a player kills another player
-EventHandler.setEventListener('onkill', function(player)
+EventHandler.setEventListener('onentitykill', function(player)
 {
 	tellraw(player.getSelector(), "You cruel boy".format(Formatting.red));
 });
+
 ```
 ###Output
 [![Cmd](http://i.imgur.com/7PoLwI0.png)]()
