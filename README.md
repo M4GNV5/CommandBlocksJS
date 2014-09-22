@@ -5,6 +5,9 @@ CommandBlocksJS allows you to translate Javascript code to minecraft CommandBloc
 moved to the [Wiki](https://github.com/M4GV5/CommandBlocksJS/wiki)
 
 ##Example
+###Output
+[![Cmd](http://i.imgur.com/7PoLwI0.png)]()
+
 ###Code
 ```javascript
 say("Welcome to this map created by <yourName>"); //broadcast message
@@ -40,8 +43,7 @@ EventHandler.setEventListener('onentitykill', function(player)
 });
 
 ```
-###Output
-[![Cmd](http://i.imgur.com/7PoLwI0.png)]()
+
 
 
 ##License
