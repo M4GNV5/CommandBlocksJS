@@ -27,6 +27,8 @@ timerHelper.setDisplay("list");
 timer(10, function() //timer function
 {
 	timerHelper.add(Selector.allPlayer(), 1);
+	
+	//test if a player has played 60 seconds
 	testfor(timerHelper.getSelector(60), function()
 	{
 		timePlayed.add(Selector.allPlayer(), 1); //add 1 to all players online
@@ -36,7 +38,7 @@ timer(10, function() //timer function
 
 
 
-//set event whenever a player kills another player
+//set event whenever a player kills an entity
 EventHandler.setEventListener('onentitykill', function(player)
 {
 	tellraw(player.getSelector(), "You cruel boy".format(Formatting.red));
