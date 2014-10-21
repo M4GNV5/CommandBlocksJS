@@ -4,7 +4,42 @@ CommandBlocksJS allows you to translate Javascript code to minecraft CommandBloc
 ##Documentation
 moved to the [Wiki](https://github.com/M4GV5/CommandBlocksJS/wiki)
 
-##Example
+##Example 1
+###Output
+[![Cmd](http://i.imgur.com/CEpe3lL.png)]()
+###code
+```javascript
+//setup karma scoreboard objective
+//name: karma, type: dummy, displayName: Karma
+var karma = new Score("karma", "dummy", "Karma");
+//set display slot to sidebar
+karma.setDisplay("sidebar");
+
+//subscribe to the 'onentitykill' event
+EventHandler.setEventListener('onentitykill', function(player)
+{
+	//tell the player he just earned karma
+	tellraw(player.getSelector(), "You just earned one Karma".format(Formatting.red));
+	//add 1 karma
+	karma.add(player.getSelector(), 1);
+});
+EventHandler.setEventListener('ondeath', function(player)
+{
+	//save selector of the dead player in local variable
+	var playerSelector = player.getSelector();
+	//setup tellraw command that tells him his karma
+	//TODO implement 1.8 tellraw updates
+	var cmdText = 'tellraw '+playerSelector+' {"text":"Your Karma was -","extra":[{"score":{"name":"'+playerSelector+'","objective":"karma"}}]}';
+	
+	//execute tellraw command
+	command(cmdText);
+	//reset karma
+	karma.set(playerSelector, 0);
+});
+```
+
+##Example 2
+
 ###Output
 [![Cmd](http://i.imgur.com/7PoLwI0.png)]()
 
