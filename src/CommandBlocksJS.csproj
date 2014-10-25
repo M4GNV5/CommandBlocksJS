@@ -55,8 +55,11 @@
     <None Include="JavascriptFiles\util.js" />
     <None Include="JavascriptFiles\vanillaCommands.js" />
     <None Include="JavascriptFiles\events.js" />
+    <None Include="Examples\game template.js" />
+    <None Include="Examples\Karma %28readme%29.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="JavascriptFiles\" />
+    <Folder Include="Examples\" />
   </ItemGroup>
 </Project>

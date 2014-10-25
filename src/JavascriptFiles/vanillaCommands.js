@@ -15,7 +15,7 @@ function tellraw(target, message)
 	{
 		this.extras.push({"text": text});
 	}
-	this.addObjective = function(selector, objective)
+	this.addScore = function(selector, objective)
 	{
 		this.extras.push({"score": {"name": selector, "objective": objective}});
 	}

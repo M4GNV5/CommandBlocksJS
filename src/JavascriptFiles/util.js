@@ -26,11 +26,36 @@ function testforScore(name, max, min, callback)
 {
 	testfor("@a[score_"+name+"="+max+",score_"+name+"_min="+min+"]", callback);
 }
-function timer(timer, callback)
+
+function timer(tick, callback, stacks)
 {
-	var mainFunc = function() { callback(); call(timerFunc); };
-	var timerFunc = function() { delay(timer); call(mainFunc, false); };
-	call(mainFunc);
+	stacks = stacks || 0;
+	var timerScore;
+	if(stacks != 0)
+	{
+		var callbackID = OutputHandler.addFunction(callback);
+		var scoreName = "timer"+callbackID+"Stack";
+
+		timerScore = new Score(scoreName, "dummy");
+		timerScore.set(Selector.allPlayer(), 0);
+	}
+
+	var timerFunc = function()
+	{
+		if(stacks == 0)
+		{
+			callback();
+		}
+		else
+		{
+			timerScore.add(Selector.allPlayer(), 1);
+			testfor(timerScore.getSelector(stacks), callback);
+			timerScore.set(timerScore.getSelector(stacks), 0);
+		}
+		delay(tick);
+		call(timerFunc);
+	};
+    call(timerFunc);
 }
 
 var Selector = new function()
