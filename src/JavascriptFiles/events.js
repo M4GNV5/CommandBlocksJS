@@ -86,3 +86,15 @@ function ScoreChangeEvent(name, objective, objectiveType, triggerOnValue, refres
 		this.base.dispatch(arg);
 	}
 }
+
+function DayLightEvent(name, triggerAt)
+{
+	this.prototype = new Event(name);
+
+	OutputHandler.addFunction(function()
+	{
+		block(151);
+		wire(triggerAt);
+		this.dispatch(triggerAt);
+	});
+}

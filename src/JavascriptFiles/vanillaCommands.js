@@ -2,8 +2,33 @@
 function tellraw(target, message)
 {
 	target = target || "@a";
-	message = message || "CommandBlocksJS error invalid call 'tellraw();'";
-	command('tellraw '+target+' {"text":"'+message+'"}');
+
+	if(typeof message == 'string')
+	{
+		command('tellraw '+target+' {"text":"'+message+'"}');
+		return;
+	}
+
+	this.extras = [];
+
+	this.addText = function(text)
+	{
+		this.extras.push({"text": text});
+	}
+	this.addObjective = function(selector, objective)
+	{
+		this.extras.push({"score": {"name": selector, "objective": objective}});
+	}
+	this.addSelector = function(selector)
+	{
+		this.extras.push({"selector": selector});
+	}
+
+	this.tell = function(selector)
+	{
+		var extrasArray = JSON.stringify(this.extras);
+		command('tellraw '+selector+' {"text":"",extra:'+extrasArray+'}');
+	}
 }
 function say(message)
 {
@@ -44,7 +69,7 @@ String.prototype.format = function(formatting)
 };
 function formatText(text, formatting)
 {
-	text = text || "CommandblockJS Error: No text givent to formatText function!";
+	text = text || "CommandblockJS Error: No text given to formatText function!";
 	formatting = ' ' + formatting || '§c';
 	var words = text.split(' ');
 	text = '';
@@ -66,6 +91,10 @@ function Score(name, type, displayName)
 	displayName = displayName || name;
 	if(typeof type != 'undefined')
 		command("scoreboard objectives add "+name+" "+type+" "+displayName);
+
+	this.name = name;
+	this.type = type;
+	this.displayName = displayName;
 
 	this.set = function(player, value)
 	{
