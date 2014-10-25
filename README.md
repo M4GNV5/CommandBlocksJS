@@ -34,7 +34,7 @@ EventHandler.setEventListener('ondeath', function(player)
     //Add Text 'The Player <name> had a Karma of <valua>'
     karmaMessage.addText("The Player ");
     karmaMessage.addSelector(playerSelector);
-    karmaMessage.addText("had a Karma of");
+    karmaMessage.addText(" had a Karma of ");
 	karmaMessage.addObjective(playerSelector, "karma");
 	
 	//tell the message to everybody
