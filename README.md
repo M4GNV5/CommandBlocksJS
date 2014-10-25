@@ -6,7 +6,7 @@ moved to the [Wiki](https://github.com/M4GV5/CommandBlocksJS/wiki)
 
 ##Example 1
 ###Output
-[![Cmd](http://i.imgur.com/CEpe3lL.png)]()
+[![Cmd](http://i.imgur.com/TxrpUGN.png)]()
 ###Code
 ```javascript
 //setup karma scoreboard objective
@@ -18,23 +18,30 @@ karma.setDisplay("sidebar");
 //subscribe to the 'onentitykill' event
 EventHandler.setEventListener('onentitykill', function(player)
 {
-	//tell the player he just earned karma
-	tellraw(player.getSelector(), "You just earned one Karma".format(Formatting.red));
-	//add 1 karma
-	karma.add(player.getSelector(), 1);
+    //tell the player he just earned karma
+    tellraw(player.getSelector(), "You just earned one Karma".format(Formatting.red));
+    //add 1 karma
+    karma.add(player.getSelector(), 1);
 });
+//subscribe to the 'ondeath' event
 EventHandler.setEventListener('ondeath', function(player)
 {
-	//save selector of the dead player in local variable
-	var playerSelector = player.getSelector();
-	//setup tellraw command that tells him his karma
-	//TODO implement 1.8 tellraw updates
-	var cmdText = 'tellraw '+playerSelector+' {"text":"Your Karma was -","extra":[{"score":{"name":"'+playerSelector+'","objective":"karma"}}]}';
+    //save selector of the dead player in local variable
+    var playerSelector = player.getSelector();
+
+    //setup tellraw command that tells him his karma
+    var karmaMessage = new tellraw();
+    //Add Text 'The Player <name> had a Karma of <valua>'
+    karmaMessage.addText("The Player ");
+    karmaMessage.addSelector(playerSelector);
+    karmaMessage.addText("had a Karma of");
+	karmaMessage.addObjective(playerSelector, "karma");
 	
-	//execute tellraw command
-	command(cmdText);
-	//reset karma
-	karma.set(playerSelector, 0);
+	//tell the message to everybody
+	karmaMessage.tell("@a");
+
+    //reset karma
+    karma.set(playerSelector, 0);
 });
 ```
 
