@@ -1,4 +1,5 @@
-﻿function Event(name)
+﻿//region events.js
+function Event(name)
 {
 	this.name = name.toLowerCase();
 	this.listener = false;
@@ -26,7 +27,7 @@ var EventHandler = new function()
 	this.events['onsprint'] = new ScoreChangeEvent('onsprint', 'sprintcm', 'stat.sprintOneCm');
 
 	this.events['ondeath'] = new ScoreChangeEvent('ondeath', 'deathCount');
-	this.events['onkill'] = new ScoreChangeEvent('ondeath', 'playerKillCount');
+	this.events['onkill'] = new ScoreChangeEvent('onkill', 'playerKillCount');
 	this.events['onentitykill'] = new ScoreChangeEvent('onentitykill', 'totalKillCount');
 
 	this.setEventListener = function(name, listener)
@@ -46,49 +47,48 @@ var EventHandler = new function()
 }
 	
 
-function ScoreChangeEvent(name, objective, objectiveType, triggerOnValue, refreshTimer)
+function ScoreChangeEvent(name, objectiveType, triggerOnValue, refreshTimer)
 {
+	Event.call(this, name);
+
 	triggerOnValue = triggerOnValue || 1;
 	refreshTimer = refreshTimer || 9;
-	objectiveType = objectiveType || objective;
-
-	this.base = new Event(name);
-	this.name = this.base.name;
-	this.objective = objective;
-
-	var reference = "@a[score_"+objective+"_min="+triggerOnValue+"]";
+	objectiveType = objectiveType || "dummy";
 
 	this.checkForChange = function()
 	{
-		var player = new PlayerArray(name+'EP', reference);
+		var reference = this.objective.getSelector(triggerOnValue);
+		var name = this.base.name;
+		var player = new PlayerArray(this.name, reference);
 		testfor(reference, function()
-			{
-				EventHandler.dispatch(name.toLowerCase(), player);
-			});
-		command("scoreboard players set "+reference+" "+objective+" 0");
+		{
+			EventHandler.dispatch(name, player);
+		});
+		this.objective.set(reference, 0);
 	}
-
 	this.getSelector = function()
 	{
-		return reference;
+		return this.objective.getSelector(triggerOnValue);
 	}
 	this.setListener = function(func)
 	{
 		if(!this.base.listener)
 		{
-			command("scoreboard objectives add "+objective+" "+objectiveType);
+			this.objective = new Score(this.name+"Internal", objectiveType, this.name+"Event");
 			timer(refreshTimer, this.checkForChange);
 		}
-		this.base.setListener(function(player) { func(player); player.removePlayer(); });
-	}
-	this.dispatch = function(arg)
-	{
-		this.base.dispatch(arg);
+		Event.prototype.setListener.call(this, function(player)
+		{
+			func(player);
+			player.removePlayer();
+		});
 	}
 }
+ScoreChangeEvent.prototype = Object.create(Event.prototype);
 
 function DayLightEvent(name, triggerAt)
 {
+	Event.call(this, name);
 	this.prototype = new Event(name);
 
 	OutputHandler.addFunction(function()
@@ -98,3 +98,5 @@ function DayLightEvent(name, triggerAt)
 		this.dispatch(triggerAt);
 	});
 }
+DayLightEvent.prototype = Object.create(Event.prototype);
+//endregion

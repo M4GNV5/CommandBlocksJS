@@ -1,4 +1,5 @@
-﻿function validate(cmd, callback)
+﻿//region util.js
+function validate(cmd, callback)
 {
 	delay();
 	sidewards(function()
@@ -97,36 +98,119 @@ var Selector = new function()
 	}
 }
 
-function PlayerArray(name, selector)
+function Player(selector)
+{
+	selector = selector || "@a";
+	this.selector = selector;
+
+	this.setGameMode = function(mode)
+	{
+		command("gamemode "+mode+" "+this.selector);
+	}
+	this.tell = function(text)
+	{
+		command("tell "+this.selector+" "+text);
+	}
+	this.tellraw = function(param)
+	{
+		if(typeof param == 'object')
+		{
+			param.tell(this.selector);
+		}
+		else
+		{
+			tellraw(this.selector, param);
+		}
+	}
+
+	this.setTeam = function(team)
+	{
+		if(typeof team == 'object')
+		{
+			team.join(this.selector);
+		}
+		else
+		{
+			command("scoreboard teams join "+team+" "+this.selector);
+		}
+	}
+	this.setScore = function(score, value)
+	{
+		if(typeof score == 'object')
+		{
+			score.set(this.selector, value);
+		}
+		else
+		{
+			command("scoreboard players set "+this.selector+" "+team+" "+value);
+		}
+	}
+	this.addScore = function(score, value)
+	{
+		if(typeof score == 'object')
+		{
+			score.add(this.selector, value);
+		}
+		else
+		{
+			command("scoreboard players add "+this.selector+" "+team+" "+value);
+		}
+	}
+	this.removeScore = function(score, value)
+	{
+		if(typeof score == 'object')
+		{
+			score.remove(this.selector, value);
+		}
+		else
+		{
+			command("scoreboard players remove "+this.selector+" "+team+" "+value);
+		}
+	}
+}
+
+function PlayerArray(name, selector, createObjective)
 {
 	if(typeof name == 'undefined')
 		throw 'Error cant create PlayerArray without name';
 	this.name = name;
 
-	command("scoreboard objectives add "+name+" dummy");
-	if(typeof selector != 'undefined')
-		command("scoreboard players set "+selector+" "+this.name+" 1");
+	var arrayScore;
+	if(createObjective !== false)
+		arrayScore = new Score(name, "dummy");
+	else
+		arrayScore = new Score(name);
 
-	this.getSelector = function(name)
+	if(typeof selector != 'undefined')
+		arrayScore.set(selector, 1);
+
+	Player.call(this, arrayScore.getSelector(1));
+
+	this.getSelector = function()
 	{
-		return "@a[score_"+this.name+"_min=1]";
+		return this.selector;
 	}
 	this.addPlayer = function(selector)
 	{
-		command("scoreboard players set "+selector+" "+this.name+" 1");
+		arrayScore.set(selector, 1);
 	}
 	this.removePlayer = function(selector)
 	{
 		selector = selector || this.getSelector();
-		command("scoreboard players set "+selector+" "+this.name+" 0");
+		arrayScore.set(selector, 0);
 	}
 
 	this.getScore = function()
 	{
-		return new Score(this.name);
+		return arrayScore;
 	}
-	this.getTeam = function(teamname)
+	this.toTeam = function(teamname)
 	{
-		return new Team(this.name, true);
+		teamname = teamname || this.name;
+		var team = new Team(teamname, true);
+		team.addPlayer(this.selector);
+		return team;
 	}
 }
+PlayerArray.prototype = Object.create(Player.prototype);
+//endregion

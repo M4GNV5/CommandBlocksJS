@@ -23,6 +23,10 @@ function tellraw(target, message)
 	{
 		this.extras.push({"selector": selector});
 	}
+	this.addExtra = function(extra)
+	{
+		this.extras.push(extra.obj);
+	}
 
 	this.tell = function(selector)
 	{
@@ -30,6 +34,34 @@ function tellraw(target, message)
 		command('tellraw '+selector+' {"text":"",extra:'+extrasArray+'}');
 	}
 }
+function TellrawExtra(text)
+{
+	text = text || ""
+	this.obj = {"text": text};
+
+	this.setText = function(newText)
+	{
+		this.setOption("text", newText);
+	}
+	this.setClickEvent = function(action, value)
+	{
+		this.setOption("clickEvent", {"action": action, "value": value});
+	}
+	this.setHoverEvent = function(action, value)
+	{
+		this.setOption("clickEvent", {"action": action, "value": value});
+	}
+	this.setColor = function(color)
+	{
+		this.setOption("color", color);
+	}
+
+	this.setOption = function(name, value)
+	{
+		this.obj[name] = value;
+	}
+}
+
 function say(message)
 {
 	message = message || "CommandBlocksJS error invalid call 'say();'";
@@ -116,6 +148,13 @@ function Score(name, type, displayName)
 	{
 		command("scoreboard objectives setdisplay "+slot+" "+name);
 	}
+	this.enableTrigger = function(selector)
+	{
+		if(this.type != 'trigger')
+			throw "Cannot enable trigger for non Trigger objective '"+name+"'";
+
+		command("scoreboard players enable "+selector+" "+name);
+	}
 	this.test = function(player, callback, min, max)
 	{
 		min = min || 1;
@@ -138,11 +177,13 @@ function Score(name, type, displayName)
 	this.getPlayer = function(min, max)
 	{
 		var reference = this.getSelector(min, max);
-		return new PlayerArray(name+'SP', reference);
+		return new PlayerArray(name, reference);
 	}
 }
 function Team(name, addTeam)
 {
+	if(typeof name == 'undefined')
+		throw 'Error cant create Score without name';
 	addTeam = addTeam || true;
 	if(addTeam !== false)
 		command("scoreboard teams add "+name);
@@ -173,7 +214,7 @@ function Team(name, addTeam)
 	this.getPlayer = function()
 	{
 		var reference = this.getSelector();
-		return new PlayerArray(name+'TP', reference);
+		return new PlayerArray(name, reference);
 	}
 }
 //endregion
