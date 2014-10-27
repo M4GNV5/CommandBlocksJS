@@ -64,7 +64,7 @@ namespace CommandBlocksJS
 			int sidewards = 2;
 			foreach (string call in source.Split(';'))
 			{
-				string[] splittedCall = call.Split(':');
+				string[] splittedCall = call.Split('|');
 				if (splittedCall.Length + 1 > sidewards)
 				{
 					sidewards = splittedCall.Length + 1;
