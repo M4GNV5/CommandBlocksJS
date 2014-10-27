@@ -6,7 +6,7 @@ moved to the [Wiki](https://github.com/M4GV5/CommandBlocksJS/wiki)
 
 ##Example
 ###Output
-[![Cmd](http://i.imgur.com/TxrpUGN.png)]()
+[![Cmd](http://i.imgur.com/WeV6njC.png)]()
 ###Code
 ```javascript
 //setup karma scoreboard objective
