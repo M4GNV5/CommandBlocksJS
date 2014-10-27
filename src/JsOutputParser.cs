@@ -137,7 +137,7 @@ namespace CommandBlocksJS
 					PlaceBlock(id, data);
 				break;
 				case 's': //s for S idewards
-					string[] calls = source.Substring(1).Split(':');
+					string[] calls = source.Substring(1).Split('|');
 
 					IntVector3 oldPos = position;
 					direction++;

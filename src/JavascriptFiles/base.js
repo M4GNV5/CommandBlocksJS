@@ -86,7 +86,7 @@ function sidewards(func)
 	var oldManager = OutputHandler;
 	var newManager = new function()
 	{
-		this.addToCurrent = function(data) { code += data.replace(/;/g, ':'); }
+		this.addToCurrent = function(data) { code += data.replace(/;/g, '|'); }
 		this.addFunction = function(func) { return oldManager.addFunction(func); }
 	}
 	OutputHandler = newManager;
