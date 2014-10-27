@@ -4,7 +4,7 @@ function validate(cmd, callback)
 	delay();
 	sidewards(function()
 		{
-			command(cmd, false);
+			queryCommand(cmd, false);
 			comparator();
 			call(callback, false);
 		});
@@ -12,7 +12,7 @@ function validate(cmd, callback)
 function validateSync(cmd)
 {
 	cmd = cmd || 'say CommandBlocksJS error invalid call "validateSync();"';
-	command(cmd);
+	queryCommand(cmd);
 	comparator();
 }
 function testfor(statement, callback)

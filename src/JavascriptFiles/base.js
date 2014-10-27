@@ -67,6 +67,13 @@ function command(text, placeRepeater)
 		delay();
 	OutputHandler.addToCurrent('c'+text+';');
 }
+function queryCommand(text, placeRepeater)
+{
+	text = text || "say CommandBlocksJS error invalid call 'command();'";
+	if(placeRepeater !== false)
+		delay();
+	OutputHandler.addToCurrent('q'+text+';');
+}
 function block(id, data)
 {
 	id = id || 1;
@@ -113,6 +120,27 @@ function main()
 		fs.writeFile(OutputHandler.current+'.txt', OutputHandler.output[OutputHandler.current]);
 		OutputHandler.current++;
 		OutputHandler.addToCurrent('w;w;');
+		var relative = Direction.getRelative(-3);
+		command("setblock "+relative+" minecraft:air 0 replace");
 	}
 }
 //endregion
+
+//region direction calculator
+var Direction = new function()
+{
+	this.direction = direction;
+
+	this.getRelative = function(amount)
+	{
+		if(this.direction == 0)
+			return "~ ~ ~"+(-amount);
+		else if(this.direction == 1)
+			return "~"+amount+" ~ ~";
+		else if(this.direction == 2)
+			return "~ ~ ~"+amount;
+		else if(this.direction == 3)
+			return "~"+(-amount)+" ~ ~";
+	}
+}
+//endredion

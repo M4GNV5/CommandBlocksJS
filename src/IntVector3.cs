@@ -4,8 +4,15 @@ namespace CommandBlocksJS
 {
 	public struct IntVector3
 	{
-		public int X {get; set;}
-		public int Y {get; set;}
-		public int Z { get; set;}
+		public IntVector3(int x, int y, int z)
+		{
+			this.x = x;
+			this.y = y;
+			this.z = z;
+		}
+
+		public int x;
+		public int y;
+		public int z;
 	}
 }

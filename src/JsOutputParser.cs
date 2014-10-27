@@ -47,7 +47,7 @@ namespace CommandBlocksJS
 
 				int sidewards = GetMaxSidewards(content);
 
-				UpdatePosition(() => position.Z -= sidewards, () => position.Z += sidewards, () => position.Z -= sidewards, () => position.Z += sidewards);
+				UpdatePosition(() => position.z -= sidewards, () => position.z += sidewards, () => position.z -= sidewards, () => position.z += sidewards);
 			}
 
 			foreach (string file in files.Keys)
@@ -85,7 +85,7 @@ namespace CommandBlocksJS
 					continue;
 				ParseCall(call);
 
-				UpdatePosition(() => position.X--, () => position.X++, () => position.Z--, () => position.Z++);
+				UpdatePosition(() => position.x--, () => position.x++, () => position.z--, () => position.z++);
 			}
 		}
 
@@ -108,16 +108,27 @@ namespace CommandBlocksJS
 					int blockData = (int)direction;
 					if (int.TryParse(source.Substring(1), out delay))
 						blockData = delay * 4 + blockData;
-					PlaceBlock(BlockType.REDSTONE_REPEATER_ON, blockData); //ids changed 92 is now off and 94 on
+					PlaceBlock(BlockType.REDSTONE_REPEATER_ON, blockData); //ids changed 93 is now off and 94 on
 				break;
 				case 'o': //o for analog O utput (comparator)
 					PlaceBlock(BlockType.REDSTONE_COMPARATOR_INACTIVE, direction);
 				break;
 				case 'c': //c for C ommandblock
-					AlphaBlock cblock = new AlphaBlock (BlockType.COMMAND_BLOCK);
-					TileEntityControl te = cblock.GetTileEntity() as TileEntityControl; //unsafe
-					te.Command = source.Substring(1);
-					blockManager.SetBlock(position.X, position.Y, position.Z, cblock);
+					string command = source.Substring(1);
+					PlaceCommandBlock(command);
+				break;
+				case 'q': //q for Q uery command
+					string qCommand = source.Substring(1);
+
+					PlaceCommandBlock(qCommand);
+
+					IntVector3 torchPos = new IntVector3 (position.x, position.y + 1, position.z);
+					PlaceBlock(BlockType.REDSTONE_TORCH_OFF, 5, torchPos);
+
+					IntVector3 resetCbPos = new IntVector3 (position.x, position.y + 2, position.z);
+					string escapedCommand = qCommand.Replace("\"", "\\\"");
+					string resetCommand = "setblock ~ ~-2 ~ minecraft:command_block 0 replace {Command:\"%cmd%\"}".Replace("%cmd%", escapedCommand);
+					PlaceCommandBlock(resetCommand, resetCbPos);
 				break;
 				case 'b': //b for B lock
 					string[] blockInfo = source.Substring(1).Split('_');
@@ -133,25 +144,17 @@ namespace CommandBlocksJS
 					foreach (string call in calls)
 					{
 						ParseCall(call.Trim());
-						UpdatePosition(() => position.X--, () => position.X++, () => position.Z--, () => position.Z++);
+						UpdatePosition(() => position.x--, () => position.x++, () => position.z--, () => position.z++);
 					}
 					direction--;
 					position = oldPos;
 				break;
 				case 'e': //e for E xecute
-					AlphaBlock _cblock;
-					TileEntityControl _te;
 					IntVector3 ePosition = filePositions [source.Substring(1)];
 
-					_cblock = new AlphaBlock (BlockType.COMMAND_BLOCK);
-					_te = _cblock.GetTileEntity() as TileEntityControl; //unsafe
-					_te.Command = "setblock " + ePosition.X + " " + ePosition.Y + " " + ePosition.Z + " minecraft:redstone_block 0 replace";
-					blockManager.SetBlock(position.X, position.Y, position.Z, _cblock);
+					string eCommand = "setblock " + ePosition.x + " " + ePosition.y + " " + ePosition.z + " minecraft:redstone_block 0 replace";
 
-					_cblock = new AlphaBlock (BlockType.COMMAND_BLOCK);
-					_te = _cblock.GetTileEntity() as TileEntityControl; //unsafe
-					_te.Command = "setblock " + ePosition.X + " " + ePosition.Y + " " + ePosition.Z + " minecraft:air 0 replace";
-					blockManager.SetBlock(position.X, position.Y+1, position.Z, _cblock);
+					PlaceCommandBlock(eCommand);
 				break;
 			}
 		}
@@ -162,19 +165,46 @@ namespace CommandBlocksJS
 		}
 		private void PlaceBlock(int id, int data)
 		{
-			int blockBelow = blockManager.GetID(position.X, position.Y - 1, position.Z);
+			int blockBelow = blockManager.GetID(position.x, position.y - 1, position.z);
 			if (blockBelow == BlockType.AIR
 			   || blockBelow == BlockType.WATER
 			   || blockBelow == BlockType.STATIONARY_WATER
 			   || blockBelow == BlockType.LAVA
 			   || blockBelow == BlockType.STATIONARY_LAVA)
 			{
-				blockManager.SetID(position.X, position.Y - 1, position.Z, BlockType.STONE);
-				blockManager.SetData(position.X, position.Y - 1, position.Z, 0);
+				blockManager.SetID(position.x, position.y - 1, position.z, BlockType.STONE);
+				blockManager.SetData(position.x, position.y - 1, position.z, 0);
 			}
 
-			blockManager.SetID(position.X, position.Y, position.Z, id);
-			blockManager.SetData(position.X, position.Y, position.Z, data);
+			PlaceBlock(id, data, position);
+		}
+		private void PlaceBlock(int id, int data, IntVector3 pos)
+		{
+			blockManager.SetID(pos.x, pos.y, pos.z, id);
+			blockManager.SetData(pos.x, pos.y, pos.z, data);
+		}
+
+		private void PlaceCommandBlock(string command)
+		{
+			int blockBelow = blockManager.GetID(position.x, position.y - 1, position.z);
+			if (blockBelow == BlockType.AIR
+				|| blockBelow == BlockType.WATER
+				|| blockBelow == BlockType.STATIONARY_WATER
+				|| blockBelow == BlockType.LAVA
+				|| blockBelow == BlockType.STATIONARY_LAVA)
+			{
+				blockManager.SetID(position.x, position.y - 1, position.z, BlockType.STONE);
+				blockManager.SetData(position.x, position.y - 1, position.z, 0);
+			}
+
+			PlaceCommandBlock(command, position);
+		}
+		private void PlaceCommandBlock(string command, IntVector3 pos)
+		{
+			AlphaBlock cblock = new AlphaBlock (BlockType.COMMAND_BLOCK);
+			TileEntityControl te = cblock.GetTileEntity() as TileEntityControl; //unsafe
+			te.Command = command;
+			blockManager.SetBlock(pos.x, pos.y, pos.z, cblock);
 		}
 
 		private void UpdatePosition(Action xMinus, Action xPlus, Action zMinus, Action zPlus)

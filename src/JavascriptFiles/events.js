@@ -21,10 +21,10 @@ var EventHandler = new function()
 {
 	this.events = {};
 
-	this.events['onmove'] = new ScoreChangeEvent('onmove', 'movecm', 'stat.walkOneCm');
-	this.events['oncrouch'] = new ScoreChangeEvent('oncrouch', 'crouchcm', 'stat.crouchOneCm');
-	this.events['onswim'] = new ScoreChangeEvent('onswim', 'swimcm', 'stat.swimOneCm');
-	this.events['onsprint'] = new ScoreChangeEvent('onsprint', 'sprintcm', 'stat.sprintOneCm');
+	this.events['onmove'] = new ScoreChangeEvent('onmove', 'stat.walkOneCm');
+	this.events['oncrouch'] = new ScoreChangeEvent('oncrouch', 'stat.crouchOneCm');
+	this.events['onswim'] = new ScoreChangeEvent('onswim', 'stat.swimOneCm');
+	this.events['onsprint'] = new ScoreChangeEvent('onsprint', 'stat.sprintOneCm');
 
 	this.events['ondeath'] = new ScoreChangeEvent('ondeath', 'deathCount');
 	this.events['onkill'] = new ScoreChangeEvent('onkill', 'playerKillCount');
@@ -55,33 +55,38 @@ function ScoreChangeEvent(name, objectiveType, triggerOnValue, refreshTimer)
 	refreshTimer = refreshTimer || 9;
 	objectiveType = objectiveType || "dummy";
 
+	this.name = name;
+
+	var objective = new Score(this.name+"E");
+	var player;
+
 	this.checkForChange = function()
 	{
-		var reference = this.objective.getSelector(triggerOnValue);
-		var name = this.base.name;
-		var player = new PlayerArray(this.name, reference);
+		var reference = objective.getSelector(triggerOnValue);
+		player.addPlayer(reference);
 		testfor(reference, function()
 		{
 			EventHandler.dispatch(name, player);
 		});
-		this.objective.set(reference, 0);
+		objective.set(reference, 0);
 	}
 	this.getSelector = function()
 	{
-		return this.objective.getSelector(triggerOnValue);
+		return objective.getSelector(triggerOnValue);
 	}
 	this.setListener = function(func)
 	{
-		if(!this.base.listener)
+		if(!this.listener)
 		{
-			this.objective = new Score(this.name+"Internal", objectiveType, this.name+"Event");
+			objective = new Score(name+"E", objectiveType);
+			player = new PlayerArray(name);
 			timer(refreshTimer, this.checkForChange);
 		}
-		Event.prototype.setListener.call(this, function(player)
+		this.listener = function(player)
 		{
 			func(player);
 			player.removePlayer();
-		});
+		};
 	}
 }
 ScoreChangeEvent.prototype = Object.create(Event.prototype);

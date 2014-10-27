@@ -116,12 +116,12 @@ function formatText(text, formatting)
 
 
 //region scoreboard
-function Score(name, type, displayName)
+function Score(name, type, displayName, addObjective)
 {
 	if(typeof name == 'undefined')
 		throw 'Error cant create Score without name';
 	displayName = displayName || name;
-	if(typeof type != 'undefined')
+	if(typeof type != 'undefined' && addObjective !== false)
 		command("scoreboard objectives add "+name+" "+type+" "+displayName);
 
 	this.name = name;

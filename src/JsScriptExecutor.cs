@@ -10,10 +10,11 @@ namespace CommandBlocksJS
 	{
 		public JavascriptContext JsContext { get; set; }
 
-		public JsScriptExecutor ()
+		public JsScriptExecutor (int direction)
 		{
 			JsContext = new JavascriptContext ();
 			JsContext.SetParameter("fs", new JsFileAPI (MainClass.tempDir));
+			JsContext.SetParameter("direction", direction);
 		}
 
 		public void Run(string libDirectory, string scriptPath)

@@ -48,9 +48,9 @@ namespace CommandBlocksJS
 
 				IntVector3 position = new IntVector3 ();
 				string[] pos = options.Position.Split('_', '-', '|', ' ', '.', ',', ';', ':');
-				position.X = Convert.ToInt32(pos [0]);
-				position.Y = Convert.ToInt32(pos [1]);
-				position.Z = Convert.ToInt32(pos [2]);
+				position.x = Convert.ToInt32(pos [0]);
+				position.y = Convert.ToInt32(pos [1]);
+				position.z = Convert.ToInt32(pos [2]);
 
 				MinecraftDirection direction = (MinecraftDirection)options.Direction;
 					
@@ -65,7 +65,7 @@ namespace CommandBlocksJS
 					Directory.CreateDirectory(tempDir);
 				}
 
-				new JsScriptExecutor().Run(options.LibPath, options.ScriptFile);
+				new JsScriptExecutor(options.Direction).Run(options.LibPath, options.ScriptFile);
 
 				if (options.Output)
 				{
