@@ -1,14 +1,20 @@
 ﻿//region tellraw.js
-function tellraw(target, message)
+function tellraw(selector, message, isJson)
 {
-	target = target || "@a";
+	selector = selector || Selector.allPlayer();
+	message = message || "No Message defined!";
 
-	if(typeof message == 'string')
-	{
-		command('tellraw '+target+' {"text":"'+message+'"}');
-		return;
-	}
+	var t = new Tellraw();
+	if(isJson == true)
+		t.addExtra(message);
+	else
+		t.addText(message);
 
+	t.tell(selector);
+}
+
+function Tellraw()
+{
 	this.extras = [];
 
 	this.addText = function(text)
@@ -30,6 +36,7 @@ function tellraw(target, message)
 
 	this.tell = function(selector)
 	{
+		selector = selector || Selector.allPlayer();
 		var extrasArray = JSON.stringify(this.extras);
 		command('tellraw '+selector+' {"text":"",extra:'+extrasArray+'}');
 	}

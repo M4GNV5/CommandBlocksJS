@@ -52,6 +52,53 @@ function formatText(text, formatting)
 
 
 
+//region title
+function title(target, text, isSubtitle)
+{
+	target = target || Selector.allPlayer();
+	text = text || "No Text defined!";
+
+	var t = new Title(text, isSubtitle);
+	t.show(target);
+}
+function Title(text, isSubtitle)
+{
+	TellrawExtra.call(this, text);
+
+	var titleType = isSubtitle ? "subtitle" : "title";
+
+	this.show = function(player)
+	{
+		player = player || Selector.allPlayer();
+		var json = JSON.stringify(this.obj);
+		command("title "+player+" "+titleType+" "+json);
+	}
+
+	var notSupported = function() { throw "Setting events is not supported for titles"; };
+	this.setClickEvent = notSupported;
+	this.setHoverEvent = notSupported;
+}
+Title.prototype = Object.create(TellrawExtra.prototype);
+
+Title.setTime = function(player, fadeIn, stay, fadeOut)
+{
+	player = player || Selector.allPlayer();
+	command("title "+player+" times "+fadeIn+" "+stay+" "+fadeOut);
+}
+Title.reset = function(player)
+{
+	player = player || Selector.allPlayer();
+	command("title "+player+" reset");
+}
+Title.clear = function(player)
+{
+	player = player || Selector.allPlayer();
+	command("title "+player+" clear");
+}
+//endregion title
+
+
+
 //region scoreboard
 function Score(name, type, displayName, addObjective)
 {
