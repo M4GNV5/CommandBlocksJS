@@ -171,8 +171,7 @@ function Player(selector)
 
 function PlayerArray(name, selector, createObjective)
 {
-	if(typeof name == 'undefined')
-		throw 'Error cant create PlayerArray without name';
+	name = name || Naming.next('array');
 	this.name = name;
 
 	var arrayScore;

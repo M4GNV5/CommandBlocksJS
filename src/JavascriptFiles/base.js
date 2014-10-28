@@ -126,7 +126,7 @@ function main()
 }
 //endregion
 
-//region direction calculator
+//region internal helper classes
 var Direction = new function()
 {
 	this.direction = direction;
@@ -141,6 +141,18 @@ var Direction = new function()
 			return "~ ~ ~"+amount;
 		else if(this.direction == 3)
 			return "~"+(-amount)+" ~ ~";
+	}
+}
+
+var Naming = new function()
+{
+	this.names = {};
+
+	this.next = function(name)
+	{
+		this.names[name] = this.names[name] || 0;
+		this.names[name]++;
+		return name+this.names[name];
 	}
 }
 //endredion

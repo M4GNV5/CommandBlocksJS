@@ -1,67 +1,4 @@
 ﻿//region chat
-function tellraw(target, message)
-{
-	target = target || "@a";
-
-	if(typeof message == 'string')
-	{
-		command('tellraw '+target+' {"text":"'+message+'"}');
-		return;
-	}
-
-	this.extras = [];
-
-	this.addText = function(text)
-	{
-		this.extras.push({"text": text});
-	}
-	this.addScore = function(selector, objective)
-	{
-		this.extras.push({"score": {"name": selector, "objective": objective}});
-	}
-	this.addSelector = function(selector)
-	{
-		this.extras.push({"selector": selector});
-	}
-	this.addExtra = function(extra)
-	{
-		this.extras.push(extra.obj);
-	}
-
-	this.tell = function(selector)
-	{
-		var extrasArray = JSON.stringify(this.extras);
-		command('tellraw '+selector+' {"text":"",extra:'+extrasArray+'}');
-	}
-}
-function TellrawExtra(text)
-{
-	text = text || ""
-	this.obj = {"text": text};
-
-	this.setText = function(newText)
-	{
-		this.setOption("text", newText);
-	}
-	this.setClickEvent = function(action, value)
-	{
-		this.setOption("clickEvent", {"action": action, "value": value});
-	}
-	this.setHoverEvent = function(action, value)
-	{
-		this.setOption("clickEvent", {"action": action, "value": value});
-	}
-	this.setColor = function(color)
-	{
-		this.setOption("color", color);
-	}
-
-	this.setOption = function(name, value)
-	{
-		this.obj[name] = value;
-	}
-}
-
 function say(message)
 {
 	message = message || "CommandBlocksJS error invalid call 'say();'";
@@ -118,8 +55,9 @@ function formatText(text, formatting)
 //region scoreboard
 function Score(name, type, displayName, addObjective)
 {
-	if(typeof name == 'undefined')
-		throw 'Error cant create Score without name';
+	name = name || Naming.next("score");
+	if(name.length > 16)
+		throw "Cannot create Score with name '"+name+"' maximum name length is 16";
 	displayName = displayName || name;
 	if(typeof type != 'undefined' && addObjective !== false)
 		command("scoreboard objectives add "+name+" "+type+" "+displayName);
@@ -148,12 +86,12 @@ function Score(name, type, displayName, addObjective)
 	{
 		command("scoreboard objectives setdisplay "+slot+" "+name);
 	}
-	this.enableTrigger = function(selector)
+	this.enableTrigger = function(player)
 	{
 		if(this.type != 'trigger')
 			throw "Cannot enable trigger for non Trigger objective '"+name+"'";
 
-		command("scoreboard players enable "+selector+" "+name);
+		command("scoreboard players enable "+player+" "+name);
 	}
 	this.test = function(player, callback, min, max)
 	{
@@ -182,8 +120,7 @@ function Score(name, type, displayName, addObjective)
 }
 function Team(name, addTeam)
 {
-	if(typeof name == 'undefined')
-		throw 'Error cant create Score without name';
+	name = name || Naming.next("team");
 	addTeam = addTeam || true;
 	if(addTeam !== false)
 		command("scoreboard teams add "+name);

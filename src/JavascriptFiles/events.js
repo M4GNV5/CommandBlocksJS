@@ -1,6 +1,8 @@
 ﻿//region events.js
 function Event(name)
 {
+	name = name || Naming.next("event");
+
 	this.name = name.toLowerCase();
 	this.listener = false;
 
@@ -26,9 +28,9 @@ var EventHandler = new function()
 	this.events['onswim'] = new ScoreChangeEvent('onswim', 'stat.swimOneCm');
 	this.events['onsprint'] = new ScoreChangeEvent('onsprint', 'stat.sprintOneCm');
 
-	this.events['ondeath'] = new ScoreChangeEvent('ondeath', 'deathCount');
-	this.events['onkill'] = new ScoreChangeEvent('onkill', 'playerKillCount');
-	this.events['onentitykill'] = new ScoreChangeEvent('onentitykill', 'totalKillCount');
+	this.events['ondeath'] = new ScoreChangeEvent('ondeath', 'deathCount', {"resetScore": false});
+	this.events['onkill'] = new ScoreChangeEvent('onkill', 'playerKillCount', {"resetScore": false});
+	this.events['onentitykill'] = new ScoreChangeEvent('onentitykill', 'totalKillCount', {"resetScore": false});
 
 	this.setEventListener = function(name, listener)
 	{
@@ -47,40 +49,53 @@ var EventHandler = new function()
 }
 	
 
-function ScoreChangeEvent(name, objectiveType, triggerOnValue, refreshTimer)
+function ScoreChangeEvent(name, objectiveType, options)
 {
+	name = name || Naming.next("scoreEvent");
+
 	Event.call(this, name);
 
-	triggerOnValue = triggerOnValue || 1;
-	refreshTimer = refreshTimer || 9;
 	objectiveType = objectiveType || "dummy";
 
-	this.name = name;
+	options = options || {};
+	options.triggerOnValue = options.triggerOnValue || 1;
+	options.refreshTimer = options.refreshTimer || 9;
+	options.removeFromScore = options.removeFromScore || 1;
 
 	var objective = new Score(this.name+"E");
 	var player;
 
 	this.checkForChange = function()
 	{
-		var reference = objective.getSelector(triggerOnValue);
+		var reference = objective.getSelector(options.triggerOnValue);
 		player.addPlayer(reference);
+
+		var resetScore = options.resetScore;
+		var removeFromScore = options.removeFromScore;
+
 		testfor(reference, function()
 		{
+			if(resetScore == false)
+				objective.remove(reference, removeFromScore);
+			else
+				objective.set(reference, 0);
+
 			EventHandler.dispatch(name, player);
 		});
-		objective.set(reference, 0);
 	}
 	this.getSelector = function()
 	{
-		return objective.getSelector(triggerOnValue);
+		return objective.getSelector(options.triggerOnValue);
 	}
 	this.setListener = function(func)
 	{
 		if(!this.listener)
 		{
-			objective = new Score(name+"E", objectiveType);
-			player = new PlayerArray(name);
-			timer(refreshTimer, this.checkForChange);
+			if(options.createObjective !== false)
+				objective = new Score(this.name+"E", objectiveType);
+
+			player = new PlayerArray(this.name);
+			timer(options.refreshTimer, this.checkForChange);
 		}
 		this.listener = function(player)
 		{
