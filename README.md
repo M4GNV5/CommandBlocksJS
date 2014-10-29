@@ -51,5 +51,12 @@ For more Examples see https://github.com/M4GV5/CommandBlocksJS/tree/master/src/E
 
 
 
+##Used Libraries
+- [CommandlineParser](https://commandline.codeplex.com/) for parsing the commandline arguments
+- [Substrat](http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-tools/1261313-sdk-substrate-map-editing-library-for-c-net-1-3-8) for editing the minecraft worlds
+- [Javascript.NET](http://javascriptdotnet.codeplex.com/) for executing the Javascript code
+
+
+
 ##License
 CommandBlocksJS is published under the 4 clause BSD license what means you can use source and binary for everything but your project needs to include the following clause: "This product includes software developed by Jakob Löw (M4GNV5)."
