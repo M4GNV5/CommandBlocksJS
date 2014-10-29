@@ -57,6 +57,7 @@
     <None Include="Examples\game template.js" />
     <None Include="Examples\Karma %28readme%29.js" />
     <None Include="JavascriptFiles\tellraw.js" />
+    <None Include="Examples\1.8 stuff.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="JavascriptFiles\" />
