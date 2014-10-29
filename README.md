@@ -53,7 +53,7 @@ For more Examples see https://github.com/M4GV5/CommandBlocksJS/tree/master/src/E
 
 ##Used Libraries
 - [CommandlineParser](https://commandline.codeplex.com/) for parsing the commandline arguments
-- [Substrat](http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-tools/1261313-sdk-substrate-map-editing-library-for-c-net-1-3-8) for editing the minecraft worlds
+- [Substrate](https://github.com/jaquadro/Substrate) for editing the minecraft worlds
 - [Javascript.NET](http://javascriptdotnet.codeplex.com/) for executing the Javascript code
 
 
