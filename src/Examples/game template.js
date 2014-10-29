@@ -9,7 +9,7 @@ startCountdown.set(Selector.allPlayer(), 5);
 timer(10, function() 
 {
     //setup tellraw message
-    var message = new tellraw();
+    var message = new Tellraw();
 
     //setup tellraw message texts
     var text1 = "Game will start in ".format(Formatting.red+Formatting.bold);

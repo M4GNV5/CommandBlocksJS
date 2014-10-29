@@ -19,15 +19,15 @@ EventHandler.setEventListener('ondeath', function(player)
     var playerSelector = player.getSelector();
 
     //setup tellraw command that tells him his karma
-    var karmaMessage = new tellraw();
+    var karmaMessage = new Tellraw();
     //Add Text 'The Player <name> had a Karma of <valua>'
     karmaMessage.addText("The Player ");
     karmaMessage.addSelector(playerSelector);
     karmaMessage.addText(" had a Karma of ");
-	karmaMessage.addScore(playerSelector, "karma");
-	
-	//tell the message to everybody
-	karmaMessage.tell("@a");
+    karmaMessage.addScore(playerSelector, "karma");
+    
+    //tell the message to everybody
+    karmaMessage.tell("@a");
 
     //reset karma
     karma.set(playerSelector, 0);
