@@ -4,6 +4,8 @@ CommandBlocksJS allows you to translate Javascript code to minecraft CommandBloc
 ##Documentation
 moved to the [Wiki](https://github.com/M4GV5/CommandBlocksJS/wiki)
 
+**Note** there is a [Quick Start](https://github.com/M4GV5/CommandBlocksJS/wiki/Quick-Start) page for those who cant wait to write their first script
+
 ##Example
 ###Output
 [![Cmd](http://i.imgur.com/WeV6njC.png)]()
