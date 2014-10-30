@@ -20,8 +20,9 @@ namespace CommandBlocksJS
 			[Option('p', "position", Required = true, HelpText = "The start-position where to build the commandblocks.")]
 			public string Position { get; set; }
 
-			[Option('d', "direction", DefaultValue = 0, HelpText = "The direction to build the commandblocks.")]
-			public int Direction { get; set; }
+			//TODO reimplement direction
+			/*[Option('d', "direction", DefaultValue = 0, HelpText = "The direction to build the commandblocks.")]
+			public int Direction { get; set; }*/
 
 			[Option('l', "lib", DefaultValue = "./libs", HelpText = "Javascript files (.js) in this directory will be used as Library")]
 			public string LibPath { get; set; }
@@ -52,12 +53,11 @@ namespace CommandBlocksJS
 				position.y = Convert.ToInt32(pos [1]);
 				position.z = Convert.ToInt32(pos [2]);
 
-				MinecraftDirection direction = (MinecraftDirection)options.Direction;
+				MinecraftDirection direction = (MinecraftDirection)1; //TODO reimplement direction
 					
 				if (Directory.Exists(tempDir))
 				{
 					Console.WriteLine("Error: output directory already exists!");
-					Console.ReadKey();
 					return 1;
 				}
 				else
@@ -65,7 +65,7 @@ namespace CommandBlocksJS
 					Directory.CreateDirectory(tempDir);
 				}
 
-				new JsScriptExecutor(options.Direction).Run(options.LibPath, options.ScriptFile);
+				new JsScriptExecutor(1).Run(options.LibPath, options.ScriptFile); //TODO reimplement direction
 
 				if (options.Output)
 				{
@@ -80,7 +80,6 @@ namespace CommandBlocksJS
 			{
 				Console.WriteLine("An Error of type {0} occured!", e.GetType());
 				Console.WriteLine("Error Message: {0}", e.Message);
-				Console.ReadKey();
 
 				if (Directory.Exists(tempDir))
 				{
