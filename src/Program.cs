@@ -48,7 +48,7 @@ namespace CommandBlocksJS
 					throw new ArgumentException("Invalid Commandline parameter!");
 
 				IntVector3 position = new IntVector3 ();
-				string[] pos = options.Position.Split('_', '-', '|', ' ', '.', ',', ';', ':');
+				string[] pos = options.Position.Split('_', '|', ' ', '.', ',', ';', ':');
 				position.x = Convert.ToInt32(pos [0]);
 				position.y = Convert.ToInt32(pos [1]);
 				position.z = Convert.ToInt32(pos [2]);
