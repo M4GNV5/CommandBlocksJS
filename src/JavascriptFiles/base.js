@@ -35,7 +35,7 @@ var OutputHandler = new function()
 }
 //endregion
 
-//region utility functions
+//region core functions
 var direction = 1;
 
 function block(id, data)
@@ -44,6 +44,46 @@ function block(id, data)
 	data = data || 0;
 	OutputHandler.addToCurrent('b'+id+'_'+data+';');
 }
+function command(text, placeRepeater)
+{
+	text = text || "say CommandBlocksJS error invalid call 'command();'";
+	if(placeRepeater !== false)
+		delay();
+	OutputHandler.addToCurrent('c'+text+';');
+}
+function queryCommand(text, placeRepeater)
+{
+	text = text || "say CommandBlocksJS error invalid call 'command();'";
+	if(placeRepeater !== false)
+		delay();
+	OutputHandler.addToCurrent('q'+text+';');
+}
+function sidewards(func)
+{
+	direction++;
+	var code = 's';
+	var oldManager = OutputHandler;
+	var newManager = new function()
+	{
+		this.addToCurrent = function(data) { code += data.replace(/;/g, '|'); }
+		this.addFunction = function(func) { return oldManager.addFunction(func); }
+	}
+	OutputHandler = newManager;
+	func();
+	OutputHandler = oldManager;
+	OutputHandler.addToCurrent(code+';');
+	direction--;
+}
+function call(func, placeRepeater)
+{
+	var funcId = OutputHandler.addFunction(func);
+	if(placeRepeater !== false)
+		delay();
+	OutputHandler.addToCurrent('e'+funcId+';');
+}
+//enregion
+
+//region wrapper functions
 function wire(length)
 {
 	length = length || 1;
@@ -78,20 +118,6 @@ function comparator(activated)
 	else
 		block(150, direction);
 }
-function command(text, placeRepeater)
-{
-	text = text || "say CommandBlocksJS error invalid call 'command();'";
-	if(placeRepeater !== false)
-		delay();
-	OutputHandler.addToCurrent('c'+text+';');
-}
-function queryCommand(text, placeRepeater)
-{
-	text = text || "say CommandBlocksJS error invalid call 'command();'";
-	if(placeRepeater !== false)
-		delay();
-	OutputHandler.addToCurrent('q'+text+';');
-}
 function invert(blockId, placeRepeater)
 {
 	blockId = blockId || 1;
@@ -100,30 +126,7 @@ function invert(blockId, placeRepeater)
 	block(blockId);
 	torch();
 }
-function sidewards(func)
-{
-	direction++;
-	var code = 's';
-	var oldManager = OutputHandler;
-	var newManager = new function()
-	{
-		this.addToCurrent = function(data) { code += data.replace(/;/g, '|'); }
-		this.addFunction = function(func) { return oldManager.addFunction(func); }
-	}
-	OutputHandler = newManager;
-	func();
-	OutputHandler = oldManager;
-	OutputHandler.addToCurrent(code+';');
-	direction--;
-}
-function call(func, placeRepeater)
-{
-	var funcId = OutputHandler.addFunction(func);
-	if(placeRepeater !== false)
-		delay();
-	OutputHandler.addToCurrent('e'+funcId+';');
-}
-//enregion
+//endregion
 
 //region usercode
 function userCode()

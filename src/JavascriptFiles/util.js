@@ -1,4 +1,12 @@
 ﻿//region util.js
+function callOnce(callback, placeRepeater)
+{
+	call(function()
+	{
+		command("setblock ~-1 ~ ~ minecraft:air 0 replace", true);
+		callback();
+	}, placeRepeater);
+}
 function validate(cmd, callback)
 {
 	delay();
@@ -100,12 +108,34 @@ var Selector = new function()
 
 function Player(selector)
 {
-	selector = selector || "@a";
+	selector = selector || Selector.allPlayer();
 	this.selector = selector;
 
 	this.setGameMode = function(mode)
 	{
 		command("gamemode "+mode+" "+this.selector);
+	}
+	this.teleport = function(dest)
+	{
+		if(typeof dest == 'string')
+		{
+			command("tp "+this.selector+" "+dest);
+		}
+		else
+		{
+			if(typeof dest.yrot == 'undefined' || typeof dest.xrot != 'undefined')
+				command("tp "+this.selector+" "+dest.x+" "+dest.y+" "+dest.z);
+			else
+				command("tp "+this.selector+" "+dest.x+" "+dest.y+" "+dest.z+" "+dest.yrot+" "+dest.xrot);
+		}
+	}
+	this.clear = function(item, data, maxCount, dataTag)
+	{
+		item = item || '';
+		data = data || '';
+		maxCount = maxCount || '';
+		dataTag = dataTag || '';
+		command("clear "+this.selector+" "+item+" "+data+" "+maxCount+" "+dataTag);
 	}
 	this.tell = function(text)
 	{
