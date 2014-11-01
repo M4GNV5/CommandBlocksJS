@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandBlocksJS", "src\CommandBlocksJS.csproj", "{9356CEBC-F413-4B4D-90B5-05A342B13447}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandBlocksJS", "CommandBlocksJS\CommandBlocksJS.csproj", "{9356CEBC-F413-4B4D-90B5-05A342B13447}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandBlocksJS.GUI", "CommandBlockJS.GUI\CommandBlocksJS.GUI.csproj", "{CBB64BA7-15AB-4A28-96E0-5BFBA8C01C35}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandBlocksJS.GUI", "CommandBlocksJS.GUI\CommandBlocksJS.GUI.csproj", "{CBB64BA7-15AB-4A28-96E0-5BFBA8C01C35}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
