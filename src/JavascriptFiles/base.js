@@ -36,15 +36,28 @@ var OutputHandler = new function()
 //endregion
 
 //region utility functions
+var direction = 1;
+
+function block(id, data)
+{
+	id = id || 1;
+	data = data || 0;
+	OutputHandler.addToCurrent('b'+id+'_'+data+';');
+}
 function wire(length)
 {
 	length = length || 1;
 	for(var i = 0; i < length; i++)
-		OutputHandler.addToCurrent('w;');
+		block(55);
 }
-function torch()
+function torch(activated)
 {
-	OutputHandler.addToCurrent('t;');
+	activated = activated || true;
+	var data = (direction == 4) ? direction+1 : 1;
+	if(activated == false)
+		block(75, data);
+	else
+		block(76, data);
 }
 function delay(time)
 {
@@ -52,13 +65,18 @@ function delay(time)
 	while(time >= 0)
 	{
 		var delay = (time > 3) ? 3 : (time == 0) ? 0 : time-1;
-		OutputHandler.addToCurrent('r'+delay+';');
+		var data = delay * 4 + direction;
+		block(93, data);
 		time -= (time > 3) ? delay+1 : delay+2;
 	}
 }
-function comparator()
+function comparator(activated)
 {
-	OutputHandler.addToCurrent('o;');
+	activated = activated || false;
+	if(activated == false)
+		block(149, direction);
+	else
+		block(150, direction);
 }
 function command(text, placeRepeater)
 {
@@ -74,14 +92,17 @@ function queryCommand(text, placeRepeater)
 		delay();
 	OutputHandler.addToCurrent('q'+text+';');
 }
-function block(id, data)
+function invert(blockId, placeRepeater)
 {
-	id = id || 1;
-	data = data || 0;
-	OutputHandler.addToCurrent('b'+id+'_'+data+';');
+	blockId = blockId || 1;
+	if(placeRepeater !== false)
+		delay();
+	block(blockId);
+	torch();
 }
 function sidewards(func)
 {
+	direction++;
 	var code = 's';
 	var oldManager = OutputHandler;
 	var newManager = new function()
@@ -93,6 +114,7 @@ function sidewards(func)
 	func();
 	OutputHandler = oldManager;
 	OutputHandler.addToCurrent(code+';');
+	direction--;
 }
 function call(func, placeRepeater)
 {
@@ -113,37 +135,19 @@ function userCode()
 //region main code
 function main()
 {
-	OutputHandler.addToCurrent('w;w;');
+	wire(2);
 	while(OutputHandler.current < OutputHandler.functions.length)
 	{
 		OutputHandler.functions[OutputHandler.current]();
 		fs.writeFile(OutputHandler.current+'.txt', OutputHandler.output[OutputHandler.current]);
 		OutputHandler.current++;
-		OutputHandler.addToCurrent('w;w;');
-		var relative = Direction.getRelative(-3);
-		command("setblock "+relative+" minecraft:air 0 replace");
+		wire(2);
+		command("setblock ~-3 ~ ~ minecraft:air 0 replace");
 	}
 }
 //endregion
 
 //region internal helper classes
-var Direction = new function()
-{
-	this.direction = direction;
-
-	this.getRelative = function(amount)
-	{
-		if(this.direction == 0)
-			return "~ ~ ~"+(-amount);
-		else if(this.direction == 1)
-			return "~"+amount+" ~ ~";
-		else if(this.direction == 2)
-			return "~ ~ ~"+amount;
-		else if(this.direction == 3)
-			return "~"+(-amount)+" ~ ~";
-	}
-}
-
 var Naming = new function()
 {
 	this.names = {};

@@ -96,23 +96,6 @@ namespace CommandBlocksJS
 
 			switch (source[0])
 			{
-				case 'w': //w for redstone W ire
-					PlaceBlock(BlockType.REDSTONE_WIRE, 0);
-				break;
-				case 't': //t for redstone T orch
-					int torchDirection = ((int)direction == 4) ? (int)direction++ : 1;
-					PlaceBlock(BlockType.REDSTONE_TORCH_OFF, torchDirection);
-				break;
-				case 'r': //r for redstone R epeater
-					int delay;
-					int blockData = (int)direction;
-					if (int.TryParse(source.Substring(1), out delay))
-						blockData = delay * 4 + blockData;
-					PlaceBlock(BlockType.REDSTONE_REPEATER_ON, blockData); //ids changed 93 is now off and 94 on
-				break;
-				case 'o': //o for analog O utput (comparator)
-					PlaceBlock(BlockType.REDSTONE_COMPARATOR_INACTIVE, direction);
-				break;
 				case 'c': //c for C ommandblock
 					string command = source.Substring(1);
 					PlaceCommandBlock(command);

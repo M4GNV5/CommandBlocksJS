@@ -49,7 +49,7 @@ namespace CommandBlocksJS.GUI
                 position.y = Convert.ToInt32(positionYTextbox.Text);
                 position.z = Convert.ToInt32(positionZTextbox.Text);
 
-                MinecraftDirection direction = (MinecraftDirection)1;
+				MinecraftDirection direction = MinecraftDirection.xPlus;
 
                 if (Directory.Exists(MainClass.tempDir))
                 {
@@ -59,7 +59,7 @@ namespace CommandBlocksJS.GUI
 
                 startButton.Text = "Executing Script";
 
-                new JsScriptExecutor(1).Run("./libs", scriptTextbox.Text);
+                new JsScriptExecutor().Run("./libs", scriptTextbox.Text);
 
                 startButton.Text = "Writing Output";
 

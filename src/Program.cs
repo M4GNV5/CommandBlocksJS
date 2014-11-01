@@ -20,10 +20,6 @@ namespace CommandBlocksJS
 			[Option('p', "position", Required = true, HelpText = "The start-position where to build the commandblocks.")]
 			public string Position { get; set; }
 
-			//TODO reimplement direction
-			/*[Option('d', "direction", DefaultValue = 0, HelpText = "The direction to build the commandblocks.")]
-			public int Direction { get; set; }*/
-
 			[Option('l', "lib", DefaultValue = "./libs", HelpText = "Javascript files (.js) in this directory will be used as Library")]
 			public string LibPath { get; set; }
 
@@ -53,7 +49,7 @@ namespace CommandBlocksJS
 				position.y = Convert.ToInt32(pos [1]);
 				position.z = Convert.ToInt32(pos [2]);
 
-				MinecraftDirection direction = (MinecraftDirection)1; //TODO reimplement direction
+				MinecraftDirection direction = MinecraftDirection.xPlus;
 					
 				if (Directory.Exists(tempDir))
 				{
@@ -65,7 +61,7 @@ namespace CommandBlocksJS
 					Directory.CreateDirectory(tempDir);
 				}
 
-				new JsScriptExecutor(1).Run(options.LibPath, options.ScriptFile); //TODO reimplement direction
+				new JsScriptExecutor().Run(options.LibPath, options.ScriptFile); //TODO reimplement direction
 
 				if (options.Output)
 				{

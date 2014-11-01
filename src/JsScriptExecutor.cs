@@ -10,11 +10,10 @@ namespace CommandBlocksJS
 	{
 		public JavascriptContext JsContext { get; set; }
 
-		public JsScriptExecutor (int direction)
+		public JsScriptExecutor ()
 		{
 			JsContext = new JavascriptContext ();
 			JsContext.SetParameter("fs", new JsFileAPI (MainClass.tempDir));
-			JsContext.SetParameter("direction", direction);
 		}
 
 		public void Run(string libDirectory, string scriptPath)
@@ -39,7 +38,8 @@ namespace CommandBlocksJS
 			}
 			catch(JavascriptException e)
 			{
-				throw new Exception ("Javascripterror: '"+e.Message+"' at '"+code.Split('\n')[e.Line-1].Trim()+"'");
+				string message = string.Format("Javascripterror: '{0}' at '{1}'", e.Message, code.Split('\n') [e.Line - 1].Trim());
+				throw new Exception (message);
 			}
 		}
 	}
