@@ -19,15 +19,15 @@ function Tellraw()
 
 	this.addText = function(text)
 	{
-		this.extras.push({"text": text});
+		this.extras.push({"text": text.toString()});
 	}
 	this.addScore = function(selector, objective)
 	{
-		this.extras.push({"score": {"name": selector, "objective": objective}});
+		this.extras.push({"score": {"name": selector.toString(), "objective": objective.toString()}});
 	}
 	this.addSelector = function(selector)
 	{
-		this.extras.push({"selector": selector});
+		this.extras.push({"selector": selector.toString()});
 	}
 	this.addExtra = function(extra)
 	{
@@ -65,7 +65,7 @@ function TellrawExtra(text)
 
 	this.setOption = function(name, value)
 	{
-		this.obj[name] = value;
+		this.obj[name] = value.toString();
 	}
 }
 function TellrawClickableExtra(callback, text, options)
