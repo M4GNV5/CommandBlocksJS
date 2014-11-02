@@ -33,7 +33,7 @@ namespace CommandBlocksJS
 		public const string help = "";
 		public static readonly string tempDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "output");
 
-		public static int Main (string[] args) //example: -s myscript.js -w ./myworld -p 1.4.16 -d 1
+		public static int Main (string[] args) //example: -s myscript.js -w ./myworld -p 1.4.16
 		{
 			try
 			{

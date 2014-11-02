@@ -7,9 +7,11 @@ function callOnce(callback, placeRepeater)
 		callback();
 	}, placeRepeater);
 }
-function validate(cmd, callback)
+function validate(cmd, callback, placeRepeater)
 {
-	delay();
+	if(placeRepeater !== false)
+		delay();
+
 	sidewards(function()
 		{
 			queryCommand(cmd, false);
@@ -17,23 +19,35 @@ function validate(cmd, callback)
 			call(callback, false);
 		});
 }
-function validateSync(cmd)
+function validateSync(cmd, placeRepeater)
 {
 	cmd = cmd || 'say CommandBlocksJS error invalid call "validateSync();"';
-	queryCommand(cmd);
+	queryCommand(cmd, placeRepeater);
 	comparator();
 }
-function testfor(statement, callback)
+function testfor(statement, callback, placeRepeater)
 {
-	validate('testfor '+statement, callback);
+	validate('testfor '+statement, callback, placeRepeater);
 }
-function testforblock(statement, callback)
+function testfornot(statement, callback, placeRepeater)
 {
-	validate('testforblock '+statement, callback);
-}
-function testforScore(name, max, min, callback)
-{
-	testfor("@a[score_"+name+"="+max+",score_"+name+"_min="+min+"]", callback);
+	if(placeRepeater !== false)
+		delay();
+
+	sidewards(function()
+	{
+		queryCommand("testfor "+statement, false);
+		comparator();
+		block(1);
+	});
+	delay();
+	sidewards(function()
+	{
+		command("setblock ~-1 ~ ~2 minecraft:unpowered_repeater 1", false);
+		delay();
+		delay();
+		call(callback, false);
+	});
 }
 
 function timer(tick, callback, stacks)
