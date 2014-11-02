@@ -1,4 +1,4 @@
-﻿//region util.js
+﻿//region utility functions
 function callOnce(callback, placeRepeater)
 {
 	call(function()
@@ -80,50 +80,91 @@ function timer(tick, callback, stacks)
 	};
     call(timerFunc);
 }
+//endregion
 
-var Selector = new function()
+//region Selector class
+var Selector = function(selectorChar, attributes)
 {
-	this.player = function(attributes)
+	this.selectorChar = selectorChar || 'a';
+	this.attributes = attributes || {};
+
+	this.setAttribute = function(name, value)
 	{
-		return this.getSelector('p', attributes);
+		this.attributes[name] = value;
 	}
-	this.randomPlayer = function(attributes)
+	this.setAttributes = function(newAttributes)
 	{
-		return this.getSelector('r', attributes);
+		for(var name in newAttributes)
+			this.setAttribute(name, newAttributes[name]);
 	}
-	this.allPlayer = function(attributes)
+	this.removeAttribute = function(name)
 	{
-		return this.getSelector('a', attributes);
-	}
-	this.entities = function(attributes)
-	{
-		return this.getSelector('e', attributes);
+		delete this.attributes[name];
 	}
 
-	this.getSelector = function(selectorChar, attributes)
+	this.toString = function()
 	{
-		attributes = attributes || {};
-		var sel = "@"+selectorChar;
-
-		if(Object.keys(attributes).length < 1)
-			return sel;
-
-		sel += "[";
-		for(var key in attributes)
-		{
-			sel += key+"="+attributes[key]+",";
-		}
-		sel = sel.substring(0, sel.length-1);
-		sel += "]";
-
-		return sel;
+		return Selector.buildSelector(this.selectorChar, this.attributes);
 	}
 }
+Selector.parse = function(stringSelector)
+{
+	stringSelector = stringSelector.toString() || "@a[]";
 
+	var selectorChar = stringSelector[1];
+	var attributes = {};
+
+	var attributeString = stringSelector.substring(3, stringSelector.length-1);
+	var attributeArray = attributeString.split(',');
+	for(var i = 0; i < attributeArray.length; i++)
+	{
+		var attributeSplit = attributeArray[i].split('=');
+		attributes[attributeSplit[0]] = attributeSplit[1];
+	}
+
+	return new Selector(selectorChar, attributes);
+}
+Selector.buildSelector = function(selectorChar, attributes)
+{
+	attributes = attributes || {};
+	var sel = "@"+selectorChar;
+
+	if(Object.keys(attributes).length < 1)
+		return sel;
+
+	sel += "[";
+	for(var key in attributes)
+	{
+		sel += key+"="+attributes[key]+",";
+	}
+	sel = sel.substring(0, sel.length-1);
+	sel += "]";
+
+	return sel;
+}
+Selector.player = function(attributes)
+{
+	return Selector.buildSelector('p', attributes);
+}
+Selector.randomPlayer = function(attributes)
+{
+	return Selector.buildSelector('r', attributes);
+}
+Selector.allPlayer = function(attributes)
+{
+	return Selector.buildSelector('a', attributes);
+}
+Selector.entities = function(attributes)
+{
+	return Selector.buildSelector('e', attributes);
+}
+//endregion
+
+//region Player classes
 function Player(selector)
 {
 	selector = selector || Selector.allPlayer();
-	this.selector = selector;
+	this.selector = Selector.parse(selector);
 
 	this.setGameMode = function(mode)
 	{

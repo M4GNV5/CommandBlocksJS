@@ -154,10 +154,16 @@ function Score(name, type, displayName, addObjective)
 
 	this.getSelector = function(min, max)
 	{
-		if(typeof max == 'undefined')
-			return "@a[score_"+name+"_min="+min+"]";
-		else
-			return "@a[score_"+name+"_min="+min+",score_"+name+"="+max+"]"
+		var minKey = "score_"+name+"_min";
+		var maxKey = "score_"+name;
+
+		var attributes = {};
+		attributes[minKey] = min;
+
+		if(typeof max != 'undefined')
+			attributes[maxKey] = max;
+		
+		return new Selector("a", attributes);
 	}
 	this.getPlayer = function(min, max)
 	{
@@ -193,7 +199,7 @@ function Team(name, addTeam)
 
 	this.getSelector = function()
 	{
-		return "@a[team="+name+"]";
+		return new Selector("a", {team: name});
 	}
 	this.getPlayer = function()
 	{
