@@ -28,6 +28,8 @@
             this.positionYTextbox = new System.Windows.Forms.TextBox();
             this.positionXTextbox = new System.Windows.Forms.TextBox();
             this.startButton = new System.Windows.Forms.Button();
+            this.savesButton = new System.Windows.Forms.Button();
+            this.worldDropdown = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // scriptLabel
@@ -42,7 +44,7 @@
             // worldLabel
             // 
             this.worldLabel.AutoSize = true;
-            this.worldLabel.Location = new System.Drawing.Point(13, 43);
+            this.worldLabel.Location = new System.Drawing.Point(13, 56);
             this.worldLabel.Name = "worldLabel";
             this.worldLabel.Size = new System.Drawing.Size(35, 13);
             this.worldLabel.TabIndex = 1;
@@ -67,7 +69,7 @@
             // 
             // worldButton
             // 
-            this.worldButton.Location = new System.Drawing.Point(240, 38);
+            this.worldButton.Location = new System.Drawing.Point(239, 64);
             this.worldButton.Name = "worldButton";
             this.worldButton.Size = new System.Drawing.Size(32, 23);
             this.worldButton.TabIndex = 4;
@@ -77,7 +79,7 @@
             // 
             // worldTextbox
             // 
-            this.worldTextbox.Location = new System.Drawing.Point(95, 40);
+            this.worldTextbox.Location = new System.Drawing.Point(95, 66);
             this.worldTextbox.Name = "worldTextbox";
             this.worldTextbox.Size = new System.Drawing.Size(139, 20);
             this.worldTextbox.TabIndex = 5;
@@ -85,7 +87,7 @@
             // positionLabel
             // 
             this.positionLabel.AutoSize = true;
-            this.positionLabel.Location = new System.Drawing.Point(13, 70);
+            this.positionLabel.Location = new System.Drawing.Point(13, 96);
             this.positionLabel.Name = "positionLabel";
             this.positionLabel.Size = new System.Drawing.Size(44, 13);
             this.positionLabel.TabIndex = 6;
@@ -93,7 +95,7 @@
             // 
             // positionZTextbox
             // 
-            this.positionZTextbox.Location = new System.Drawing.Point(217, 67);
+            this.positionZTextbox.Location = new System.Drawing.Point(217, 93);
             this.positionZTextbox.Name = "positionZTextbox";
             this.positionZTextbox.Size = new System.Drawing.Size(55, 20);
             this.positionZTextbox.TabIndex = 7;
@@ -102,7 +104,7 @@
             // 
             // positionYTextbox
             // 
-            this.positionYTextbox.Location = new System.Drawing.Point(156, 67);
+            this.positionYTextbox.Location = new System.Drawing.Point(156, 93);
             this.positionYTextbox.Name = "positionYTextbox";
             this.positionYTextbox.Size = new System.Drawing.Size(55, 20);
             this.positionYTextbox.TabIndex = 8;
@@ -111,7 +113,7 @@
             // 
             // positionXTextbox
             // 
-            this.positionXTextbox.Location = new System.Drawing.Point(95, 67);
+            this.positionXTextbox.Location = new System.Drawing.Point(95, 93);
             this.positionXTextbox.Name = "positionXTextbox";
             this.positionXTextbox.Size = new System.Drawing.Size(55, 20);
             this.positionXTextbox.TabIndex = 9;
@@ -121,7 +123,7 @@
             // startButton
             // 
             this.startButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.startButton.Location = new System.Drawing.Point(12, 93);
+            this.startButton.Location = new System.Drawing.Point(12, 119);
             this.startButton.Name = "startButton";
             this.startButton.Size = new System.Drawing.Size(259, 44);
             this.startButton.TabIndex = 12;
@@ -129,11 +131,33 @@
             this.startButton.UseVisualStyleBackColor = false;
             this.startButton.Click += new System.EventHandler(this.startButton_Click);
             // 
+            // savesButton
+            // 
+            this.savesButton.Location = new System.Drawing.Point(239, 37);
+            this.savesButton.Name = "savesButton";
+            this.savesButton.Size = new System.Drawing.Size(32, 23);
+            this.savesButton.TabIndex = 14;
+            this.savesButton.Text = "...";
+            this.savesButton.UseVisualStyleBackColor = true;
+            this.savesButton.Click += new System.EventHandler(this.savesButton_Click);
+            // 
+            // worldDropdown
+            // 
+            this.worldDropdown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.worldDropdown.FormattingEnabled = true;
+            this.worldDropdown.Location = new System.Drawing.Point(95, 37);
+            this.worldDropdown.Name = "worldDropdown";
+            this.worldDropdown.Size = new System.Drawing.Size(138, 21);
+            this.worldDropdown.TabIndex = 15;
+            this.worldDropdown.SelectedValueChanged += new System.EventHandler(this.worldDropdown_SelectedValueChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 142);
+            this.ClientSize = new System.Drawing.Size(284, 175);
+            this.Controls.Add(this.worldDropdown);
+            this.Controls.Add(this.savesButton);
             this.Controls.Add(this.startButton);
             this.Controls.Add(this.positionXTextbox);
             this.Controls.Add(this.positionYTextbox);
@@ -165,6 +189,8 @@
         private System.Windows.Forms.TextBox positionYTextbox;
         private System.Windows.Forms.TextBox positionXTextbox;
         private System.Windows.Forms.Button startButton;
+        private System.Windows.Forms.Button savesButton;
+        private System.Windows.Forms.ComboBox worldDropdown;
     }
 }
 

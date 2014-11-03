@@ -138,15 +138,17 @@ function userCode()
 //region main code
 function main()
 {
-	wire(2);
+	block(143, 5);
+	wire(1);
 	while(OutputHandler.current < OutputHandler.functions.length)
 	{
 		OutputHandler.functions[OutputHandler.current]();
-		fs.writeFile(OutputHandler.current+'.txt', OutputHandler.output[OutputHandler.current]);
+		api.addOutput(OutputHandler.current, OutputHandler.output[OutputHandler.current]);
 		OutputHandler.current++;
 		wire(2);
 		command("setblock ~-3 ~ ~ minecraft:air 0 replace");
 	}
+	api.log("Successfully executed "+OutputHandler.functions.length+" functions!");
 }
 //endregion
 

@@ -3,20 +3,24 @@ using System.IO;
 using System.Text;
 
 using Noesis.Javascript;
+using CommandBlocksJS.Core;
 
 namespace CommandBlocksJS
 {
-	public class JsScriptExecutor
+	public class JsScriptExecutor : ScriptExecutor
 	{
 		public JavascriptContext JsContext { get; set; }
+		private JsApi api;
 
 		public JsScriptExecutor ()
 		{
 			JsContext = new JavascriptContext ();
-			JsContext.SetParameter("fs", new JsFileAPI (MainClass.tempDir));
+			api = new JsApi ();
+
+			JsContext.SetParameter("api", api);
 		}
 
-		public void Run(string libDirectory, string scriptPath)
+		public override ScriptOutput Run(string libDirectory, string scriptPath)
 		{
 			string code = "";
 			try
@@ -41,6 +45,8 @@ namespace CommandBlocksJS
 				string message = string.Format("Javascripterror: '{0}' at '{1}'", e.Message, code.Split('\n') [e.Line - 1].Trim());
 				throw new Exception (message);
 			}
+
+			return api.Output;
 		}
 	}
 }

@@ -4,6 +4,7 @@ using System.IO;
 using CommandLine;
 using CommandLine.Text;
 using Noesis.Javascript;
+using CommandBlocksJS.Core;
 
 namespace CommandBlocksJS
 {
@@ -17,23 +18,23 @@ namespace CommandBlocksJS
 			[Option('w', "world", Required = true, HelpText = "The Directory of the world the commandblocks will be built in.")]
 			public string WorldDirectory { get; set; }
 
-			[Option('p', "position", Required = true, HelpText = "The start-position where to build the commandblocks.")]
-			public string Position { get; set; }
+			[Option('x', "posx", Required = false, HelpText = "The X-start-position where to build the commandblocks.")]
+			public int PositionX { get; set; }
+
+			[Option('y', "posy", Required = false, HelpText = "The Y-start-position where to build the commandblocks.")]
+			public int PositionY { get; set; }
+
+			[Option('z', "posz", Required = false, HelpText = "The Z-start-position where to build the commandblocks.")]
+			public int PositionZ { get; set; }
 
 			[Option('l', "lib", DefaultValue = "./libs", HelpText = "Javascript files (.js) in this directory will be used as Library")]
 			public string LibPath { get; set; }
-
-			[Option("keeptemp", DefaultValue = false, HelpText = "Keep temporary Files true/false.")]
-			public bool KeepTemp { get; set; }
 
 			[Option("output", DefaultValue = true, HelpText = "Write Script to World true/false.")]
 			public bool Output { get; set; }
 		}
 
-		public const string help = "";
-		public static readonly string tempDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "output");
-
-		public static int Main (string[] args) //example: -s myscript.js -w ./myworld -p 1.4.16
+		public static int Main (string[] args) //example: -s myscript.js -w ./myworld -x 1 -y 4 -z 16
 		{
 			try
 			{
@@ -43,47 +44,31 @@ namespace CommandBlocksJS
 				if(!cmdParser.ParseArguments(args, options))
 					throw new ArgumentException("Invalid Commandline parameter!");
 
-				IntVector3 position = new IntVector3 ();
-				string[] pos = options.Position.Split('_', '|', ' ', '.', ',', ';', ':');
-				position.x = Convert.ToInt32(pos [0]);
-				position.y = Convert.ToInt32(pos [1]);
-				position.z = Convert.ToInt32(pos [2]);
-
-				MinecraftDirection direction = MinecraftDirection.xPlus;
-					
-				if (Directory.Exists(tempDir))
-				{
-					Console.WriteLine("Error: output directory already exists!");
-					return 1;
-				}
-				else
-				{
-					Directory.CreateDirectory(tempDir);
-				}
-
-				new JsScriptExecutor().Run(options.LibPath, options.ScriptFile); //TODO reimplement direction
+				ScriptExecutor executor = new JsScriptExecutor();
+				ScriptOutput output = executor.Run(options.LibPath, options.ScriptFile);
 
 				if (options.Output)
 				{
-					JsOutputParser parser = new JsOutputParser (options.WorldDirectory, position, direction);
-					parser.ParseDirectory(tempDir);
+					IntVector3 position = default(IntVector3);
+					if(options.PositionY != 0)
+					{
+						position = new IntVector3 ();
+						position.x = options.PositionX;
+						position.y = options.PositionY;
+						position.z = options.PositionZ;
+					}
+
+					OutputParser parser = new OutputParser (options.WorldDirectory);
+					parser.ParseOutput(output, position);
 				}
-				if (!options.KeepTemp)
-					Directory.Delete(tempDir, true);
-				return 0;
 			}
 			catch(Exception e)
 			{
 				Console.WriteLine("An Error of type {0} occured!", e.GetType());
 				Console.WriteLine("Error Message: {0}", e.Message);
-
-				if (Directory.Exists(tempDir))
-				{
-					Directory.Delete(tempDir, true);
-				}
-
-				return -1;
+				return 1;
 			}
+			return 0;
 		}
 	}
 }
