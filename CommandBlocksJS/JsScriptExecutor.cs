@@ -7,7 +7,7 @@ using CommandBlocksJS.Core;
 
 namespace CommandBlocksJS
 {
-	public class JsScriptExecutor : ScriptExecutor
+	public class JsScriptExecutor : IScriptExecutor
 	{
 		public JavascriptContext JsContext { get; set; }
 		private JsApi api;
@@ -20,7 +20,7 @@ namespace CommandBlocksJS
 			JsContext.SetParameter("api", api);
 		}
 
-		public override ScriptOutput Run(string libDirectory, string scriptPath)
+		public ScriptOutput Run(string libDirectory, string scriptPath)
 		{
 			string code = "";
 			try

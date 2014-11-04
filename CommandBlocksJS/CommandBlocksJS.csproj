@@ -46,9 +46,11 @@
     <Compile Include="Core\IntVector3.cs" />
     <Compile Include="Core\MinecraftDirection.cs" />
     <Compile Include="Core\OutputParser.cs" />
-    <Compile Include="Core\ScriptExecutor.cs" />
     <Compile Include="Core\ScriptOutput.cs" />
     <Compile Include="JsApi.cs" />
+    <Compile Include="Core\IWorldHandler.cs" />
+    <Compile Include="DefaultWorldHandler.cs" />
+    <Compile Include="Core\IScriptExecutor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

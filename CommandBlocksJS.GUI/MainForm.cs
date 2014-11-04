@@ -41,7 +41,6 @@ namespace CommandBlocksJS.GUI
             if (fd.ShowDialog() == DialogResult.OK)
             {
                 worldTextbox.Text = fd.SelectedPath;
-                TryAutoPosition();
             }
         }
 
@@ -51,7 +50,6 @@ namespace CommandBlocksJS.GUI
             if(fd.ShowDialog() == DialogResult.OK)
             {
                 worldTextbox.Text = fd.SelectedPath;
-                TryAutoPosition();
             }
         }
 
@@ -59,25 +57,6 @@ namespace CommandBlocksJS.GUI
         {
             string path = Path.Combine(savesPath, saves[worldDropdown.SelectedIndex]);
             worldTextbox.Text = path;
-
-            TryAutoPosition();
-        }
-
-        private void TryAutoPosition()
-        {
-            OutputParser parser = new OutputParser(worldTextbox.Text);
-            try
-            {
-                IntVector3 pos = parser.GetDefaultPosition();
-                if (!pos.Equals(default(IntVector3)))
-                {
-                    positionXTextbox.Text = pos.x.ToString();
-                    positionYTextbox.Text = pos.y.ToString();
-                    positionZTextbox.Text = pos.z.ToString();
-                }
-            }
-            catch
-            { }
         }
 
         private void startButton_Click(object sender, EventArgs e)
@@ -88,7 +67,7 @@ namespace CommandBlocksJS.GUI
 
             try
             {
-                ScriptExecutor executor = new JsScriptExecutor();
+                IScriptExecutor executor = new JsScriptExecutor();
 				ScriptOutput output = executor.Run("./libs", scriptTextbox.Text);
 
                 int posX = Convert.ToInt32(positionXTextbox.Text);
@@ -101,7 +80,8 @@ namespace CommandBlocksJS.GUI
 					position = new IntVector3 (posX, posY, posZ);
 				}
 
-				OutputParser parser = new OutputParser (worldTextbox.Text);
+				IWorldHandler worldHandler = new DefaultWorldHandler(worldTextbox.Text);
+				OutputParser parser = new OutputParser (worldHandler);
 				parser.ParseOutput(output, position);
 
             }

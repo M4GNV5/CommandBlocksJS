@@ -2,61 +2,26 @@
 using System.IO;
 using System.Collections.Generic;
 
-using Substrate;
-using Substrate.Core;
-using Substrate.TileEntities;
-
 namespace CommandBlocksJS.Core
 {
 	public class OutputParser
 	{
-		private readonly AnvilWorld world;
-		private readonly IBlockManager blockManager;
+		private readonly IWorldHandler worldHandler;
 		private IntVector3 position;
 		private MinecraftDirection direction;
 
 		private Dictionary<string, IntVector3> functionPositions;
 
-		public OutputParser (string worldDirectory)
+		public OutputParser (IWorldHandler worldHandler)
 		{
-			if (!Directory.Exists(worldDirectory))
-				throw new System.IO.DirectoryNotFoundException ("The given world was not found!");
-
-			this.world = AnvilWorld.Create(worldDirectory);
-			this.blockManager = world.GetBlockManager();
+			this.worldHandler = worldHandler;
 
 			this.direction = MinecraftDirection.xPlus;
 		}
 
-		public IntVector3 GetDefaultPosition()
-		{
-			try
-			{
-				Vector3 playerpos = world.Level.Player.Position;
-				IntVector3 _position = new IntVector3 ();
-
-				_position.x = Convert.ToInt32(playerpos.X);
-				_position.y = Convert.ToInt32(playerpos.Y);
-				_position.z = Convert.ToInt32(playerpos.Z);
-
-				return _position;
-			}
-			catch
-			{
-				throw new Exception ("Cannot automatically find position. Please defined -x, -y and -z");
-			}
-		}
-
 		public void ParseOutput(ScriptOutput output, IntVector3 position = default(IntVector3))
 		{
-			if (position.Equals(default(IntVector3)))
-			{
-				this.position = GetDefaultPosition();
-			}
-			else
-			{
-				this.position = position;
-			}
+			this.position = position;
 			
 			this.functionPositions = new Dictionary<string, IntVector3> ();
 
@@ -77,7 +42,7 @@ namespace CommandBlocksJS.Core
 				this.position = functionPositions [function];
 				ParseFunction(source);
 			}
-			world.Save();
+			worldHandler.Save();
 		}
 		public int GetMaxSidewards(string source)
 		{
@@ -122,26 +87,26 @@ namespace CommandBlocksJS.Core
 			{
 				case 'c': //c for C ommandblock
 					string command = source.Substring(1);
-					PlaceCommandBlock(command);
+					worldHandler.PlaceCommandBlock(command, position);
 				break;
 				case 'q': //q for Q uery command
 					string qCommand = source.Substring(1);
 
-					PlaceCommandBlock(qCommand);
+					worldHandler.PlaceCommandBlock(qCommand, position);
 
 					IntVector3 torchPos = new IntVector3 (position.x, position.y + 1, position.z);
-					PlaceBlock(BlockType.REDSTONE_TORCH_OFF, 5, torchPos);
+					worldHandler.PlaceBlock(75, 5, torchPos);
 
 					IntVector3 resetCbPos = new IntVector3 (position.x, position.y + 2, position.z);
 					string escapedCommand = qCommand.Replace("\"", "\\\"");
 					string resetCommand = "setblock ~ ~-2 ~ minecraft:command_block 0 replace {Command:\"%cmd%\"}".Replace("%cmd%", escapedCommand);
-					PlaceCommandBlock(resetCommand, resetCbPos);
+					worldHandler.PlaceCommandBlock(resetCommand, resetCbPos);
 				break;
 				case 'b': //b for B lock
 					string[] blockInfo = source.Substring(1).Split('_');
 					int id = Convert.ToInt32(blockInfo [0]); //unsafe
 					int data = Convert.ToInt32(blockInfo [1]); //unsafe
-					PlaceBlock(id, data);
+					worldHandler.PlaceBlock(id, data, position);
 				break;
 				case 's': //s for S idewards
 					string[] calls = source.Substring(1).Split('|');
@@ -161,47 +126,12 @@ namespace CommandBlocksJS.Core
 
 					string eCommand = "setblock " + ePosition.x + " " + ePosition.y + " " + ePosition.z + " minecraft:redstone_block 0 replace";
 
-					PlaceCommandBlock(eCommand);
+					worldHandler.PlaceCommandBlock(eCommand, position);
 				break;
 			}
 		}
 
-		private void PlaceBlock(int id, MinecraftDirection direction)
-		{
-			PlaceBlock(id, (int)direction);
-		}
-		private void PlaceBlock(int id, int data)
-		{
-			int blockBelow = blockManager.GetID(position.x, position.y - 1, position.z);
-			if (blockBelow == BlockType.AIR
-			   || blockBelow == BlockType.WATER
-			   || blockBelow == BlockType.STATIONARY_WATER
-			   || blockBelow == BlockType.LAVA
-			   || blockBelow == BlockType.STATIONARY_LAVA)
-			{
-				blockManager.SetID(position.x, position.y - 1, position.z, BlockType.STONE);
-				blockManager.SetData(position.x, position.y - 1, position.z, 0);
-			}
 
-			PlaceBlock(id, data, position);
-		}
-		private void PlaceBlock(int id, int data, IntVector3 pos)
-		{
-			blockManager.SetID(pos.x, pos.y, pos.z, id);
-			blockManager.SetData(pos.x, pos.y, pos.z, data);
-		}
-
-		private void PlaceCommandBlock(string command)
-		{
-			PlaceCommandBlock(command, position);
-		}
-		private void PlaceCommandBlock(string command, IntVector3 pos)
-		{
-			AlphaBlock cblock = new AlphaBlock (BlockType.COMMAND_BLOCK);
-			TileEntityControl te = cblock.GetTileEntity() as TileEntityControl; //unsafe
-			te.Command = command;
-			blockManager.SetBlock(pos.x, pos.y, pos.z, cblock);
-		}
 
 		private void UpdatePosition(Action xMinus, Action xPlus, Action zMinus, Action zPlus)
 		{

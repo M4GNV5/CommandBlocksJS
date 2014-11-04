@@ -44,7 +44,7 @@ namespace CommandBlocksJS
 				if(!cmdParser.ParseArguments(args, options))
 					throw new ArgumentException("Invalid Commandline parameter!");
 
-				ScriptExecutor executor = new JsScriptExecutor();
+				IScriptExecutor executor = new JsScriptExecutor();
 				ScriptOutput output = executor.Run(options.LibPath, options.ScriptFile);
 
 				if (options.Output)
@@ -58,7 +58,9 @@ namespace CommandBlocksJS
 						position.z = options.PositionZ;
 					}
 
-					OutputParser parser = new OutputParser (options.WorldDirectory);
+					IWorldHandler worldHandler = new DefaultWorldHandler(options.WorldDirectory);
+
+					OutputParser parser = new OutputParser (worldHandler);
 					parser.ParseOutput(output, position);
 				}
 			}
