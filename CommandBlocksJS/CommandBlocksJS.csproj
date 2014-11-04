@@ -61,6 +61,7 @@
     <None Include="JavascriptFiles\tellraw.js" />
     <None Include="Examples\1.8 stuff.js" />
     <None Include="JavascriptFiles\player.js" />
+    <None Include="JavascriptFiles\runtimeVariables.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="JavascriptFiles\" />
