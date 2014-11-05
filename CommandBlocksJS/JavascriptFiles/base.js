@@ -146,7 +146,7 @@ function main()
 		api.addOutput(OutputHandler.current, OutputHandler.output[OutputHandler.current]);
 		OutputHandler.current++;
 		wire(2);
-		command("setblock ~-3 ~ ~ minecraft:air 0 replace");
+		command("setblock ~-3 ~ ~ minecraft:air 0 replace", false);
 	}
 	api.log("Successfully executed "+OutputHandler.functions.length+" functions!");
 }

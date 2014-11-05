@@ -3,7 +3,8 @@ function callOnce(callback, placeRepeater)
 {
 	call(function()
 	{
-		command("setblock ~-1 ~ ~ minecraft:air 0 replace", true);
+		command("setblock ~1 ~ ~ minecraft:redstone_block 0 replace", false);
+		wire();
 		callback();
 	}, placeRepeater);
 }

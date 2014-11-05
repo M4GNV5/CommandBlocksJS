@@ -6,7 +6,6 @@ function RuntimeInteger(options)
 		{
 			command('summon Chicken ~ ~1 ~ {CustomName:"'+RuntimeInteger.mobName+'",NoAI:true}');
 		});
-		delay(3);
 	}
 
 	options = options || {};
@@ -110,7 +109,7 @@ function RuntimeString(value)
 
 		RuntimeString.indexScore.set('@e[name='+value+']', RuntimeString.lastIndex);
 	});
-	delay(4);
+	delay(2);
 
 	this.set = function(value)
 	{
