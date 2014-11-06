@@ -1,15 +1,27 @@
 #CommandBlocksJS
-CommandBlocksJS allows you to translate Javascript code to minecraft CommandBlocks
+CommandBlocksJS executes Javascript code and translates it to Commandblock logic.
 
 ##Documentation
 moved to the [Wiki](https://github.com/M4GV5/CommandBlocksJS/wiki)
 
 **Note** there is a [Quick Start](https://github.com/M4GV5/CommandBlocksJS/wiki/Quick-Start) page for those who cant wait to write their first script
 
-##Example
-###Output
-[![Cmd](http://i.imgur.com/WeV6njC.png)]()
-###Code
+##Examples
+The most Basic example is a simple auto-announcer nearly every server has one:
+```javascript
+timer(1200, //Timer tick in deciseconds
+    function() //function to execute every 120 seconds
+    {
+        //say message
+        say("Some message that will annoy everybody after 6 minutes");
+    }
+);
+```
+The Output commandblocks look like this:
+
+[![Cmd](http://i.imgur.com/lJ5MrJ6.png)]()
+
+Of Course you can do much more complex stuff like this:
 ```javascript
 //setup karma scoreboard objective
 //name: karma, type: dummy, displayName: Karma
