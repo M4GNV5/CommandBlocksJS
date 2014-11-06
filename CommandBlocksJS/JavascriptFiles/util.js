@@ -3,8 +3,7 @@ function callOnce(callback, placeRepeater)
 {
 	call(function()
 	{
-		command("setblock ~1 ~ ~ minecraft:redstone_block 0 replace", false);
-		wire();
+		command("setblock ~-3 ~ ~ minecraft:air 0 replace", true);
 		callback();
 	}, placeRepeater);
 }
@@ -70,7 +69,7 @@ function Timer(callback, options)
 
 	options = options || {};
 	options.time = options.time || 10;
-	options.useScoreboard = options.useScoreboard || (options.tick >= 40) ? true : false;
+	options.useScoreboard = options.useScoreboard || (options.time >= 40) ? true : false;
 	options.hardTickLength = options.hardTickLength || 10;
 	options.callAsync = options.callAsync || false;
 	options.scoreName = options.scoreName || Naming.next("timer");

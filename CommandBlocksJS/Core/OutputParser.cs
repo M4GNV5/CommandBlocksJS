@@ -50,9 +50,9 @@ namespace CommandBlocksJS.Core
 			foreach (string call in source.Split(';'))
 			{
 				string[] splittedCall = call.Split('|');
-				if (splittedCall.Length + 1 > sidewards)
+				if (splittedCall.Length > sidewards)
 				{
-					sidewards = splittedCall.Length + 1;
+					sidewards = splittedCall.Length;
 				}
 			}
 			return sidewards;
