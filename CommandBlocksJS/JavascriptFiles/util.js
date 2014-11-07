@@ -74,15 +74,18 @@ function Timer(callback, options)
 	options.callAsync = options.callAsync || false;
 	options.scoreName = options.scoreName || Naming.next("timer");
 
-	var timerScore;
+	var timerVar;
 	var scoreTicks;
 
 	if(options.useScoreboard !== false)
 	{
 		scoreTicks = options.time / options.hardTickLength;
 		options.time = options.hardTickLength;
-		timerScore = new Score(options.scoreName, "dummy");
-		timerScore.set(Selector.allPlayer(), -1);
+
+		var varOptions = {startValue: -1, name: ""};
+		varOptions.name = options.scoreName;
+
+		timerVar = new RuntimeInteger(varOptions);
 	}
 
 	var timerFunc = function()
@@ -96,11 +99,11 @@ function Timer(callback, options)
 		}
 		else
 		{
-			testforSync(timerScore.getSelector(0));
-			timerScore.add(Selector.allPlayer(), 1);
-			testfor(timerScore.getSelector(scoreTicks), function()
+			testforSync(timerVar.isBetween(0));
+			timerVar.add(1);
+			testfor(timerVar.isBetween(scoreTicks), function()
 			{
-				timerScore.set(Selector.allPlayer(), 0);
+				timerVar.set(0);
 				callback();
 			});
 		}
@@ -113,8 +116,11 @@ function Timer(callback, options)
 	{
 		if(options.useScoreboard)
 		{
-			testfor(timerScore.getSelector(-1, -1), timerFunc);
-			timerScore.set(Selector.allPlayer(), 0);
+			testfor(timerVar.hasValue(-1), function()
+			{
+				timerVar.set(0);
+				call(timerFunc);
+			});
 		}
 		else
 		{
@@ -125,7 +131,7 @@ function Timer(callback, options)
 	{
 		if(options.useScoreboard == false)
 			throw "Cannot stop timer that doesnt use the Scoreboard";
-		timerScore.set(Selector.allPlayer(), -1);
+		timerVar.set(-1);
 	}
 }
 //endregion
