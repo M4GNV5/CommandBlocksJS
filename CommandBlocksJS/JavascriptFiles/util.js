@@ -86,6 +86,8 @@ function Timer(callback, options)
 		varOptions.name = options.scoreName;
 
 		timerVar = new RuntimeInteger(varOptions);
+
+		options.time = (options.time-5 > 0) ? options.time-5 : 1;
 	}
 
 	var timerFunc = function()

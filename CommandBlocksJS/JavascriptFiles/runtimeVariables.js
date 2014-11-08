@@ -7,6 +7,8 @@ function RuntimeInteger(options)
 			command('summon Chicken ~ ~1 ~ {CustomName:"'+RuntimeInteger.mobName+'",NoAI:true}');
 		});
 		delay(2);
+
+		RuntimeInteger.mobSpawned = true;
 	}
 
 	options = options || {};
@@ -53,9 +55,9 @@ function RuntimeInteger(options)
 	this.isBetween = function(min, max, callback)
 	{
 		var attributes = {};
-		attributes[name] = "intmob";
+		attributes["name"] = "intmob";
 		attributes["score_"+options.name+"_min"] = min.toString();
-		if(max != false)
+		if(typeof max != 'undefined' && max != false)
 			attributes["score_"+options.name] = max.toString();
 		var selector = new Selector("e", attributes);
 
