@@ -13,11 +13,12 @@ function RuntimeInteger(options)
 
 	options = options || {};
 
-	options.startValue = options.startValue || 0;
 	options.name = options.name || Naming.next("int");
 
 	var score = new Score(options.name, "dummy");
-	score.set(RuntimeInteger.mob, options.startValue);
+
+	if(typeof options.startValue != 'undefined' && options.startValue != false)
+		score.set(RuntimeInteger.mob, options.startValue);
 
 	this.name = options.name;
 
@@ -57,7 +58,7 @@ function RuntimeInteger(options)
 		var attributes = {};
 		attributes["name"] = "intmob";
 		attributes["score_"+options.name+"_min"] = min.toString();
-		if(typeof max != 'undefined' && max != false)
+		if(typeof max != 'undefined' && max !== false)
 			attributes["score_"+options.name] = max.toString();
 		var selector = new Selector("e", attributes);
 

@@ -90,6 +90,15 @@ function Player(selector)
 			command("scoreboard players remove "+this.selector+" "+team+" "+value);
 		}
 	}
+
+	this.getSelector = function()
+	{
+		return this.selector;
+	}
+	this.toString = function()
+	{
+		return this.selector;
+	}
 }
 
 
@@ -110,10 +119,6 @@ function PlayerArray(name, selector, createObjective)
 
 	Player.call(this, arrayScore.getSelector(1));
 
-	this.getSelector = function()
-	{
-		return this.selector;
-	}
 	this.addPlayer = function(selector)
 	{
 		arrayScore.set(selector, 1);

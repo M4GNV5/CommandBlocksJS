@@ -79,13 +79,16 @@ function Timer(callback, options)
 
 	if(options.useScoreboard !== false)
 	{
-		scoreTicks = options.time / options.hardTickLength;
+		scoreTicks = ((options.time / options.hardTickLength) < 1) ? 1 : (options.time / options.hardTickLength);
 		options.time = options.hardTickLength;
 
-		var varOptions = {startValue: -1, name: ""};
+		var varOptions = {name: ""};
 		varOptions.name = options.scoreName;
 
 		timerVar = new RuntimeInteger(varOptions);
+
+		callOnce(function() { timerVar.set(-1); });
+		delay(3);
 
 		options.time = (options.time-5 > 0) ? options.time-5 : 1;
 	}
