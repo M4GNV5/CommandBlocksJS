@@ -1,0 +1,932 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"cal",
+				"calls"
+			],
+			[
+				"spl",
+				"splitted"
+			],
+			[
+				"ed",
+				"edge2"
+			],
+			[
+				"pho",
+				"phoneApps"
+			],
+			[
+				"phone",
+				"phoneAppLockScreen"
+			],
+			[
+				"App",
+				"AppManager"
+			],
+			[
+				"bli",
+				"blinkTimer"
+			],
+			[
+				"sto",
+				"stopCurrent"
+			],
+			[
+				"fi",
+				"final1"
+			],
+			[
+				"size",
+				"sizeY"
+			],
+			[
+				"rem",
+				"removeListener"
+			],
+			[
+				"timer",
+				"timerFunc"
+			],
+			[
+				"sco",
+				"score"
+			],
+			[
+				"str",
+				"structure"
+			],
+			[
+				"numb",
+				"number4"
+			],
+			[
+				"struc",
+				"Structures"
+			],
+			[
+				"pre",
+				"prerender"
+			],
+			[
+				"fin",
+				"final2"
+			],
+			[
+				"stru",
+				"Structures"
+			],
+			[
+				"get",
+				"getPosition"
+			],
+			[
+				"pos",
+				"pos1"
+			],
+			[
+				"rend",
+				"renderLength"
+			],
+			[
+				"re",
+				"Renderer"
+			],
+			[
+				"th",
+				"throw"
+			],
+			[
+				"edg",
+				"edge1"
+			],
+			[
+				"ne",
+				"nextPrerenderPos"
+			],
+			[
+				"sc",
+				"Screen"
+			],
+			[
+				"tim",
+				"time"
+			],
+			[
+				"ti",
+				"time"
+			],
+			[
+				"mo",
+				"mobSpawned"
+			],
+			[
+				"mob",
+				"mobName"
+			],
+			[
+				"ob",
+				"objective"
+			],
+			[
+				"obj",
+				"obj"
+			],
+			[
+				"a",
+				"addText"
+			],
+			[
+				"Run",
+				"RuntimeInteger"
+			],
+			[
+				"has",
+				"hasValueSelector"
+			],
+			[
+				"in",
+				"indexScore"
+			],
+			[
+				"se",
+				"selector"
+			],
+			[
+				"va",
+				"value"
+			],
+			[
+				"op",
+				"options"
+			],
+			[
+				"oth",
+				"other"
+			],
+			[
+				"ot",
+				"otherPlayer"
+			],
+			[
+				"fun",
+				"functions"
+			],
+			[
+				"time",
+				"timerFunc"
+			],
+			[
+				"call",
+				"call"
+			],
+			[
+				"use",
+				"useScoreboard"
+			],
+			[
+				"is",
+				"isStarted"
+			],
+			[
+				"us",
+				"useScoreboard"
+			],
+			[
+				"st",
+				"start"
+			],
+			[
+				"vali",
+				"validateSync"
+			],
+			[
+				"pla",
+				"placeRepeater"
+			],
+			[
+				"red",
+				"redTeam"
+			],
+			[
+				"blue",
+				"blueTeam"
+			],
+			[
+				"testf",
+				"testfornot"
+			],
+			[
+				"max",
+				"maxKey"
+			],
+			[
+				"ma",
+				"maxKey"
+			],
+			[
+				"min",
+				"minKey"
+			],
+			[
+				"att",
+				"attributeSplit"
+			],
+			[
+				"at",
+				"attributes"
+			],
+			[
+				"attr",
+				"attributeString"
+			],
+			[
+				"strg",
+				"stringSelector"
+			],
+			[
+				"set",
+				"setAttribute"
+			],
+			[
+				"sele",
+				"selectorChar"
+			],
+			[
+				"da",
+				"dataTag"
+			],
+			[
+				"blo",
+				"blockId"
+			],
+			[
+				"test",
+				"testGameEnd"
+			],
+			[
+				"play",
+				"playerAtSpawn"
+			],
+			[
+				"blu",
+				"blueInMap"
+			],
+			[
+				"map",
+				"mapRadius"
+			],
+			[
+				"game",
+				"gameEnd"
+			],
+			[
+				"spec",
+				"spectatorTeam"
+			],
+			[
+				"fade",
+				"fadeOut"
+			],
+			[
+				"fad",
+				"fadeIn"
+			],
+			[
+				"titl",
+				"titleType"
+			],
+			[
+				"tit",
+				"titleType"
+			],
+			[
+				"score",
+				"scoreEvent"
+			],
+			[
+				"nam",
+				"names"
+			],
+			[
+				"click",
+				"clickEvent"
+			],
+			[
+				"event",
+				"eventOptions"
+			],
+			[
+				"setC",
+				"setClickEvent"
+			],
+			[
+				"remo",
+				"removeFromScore"
+			],
+			[
+				"for",
+				"forward"
+			],
+			[
+				"add",
+				"addObjective"
+			],
+			[
+				"ext",
+				"extras"
+			],
+			[
+				"new",
+				"newText"
+			],
+			[
+				"cre",
+				"create"
+			],
+			[
+				"Play",
+				"PlayerArray"
+			],
+			[
+				"proto",
+				"prototype"
+			],
+			[
+				"Eve",
+				"Event"
+			],
+			[
+				"pro",
+				"prototype"
+			],
+			[
+				"Scor",
+				"ScoreChangeEvent"
+			],
+			[
+				"obje",
+				"objective"
+			],
+			[
+				"tri",
+				"triggerOnValue"
+			],
+			[
+				"objec",
+				"objectiveType"
+			],
+			[
+				"sel",
+				"selector"
+			],
+			[
+				"star",
+				"startGame"
+			],
+			[
+				"start",
+				"startCountdown"
+			],
+			[
+				"karm",
+				"karmaMessage"
+			],
+			[
+				"mess",
+				"messages"
+			],
+			[
+				"ren",
+				"render"
+			],
+			[
+				"jso",
+				"json_decode"
+			],
+			[
+				"error",
+				"error_reporting"
+			],
+			[
+				"all",
+				"allPlayer"
+			],
+			[
+				"walk",
+				"walkedScore"
+			],
+			[
+				"wal",
+				"walkedScore"
+			],
+			[
+				"other",
+				"otherObjective"
+			],
+			[
+				"ref",
+				"reference"
+			],
+			[
+				"disp",
+				"dispatchByObject"
+			],
+			[
+				"Even",
+				"EventHandler"
+			],
+			[
+				"func",
+				"func"
+			],
+			[
+				"ou",
+				"OutputHandler"
+			],
+			[
+				"com",
+				"comparator"
+			],
+			[
+				"url",
+				"urlSplit"
+			],
+			[
+				"ans",
+				"answerElement"
+			],
+			[
+				"answe",
+				"answers"
+			],
+			[
+				"_pa",
+				"_path"
+			],
+			[
+				"par",
+				"parseButton"
+			],
+			[
+				"ad",
+				"addToCurrent"
+			],
+			[
+				"funct",
+				"functions"
+			],
+			[
+				"ro",
+				"rotate-start-anim"
+			],
+			[
+				"spee",
+				"speechOptions"
+			],
+			[
+				"gt",
+				"getJSON"
+			],
+			[
+				"user",
+				"username"
+			],
+			[
+				"Start",
+				"StartInfo"
+			],
+			[
+				"sy",
+				"syncMotors"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "Cmd/bin/Debug/example.js",
+			"settings":
+			{
+				"buffer_size": 1146,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "Core/base.js",
+			"settings":
+			{
+				"buffer_size": 3664,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "Core/outputParser.js",
+			"settings":
+			{
+				"buffer_size": 3645,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "Cmd/bin/Debug/core.js",
+			"settings":
+			{
+				"buffer_size": 29533,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/Users/Agent J/Desktop/McSmartphone/CommandblocksJS/libs/Vector3.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/Core/events.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/Core/vanillaCommands.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/Cmd/bin/Debug/core.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/Core/util.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/Core/base.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlocksJS.sln",
+		"/C/Users/Agent J/Desktop/McSmartphone/src/Apps/Standby.js",
+		"/C/Users/Agent J/Desktop/McSmartphone/src/libs/appManager.js",
+		"/C/Users/Agent J/Desktop/McSmartphone/CommandblocksJS/mcphone.js",
+		"/C/Users/Agent J/Desktop/McSmartphone/src/libs/renderer.js",
+		"/C/Users/Agent J/Desktop/McSmartphone/src/libs/phoneBase.js",
+		"/C/Users/Agent J/Documents/GitHub/AternosSupportGateway/content/js.json",
+		"/C/Data/Programme/xampp/htdocs/content/js.json",
+		"/C/Data/Programme/xampp/htdocs/main.js",
+		"/C/Users/Agent J/Desktop/McSmartphone/src/Apps/LockScreen.js",
+		"/C/Users/Agent J/Documents/GitHub/AternosSupportGateway/content/objectSrc.json",
+		"/C/Users/Agent J/Documents/GitHub/AternosSupportGateway/.htaccess",
+		"/C/Data/Programme/xampp/htdocs/panel/content/panel.js",
+		"/C/Data/Programme/xampp/htdocs/panel/index.php",
+		"/C/Data/Programme/xampp/htdocs/panel/modify.php",
+		"/C/Data/Programme/xampp/htdocs/panel/users.php",
+		"/C/Users/Agent J/Desktop/McSmartphone/src/libs/colors.js",
+		"/C/Users/Agent J/Desktop/McSmartphone/README.md",
+		"/C/Users/Agent J/Desktop/McSmartphone/src/libs/screen.js",
+		"/C/Users/Agent J/Desktop/McSmartphone/src/libs/structures.js",
+		"/C/Users/Agent J/Desktop/McSmartphone/src/libs/touch.js",
+		"/C/Users/Agent J/Desktop/McSmartphone/CommandblocksJS/libs/base.js",
+		"/C/Users/Agent J/Desktop/McSmartphone/src/libs/Vector3.js",
+		"/C/Users/Agent J/Desktop/McSmartphone/src/libs/Vector2.js",
+		"/C/Users/Agent J/Desktop/McSmartphone/src/libs/relativeBuilder.js",
+		"/C/Users/Agent J/Desktop/stuff.txt",
+		"/C/Users/Agent J/Desktop/McSmartphone/CommandblocksJS/libs/util.js",
+		"/C/Users/Agent J/Desktop/McSmartphone/CommandblocksJS/libs/player.js",
+		"/C/Users/Agent J/Desktop/McSmartphone/CommandblocksJS/libs/runtimeVariables.js",
+		"/C/Users/Agent J/Desktop/McSmartphone/CommandblocksJS/libs/events.js",
+		"/C/Users/Agent J/Desktop/McSmartphone/CommandblocksJS/libs/tellraw.js",
+		"/C/Users/Agent J/Desktop/McSmartphone/src/libs/run.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlocksJS/bin/Debug/test.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlocksJS/JavascriptFiles/util.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlocksJS/JavascriptFiles/runtimeVariables.js",
+		"/C/Data/OFA/Aternos/aternos.txt",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlocksJS/JavascriptFiles/base.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlocksJS/JavascriptFiles/tellraw.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlocksJS/JavascriptFiles/events.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlocksJS/JavascriptFiles/player.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlocksJS/JavascriptFiles/vanillaCommands.js",
+		"/C/Users/Agent J/Desktop/WeilIRCGeilIst.txt",
+		"/C/Users/Agent J/Desktop/cbjs.txt",
+		"/C/Users/Agent J/Desktop/CubeAnimation.3ds",
+		"/C/Users/Agent J/AppData/Local/Temp/Temp1_JavaScript.zip/JavaScript.grm",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlocksJS/bin/Debug/libs/base.js",
+		"/C/Users/Agent J/AppData/Local/Temp/Temp1_contact.zip/contactformscript.php",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlocksJS/JavascriptFiles/selector.js",
+		"/C/Users/Agent J/Desktop/Scripted4fupMinigames/current.js",
+		"/C/Users/Agent J/Desktop/Scripted4fupMinigames/games/bedwars.js",
+		"/C/Users/Agent J/Desktop/Scripted4fupMinigames/libs/minigamesShared.js",
+		"/C/Users/Agent J/Desktop/Scripted4fupMinigames/games/template.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlocksJS/bin/Debug/output/0.txt",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlocksJS/bin/Debug/libs/util.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlocksJS/bin/Debug/output/1.txt",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlocksJS/bin/Debug/output/2.txt",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlocksJS/bin/Debug/output/3.txt",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlocksJS/bin/Debug/output/4.txt",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/src/bin/Debug/test.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/src/JavascriptFiles/vanillaCommands.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/src/JavascriptFiles/util.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/src/JavascriptFiles/tellraw.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/src/JavascriptFiles/events.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/src/JavascriptFiles/base.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlockJS.GUI/CommandBlocksJS.GUI.csproj",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/src/CommandBlocksJS.csproj",
+		"/C/Data/Programmieren/projektideen.txt",
+		"/C/Data/OFA/MC-Server/Vanilla-1.8/server.properties",
+		"/C/Users/Agent J/Desktop/Scripted4fupMinigames/current.js.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/src/bin/Release/CommandBlocksJS.GUI.exe.config",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/src/Examples/Karma (readme).js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/src/Examples/game template.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/src/Examples/1.8 stuff.js",
+		"/C/Users/Agent J/Desktop/CommandBlocks.js.pdb",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/src/bin/Debug/libs/events.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/src/bin/Debug/libs/vanillaCommands.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/src/bin/Debug/libs/util.js",
+		"/C/Data/Games/MinecraftLog.txt",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/README.md",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/Examples/game template.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/Examples/Karma (readme).js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/src/bin/Debug/libs/base.js",
+		"/C/Data/Programmieren/Visual Studio/WorldMinifier/WorldMinifier/bin/Debug/tempServer/server.config",
+		"/C/Data/Programmieren/Visual Studio/WorldMinifier/WorldMinifier/bin/Debug/tempServer/banned-ips.txt",
+		"/C/Data/Programmieren/Visual Studio/WorldMinifier/WorldMinifier/bin/Debug/configTemplate.config",
+		"/C/Data/OFA/MC-Server/Vanilla-1.6.4/server.config",
+		"/C/Users/Agent J/Documents/GitHub/NINSS/NINSS/MinecraftServerManager.cs",
+		"/C/Data/OFA/MC-Server/NINSS/logs/latest.log",
+		"/C/Data/OFA/MC-Server/NINSS/server.properties",
+		"/C/Data/Programmieren/Visual Studio/WorldResizer/WorldMinifierGui/WorldResizerGui.csproj",
+		"/C/Data/OFA/MC-Server/Vanilla-1.8/logs/latest.log",
+		"/C/Data/Programmieren/Visual Studio/WorldResizer/WorldMinifier.sln",
+		"/C/Data/OFA/MC-Server/Vanilla-1.8/eula.txt",
+		"/C/Data/Programmieren/Visual Studio/Sharpcraft-master/Sharpcraft/Sharpcraft.csproj",
+		"/C/Data/Programmieren/MonoProjects/Main/SharpCrawler/GithubCrawler/bin/Release/repos.json",
+		"/C/Data/Programmieren/sg_mc.txt",
+		"/C/Users/Agent J/Documents/GitHub/MinecraftADE/testProject/testProject.xml",
+		"/C/Users/Agent J/Desktop/SYSLINUX.CFG",
+		"/C/Users/Agent J/Documents/GitHub/MinecraftADE/testProject/testProject",
+		"/E/Jakob/Spiele/Desktop/ofa/txt-files/projekt-sozi.gesch.txt",
+		"/E/Jakob/Spiele/Desktop/ofa/txt-files/server gut.txt",
+		"/C/Data/Programmieren/Visual Studio/MinecraftADE/MinecraftADE/bin/Debug/plugins/WebWorldPreview/renderer.js",
+		"/C/Data/Programmieren/Visual Studio/MinecraftADE/MinecraftADE/bin/Debug/plugins/WebWorldPreview/test.html",
+		"/E/Jakob/Backups/OFA/Aternos/aternos.txt",
+		"/C/Users/Agent J/Documents/GitHub/MinecraftADE/MinecraftADE.sln",
+		"/C/Users/Agent J/Desktop/blockplot-master/js/world-bundle.js",
+		"/C/Data/Programme/xampp/htdocs/test/js/world-bundle.js",
+		"/C/Users/Agent J/Desktop/blockplot-master/world.html",
+		"/C/Data/Programmieren/Visual Studio/MinecraftADE/MinecraftADE.sln",
+		"/C/Users/Agent J/Desktop/blockplot-master/package.json",
+		"/C/Users/Agent J/Desktop/blockplot-master/license.txt",
+		"/C/Users/Agent J/Desktop/blockplot-master/js/world.js",
+		"/C/Users/Agent J/Desktop/test/testproject.xml",
+		"/C/Users/Agent J/Desktop/test/stuff.txt",
+		"/C/Data/Programmieren/Visual Studio/MinecraftADE/Plugins/WindowsMenuStrip/BasePlugins.csproj",
+		"/C/Users/Agent J/AppData/Local/Temp/Temp1_DockPanelSuite_v2.6.0.zip/DockPanelSuite_v2.6.0.txt",
+		"/C/Users/Agent J/Documents/GitHub/scriptedspace/src/js/bootstrap.js",
+		"/C/Data/Programme/xampp/htdocs/email4bretti/panel.php",
+		"/C/Users/Agent J/Documents/GitHub/scriptedspace/src/index.html",
+		"/C/Users/Agent J/AppData/Local/Temp/Temp1_DockPanel_2.4_Bin.zip/license.txt",
+		"/C/Data/Programme/xampp/htdocs/email4bretti/emails.php",
+		"/C/Users/Agent J/Documents/GitHub/scriptedspace/src/js/base.js"
+	],
+	"find":
+	{
+		"height": 36.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"api.log",
+			"Replace",
+			"Substring",
+			"UpdatePosition",
+			"IntVector3 ",
+			"worldHandler",
+			"string ",
+			"string",
+			"Split",
+			"Length",
+			"ECHO",
+			"Echo ist aus",
+			"\\",
+			"  ",
+			"\\\\",
+			" ",
+			"	",
+			"\\n",
+			"Red",
+			"7",
+			"0",
+			"PlayerArray",
+			"/img",
+			"this",
+			"{\n",
+			")\n",
+			"validate",
+			"invalid",
+			"login",
+			"Key",
+			"run_motor"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "Cmd/bin/Debug/example.js",
+					"settings":
+					{
+						"buffer_size": 1146,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1059,
+								1059
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "Core/base.js",
+					"settings":
+					{
+						"buffer_size": 3664,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2943,
+								2943
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2216.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "Core/outputParser.js",
+					"settings":
+					{
+						"buffer_size": 3645,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3397,
+								3397
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "Cmd/bin/Debug/core.js",
+					"settings":
+					{
+						"buffer_size": 29533,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								545,
+								545
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 34.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 160.0,
+	"status_bar_visible": true
+}
