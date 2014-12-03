@@ -1,11 +1,8 @@
-﻿<Properties>
+﻿<Properties GitUserInfo="UsingGIT">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Cmd\JsApi.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="ServerWrapper\JsApi.cs">
     <Files>
-      <File FileName="Cmd\JsApi.cs" Line="51" Column="36" />
-      <File FileName="Cmd\JsScriptExecutor.cs" Line="45" Column="1" />
-      <File FileName="Cmd\Program.cs" Line="69" Column="3" />
-      <File FileName="Cmd\IntVector3.cs" Line="1" Column="1" />
+      <File FileName="ServerWrapper\JsApi.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

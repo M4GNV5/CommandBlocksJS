@@ -48,4 +48,7 @@
     <Compile Include="IntVector3.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <None Include="run.bat" />
+  </ItemGroup>
 </Project>

@@ -4,6 +4,38 @@
 		"selected_items":
 		[
 			[
+				"sc",
+				"scoreName"
+			],
+			[
+				"nex",
+				"nextFunc"
+			],
+			[
+				"out",
+				"OutputHandler"
+			],
+			[
+				"text",
+				"text1"
+			],
+			[
+				"dir",
+				"direc"
+			],
+			[
+				"tex",
+				"text1"
+			],
+			[
+				"se",
+				"seeker"
+			],
+			[
+				"give",
+				"giveItems"
+			],
+			[
 				"cal",
 				"calls"
 			],
@@ -108,10 +140,6 @@
 				"nextPrerenderPos"
 			],
 			[
-				"sc",
-				"Screen"
-			],
-			[
 				"tim",
 				"time"
 			],
@@ -150,10 +178,6 @@
 			[
 				"in",
 				"indexScore"
-			],
-			[
-				"se",
-				"selector"
 			],
 			[
 				"va",
@@ -490,52 +514,32 @@
 			[
 				"gt",
 				"getJSON"
-			],
-			[
-				"user",
-				"username"
-			],
-			[
-				"Start",
-				"StartInfo"
-			],
-			[
-				"sy",
-				"syncMotors"
 			]
 		]
 	},
 	"buffers":
 	[
 		{
-			"file": "Cmd/bin/Debug/example.js",
-			"settings":
-			{
-				"buffer_size": 1146,
-				"line_ending": "Windows"
-			}
-		},
-		{
 			"file": "Core/base.js",
 			"settings":
 			{
-				"buffer_size": 3664,
+				"buffer_size": 4147,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "Core/outputParser.js",
+			"file": "ServerWrapper/bin/Debug/core.js",
 			"settings":
 			{
-				"buffer_size": 3645,
+				"buffer_size": 29768,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "Cmd/bin/Debug/core.js",
+			"file": "Cmd/bin/Debug/hns.js",
 			"settings":
 			{
-				"buffer_size": 29533,
+				"buffer_size": 1305,
 				"line_ending": "Windows"
 			}
 		}
@@ -564,6 +568,134 @@
 	},
 	"file_history":
 	[
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/Core/util.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/Core/outputParser.js",
+		"/C/Data/OFA/Aternos/aternos.txt",
+		"/C/Data/OFA/Aternos/language_aternos.php",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/Cmd/bin/Debug/core.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/Cmd/bin/Debug/hns.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/Core/vanillaCommands.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/Core/player.js",
+		"/C/Users/Agent J/Desktop/quellen.txt",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/Cmd/bin/Debug/hide n seek.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/Cmd/bin/Debug/example.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/Core/base.js",
+		"/C/Users/Agent J/Desktop/McSmartphone/CommandblocksJS/core.js",
+		"/C/Data/OFA/schule/fachreferat_physik/versuch.xml",
+		"/C/Users/Agent J/Desktop/McSmartphone/CommandblocksJS/libs/Vector3.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/Core/events.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlocksJS.sln",
+		"/C/Users/Agent J/Desktop/McSmartphone/src/Apps/Standby.js",
+		"/C/Users/Agent J/Desktop/McSmartphone/src/libs/appManager.js",
+		"/C/Users/Agent J/Desktop/McSmartphone/CommandblocksJS/mcphone.js",
+		"/C/Users/Agent J/Desktop/McSmartphone/src/libs/renderer.js",
+		"/C/Users/Agent J/Desktop/McSmartphone/src/libs/phoneBase.js",
+		"/C/Users/Agent J/Documents/GitHub/AternosSupportGateway/content/js.json",
+		"/C/Data/Programme/xampp/htdocs/content/js.json",
+		"/C/Data/Programme/xampp/htdocs/main.js",
+		"/C/Users/Agent J/Desktop/McSmartphone/src/Apps/LockScreen.js",
+		"/C/Users/Agent J/Documents/GitHub/AternosSupportGateway/content/objectSrc.json",
+		"/C/Users/Agent J/Documents/GitHub/AternosSupportGateway/.htaccess",
+		"/C/Data/Programme/xampp/htdocs/panel/content/panel.js",
+		"/C/Data/Programme/xampp/htdocs/panel/index.php",
+		"/C/Data/Programme/xampp/htdocs/panel/modify.php",
+		"/C/Data/Programme/xampp/htdocs/panel/users.php",
+		"/C/Users/Agent J/Desktop/McSmartphone/src/libs/colors.js",
+		"/C/Users/Agent J/Desktop/McSmartphone/README.md",
+		"/C/Users/Agent J/Desktop/McSmartphone/src/libs/screen.js",
+		"/C/Users/Agent J/Desktop/McSmartphone/src/libs/structures.js",
+		"/C/Users/Agent J/Desktop/McSmartphone/src/libs/touch.js",
+		"/C/Users/Agent J/Desktop/McSmartphone/CommandblocksJS/libs/base.js",
+		"/C/Users/Agent J/Desktop/McSmartphone/src/libs/Vector3.js",
+		"/C/Users/Agent J/Desktop/McSmartphone/src/libs/Vector2.js",
+		"/C/Users/Agent J/Desktop/McSmartphone/src/libs/relativeBuilder.js",
+		"/C/Users/Agent J/Desktop/stuff.txt",
+		"/C/Users/Agent J/Desktop/McSmartphone/CommandblocksJS/libs/util.js",
+		"/C/Users/Agent J/Desktop/McSmartphone/CommandblocksJS/libs/player.js",
+		"/C/Users/Agent J/Desktop/McSmartphone/CommandblocksJS/libs/runtimeVariables.js",
+		"/C/Users/Agent J/Desktop/McSmartphone/CommandblocksJS/libs/events.js",
+		"/C/Users/Agent J/Desktop/McSmartphone/CommandblocksJS/libs/tellraw.js",
+		"/C/Users/Agent J/Desktop/McSmartphone/src/libs/run.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlocksJS/bin/Debug/test.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlocksJS/JavascriptFiles/util.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlocksJS/JavascriptFiles/runtimeVariables.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlocksJS/JavascriptFiles/base.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlocksJS/JavascriptFiles/tellraw.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlocksJS/JavascriptFiles/events.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlocksJS/JavascriptFiles/player.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlocksJS/JavascriptFiles/vanillaCommands.js",
+		"/C/Users/Agent J/Desktop/WeilIRCGeilIst.txt",
+		"/C/Users/Agent J/Desktop/cbjs.txt",
+		"/C/Users/Agent J/Desktop/CubeAnimation.3ds",
+		"/C/Users/Agent J/AppData/Local/Temp/Temp1_JavaScript.zip/JavaScript.grm",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlocksJS/bin/Debug/libs/base.js",
+		"/C/Users/Agent J/AppData/Local/Temp/Temp1_contact.zip/contactformscript.php",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlocksJS/JavascriptFiles/selector.js",
+		"/C/Users/Agent J/Desktop/Scripted4fupMinigames/current.js",
+		"/C/Users/Agent J/Desktop/Scripted4fupMinigames/games/bedwars.js",
+		"/C/Users/Agent J/Desktop/Scripted4fupMinigames/libs/minigamesShared.js",
+		"/C/Users/Agent J/Desktop/Scripted4fupMinigames/games/template.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlocksJS/bin/Debug/output/0.txt",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlocksJS/bin/Debug/libs/util.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlocksJS/bin/Debug/output/1.txt",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlocksJS/bin/Debug/output/2.txt",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlocksJS/bin/Debug/output/3.txt",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlocksJS/bin/Debug/output/4.txt",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/src/bin/Debug/test.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/src/JavascriptFiles/vanillaCommands.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/src/JavascriptFiles/util.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/src/JavascriptFiles/tellraw.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/src/JavascriptFiles/events.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/src/JavascriptFiles/base.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/CommandBlockJS.GUI/CommandBlocksJS.GUI.csproj",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/src/CommandBlocksJS.csproj",
+		"/C/Data/Programmieren/projektideen.txt",
+		"/C/Data/OFA/MC-Server/Vanilla-1.8/server.properties",
+		"/C/Users/Agent J/Desktop/Scripted4fupMinigames/current.js.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/src/bin/Release/CommandBlocksJS.GUI.exe.config",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/src/Examples/Karma (readme).js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/src/Examples/game template.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/src/Examples/1.8 stuff.js",
+		"/C/Users/Agent J/Desktop/CommandBlocks.js.pdb",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/src/bin/Debug/libs/events.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/src/bin/Debug/libs/vanillaCommands.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/src/bin/Debug/libs/util.js",
+		"/C/Data/Games/MinecraftLog.txt",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/README.md",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/Examples/game template.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/Examples/Karma (readme).js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/src/bin/Debug/libs/base.js",
+		"/C/Data/Programmieren/Visual Studio/WorldMinifier/WorldMinifier/bin/Debug/tempServer/server.config",
+		"/C/Data/Programmieren/Visual Studio/WorldMinifier/WorldMinifier/bin/Debug/tempServer/banned-ips.txt",
+		"/C/Data/Programmieren/Visual Studio/WorldMinifier/WorldMinifier/bin/Debug/configTemplate.config",
+		"/C/Data/OFA/MC-Server/Vanilla-1.6.4/server.config",
+		"/C/Users/Agent J/Documents/GitHub/NINSS/NINSS/MinecraftServerManager.cs",
+		"/C/Data/OFA/MC-Server/NINSS/logs/latest.log",
+		"/C/Data/OFA/MC-Server/NINSS/server.properties",
+		"/C/Data/Programmieren/Visual Studio/WorldResizer/WorldMinifierGui/WorldResizerGui.csproj",
+		"/C/Data/OFA/MC-Server/Vanilla-1.8/logs/latest.log",
+		"/C/Data/Programmieren/Visual Studio/WorldResizer/WorldMinifier.sln",
+		"/C/Data/OFA/MC-Server/Vanilla-1.8/eula.txt",
+		"/C/Data/Programmieren/Visual Studio/Sharpcraft-master/Sharpcraft/Sharpcraft.csproj",
+		"/C/Data/Programmieren/MonoProjects/Main/SharpCrawler/GithubCrawler/bin/Release/repos.json",
+		"/C/Data/Programmieren/sg_mc.txt",
+		"/C/Users/Agent J/Documents/GitHub/MinecraftADE/testProject/testProject.xml",
+		"/C/Users/Agent J/Desktop/SYSLINUX.CFG",
+		"/C/Users/Agent J/Documents/GitHub/MinecraftADE/testProject/testProject",
+		"/E/Jakob/Spiele/Desktop/ofa/txt-files/projekt-sozi.gesch.txt",
+		"/E/Jakob/Spiele/Desktop/ofa/txt-files/server gut.txt",
+		"/C/Data/Programmieren/Visual Studio/MinecraftADE/MinecraftADE/bin/Debug/plugins/WebWorldPreview/renderer.js",
+		"/C/Data/Programmieren/Visual Studio/MinecraftADE/MinecraftADE/bin/Debug/plugins/WebWorldPreview/test.html",
+		"/E/Jakob/Backups/OFA/Aternos/aternos.txt",
+		"/C/Users/Agent J/Documents/GitHub/MinecraftADE/MinecraftADE.sln",
+		"/C/Users/Agent J/Desktop/blockplot-master/js/world-bundle.js",
+		"/C/Data/Programme/xampp/htdocs/test/js/world-bundle.js",
+		"/C/Users/Agent J/Desktop/blockplot-master/world.html",
+		"/C/Data/Programmieren/Visual Studio/MinecraftADE/MinecraftADE.sln",
+		"/C/Users/Agent J/Desktop/blockplot-master/package.json",
+		"/C/Users/Agent J/Desktop/blockplot-master/license.txt",
+		"/C/Users/Agent J/Desktop/blockplot-master/js/world.js",
+		"/C/Users/Agent J/Desktop/test/testproject.xml"
 	],
 	"find":
 	{
@@ -634,46 +766,45 @@
 			[
 				{
 					"buffer": 0,
-					"file": "Cmd/bin/Debug/example.js",
+					"file": "Core/base.js",
 					"settings":
 					{
-						"buffer_size": 1146,
+						"buffer_size": 4147,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1059,
-								1059
+								3138,
+								3138
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 2214.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "Core/base.js",
+					"file": "ServerWrapper/bin/Debug/core.js",
 					"settings":
 					{
-						"buffer_size": 3664,
+						"buffer_size": 29768,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2943,
-								2943
+								8851,
+								8851
 							]
 						],
 						"settings":
@@ -682,51 +813,25 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2216.0,
+						"translation.y": 5588.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 2,
-					"file": "Core/outputParser.js",
+					"file": "Cmd/bin/Debug/hns.js",
 					"settings":
 					{
-						"buffer_size": 3645,
+						"buffer_size": 1305,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3397,
-								3397
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "Cmd/bin/Debug/core.js",
-					"settings":
-					{
-						"buffer_size": 29533,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								545,
-								545
+								1110,
+								1110
 							]
 						],
 						"settings":
@@ -735,7 +840,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 270.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
