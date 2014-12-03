@@ -523,15 +523,15 @@
 			"file": "Core/base.js",
 			"settings":
 			{
-				"buffer_size": 4147,
-				"line_ending": "Windows"
+				"buffer_size": 4156,
+				"line_ending": "Unix"
 			}
 		},
 		{
 			"file": "ServerWrapper/bin/Debug/core.js",
 			"settings":
 			{
-				"buffer_size": 29768,
+				"buffer_size": 0,
 				"line_ending": "Windows"
 			}
 		},
@@ -568,18 +568,18 @@
 	},
 	"file_history":
 	[
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/Core/base.js",
+		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/Cmd/bin/Debug/core.js",
 		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/Core/util.js",
 		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/Core/outputParser.js",
 		"/C/Data/OFA/Aternos/aternos.txt",
 		"/C/Data/OFA/Aternos/language_aternos.php",
-		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/Cmd/bin/Debug/core.js",
 		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/Cmd/bin/Debug/hns.js",
 		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/Core/vanillaCommands.js",
 		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/Core/player.js",
 		"/C/Users/Agent J/Desktop/quellen.txt",
 		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/Cmd/bin/Debug/hide n seek.js",
 		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/Cmd/bin/Debug/example.js",
-		"/C/Users/Agent J/Documents/GitHub/CommandBlocksJS/Core/base.js",
 		"/C/Users/Agent J/Desktop/McSmartphone/CommandblocksJS/core.js",
 		"/C/Data/OFA/schule/fachreferat_physik/versuch.xml",
 		"/C/Users/Agent J/Desktop/McSmartphone/CommandblocksJS/libs/Vector3.js",
@@ -761,7 +761,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 0,
 			"sheets":
 			[
 				{
@@ -769,15 +769,15 @@
 					"file": "Core/base.js",
 					"settings":
 					{
-						"buffer_size": 4147,
+						"buffer_size": 4156,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3138,
-								3138
+								1400,
+								1400
 							]
 						],
 						"settings":
@@ -786,7 +786,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2214.0,
+						"translation.y": 1026.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -796,15 +796,15 @@
 					"file": "ServerWrapper/bin/Debug/core.js",
 					"settings":
 					{
-						"buffer_size": 29768,
+						"buffer_size": 0,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								8851,
-								8851
+								0,
+								0
 							]
 						],
 						"settings":
@@ -813,7 +813,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 5588.0,
+						"translation.y": 5372.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

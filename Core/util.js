@@ -75,6 +75,7 @@ function Timer(callback, options)
 	options.scoreName = options.scoreName || Naming.next("timer");
 
 	var timerVar;
+	var isRunning;
 	var scoreTicks;
 
 	if(options.useScoreboard !== false)
@@ -82,10 +83,14 @@ function Timer(callback, options)
 		scoreTicks = ((options.time / options.hardTickLength) < 1) ? 1 : (options.time / options.hardTickLength);
 		options.time = options.hardTickLength;
 
-		var varOptions = {name: ""};
+		var varOptions = {};
 		varOptions.name = options.scoreName;
-
 		timerVar = new RuntimeInteger(varOptions);
+
+		var isRunningOptions = {}
+		isRunningOptions.name = varOptions.name+"R";
+		isRunning = new RuntimeInteger(isRunningOptions);
+		isRunning.set(-1);
 
 		callOnce(function() { timerVar.set(-1); });
 		delay(3);
@@ -104,7 +109,7 @@ function Timer(callback, options)
 		}
 		else
 		{
-			testforSync(timerVar.isBetween(0));
+			testforSync(isRunning.hasValue(1));
 			timerVar.add(1);
 			testfor(timerVar.isBetween(scoreTicks), function()
 			{
@@ -121,11 +126,8 @@ function Timer(callback, options)
 	{
 		if(options.useScoreboard)
 		{
-			testfor(timerVar.hasValue(-1), function()
-			{
-				timerVar.set(0);
-				call(timerFunc);
-			});
+			testfor(isRunning.hasValue(-1), timerFunc);
+			isRunning.set(1);
 		}
 		else
 		{
@@ -136,7 +138,7 @@ function Timer(callback, options)
 	{
 		if(options.useScoreboard == false)
 			throw "Cannot stop timer that doesnt use the Scoreboard";
-		timerVar.set(-1);
+		isRunning.set(-1);
 	}
 }
 //endregion
