@@ -89,7 +89,13 @@ function ScoreChangeEvent(name, objectiveType, options)
 	}
 	this.setListener = function(func)
 	{
-		if(!this.listener)
+		var oldListener = this.listener;
+		this.listener = function(player)
+		{
+			func(player);
+			player.removePlayer();
+		};
+		if(!oldListener)
 		{
 			if(options.createObjective !== false)
 				objective = new Score(this.name+"E", objectiveType);
@@ -97,11 +103,6 @@ function ScoreChangeEvent(name, objectiveType, options)
 			player = new PlayerArray(this.name);
 			timer(options.refreshTimer, this.checkForChange);
 		}
-		this.listener = function(player)
-		{
-			func(player);
-			player.removePlayer();
-		};
 	}
 }
 ScoreChangeEvent.prototype = Object.create(Event.prototype);

@@ -17,7 +17,7 @@ function RuntimeInteger(options)
 
 	var score = new Score(options.name, "dummy");
 
-	if(typeof options.startValue != 'undefined' && options.startValue != false)
+	if(typeof options.startValue != 'undefined' && options.startValue !== false)
 		score.set(RuntimeInteger.mob, options.startValue);
 
 	this.name = options.name;
@@ -121,7 +121,7 @@ function RuntimeString(value)
 	}
 	this.hasValue = function(value, callback)
 	{
-		var hasValueSelector = this.selector;
+		var hasValueSelector = this.selector.clone();
 		hasValueSelector.setAttribute("name", value);
 
 		if(typeof callback != 'undefined')

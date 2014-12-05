@@ -164,6 +164,15 @@ var Selector = function(selectorChar, attributes)
 		delete this.attributes[name];
 	}
 
+	this.clone = function()
+	{
+		var atts = {};
+		for(var key in this.attributes)
+			if(this.attributes.hasOwnProperty(key))
+				atts[key] = this.attributes[key];
+
+		return new Selector(this.selectorChar, atts);
+	}
 	this.toString = function()
 	{
 		return Selector.buildSelector(this.selectorChar, this.attributes);

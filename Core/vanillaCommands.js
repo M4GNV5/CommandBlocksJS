@@ -1,7 +1,7 @@
 ﻿//region chat
 function say(message)
 {
-	message = message || "CommandBlocksJS error invalid call 'say();'";
+	message = message || "CommandBlocksJS error invalid call 'say()'";
 	command("say "+message);
 }
 

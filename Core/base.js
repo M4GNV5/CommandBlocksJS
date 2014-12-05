@@ -13,7 +13,18 @@ var OutputHandler = new function()
 		if(this.functions.indexOf(func) == -1)
 		{
 			this.functions.push(func);
-			this.output[this.functions.indexOf(func)] = '';
+			var id = this.functions.indexOf(func);
+			this.output[id] = '';
+
+			var last = this.current;
+			this.current = id;
+
+			wire(2);
+			command("setblock ~-3 ~ ~ minecraft:air 0 replace");
+			func();
+
+			this.current = last;
+			return id;
 		}
 		return this.functions.indexOf(func);
 	}
@@ -66,7 +77,15 @@ function sidewards(func)
 	var newManager = new function()
 	{
 		this.addToCurrent = function(data) { code += data.replace(/;/g, '|'); }
-		this.addFunction = function(func) { return oldManager.addFunction(func); }
+		this.addFunction = function(func)
+		{
+			direction--;
+			OutputHandler = oldManager;
+			var id = OutputHandler.addFunction(func);
+			OutputHandler = newManager;
+			direction++;
+			return id;
+		}
 	}
 	OutputHandler = newManager;
 	func();
@@ -147,7 +166,7 @@ block(143, 5);
 wire(1);
 function cbjsWorker()
 {
-	while(OutputHandler.current < OutputHandler.functions.length)
+	/*while(OutputHandler.current < OutputHandler.functions.length)
 	{
 		OutputHandler.functions[OutputHandler.current]();
 		OutputHandler.current++;
@@ -156,7 +175,7 @@ function cbjsWorker()
 			wire(2);
 			command("setblock ~-3 ~ ~ minecraft:air 0 replace");
 		}
-	}
+	}*/
 	OutputParser.start();
 	api.log("Successfully executed "+OutputHandler.functions.length+" functions!");
 }
