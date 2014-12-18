@@ -1,3 +1,89 @@
+function RuntimeByte()
+{
+	if(!RuntimeByte.nextPosition)
+	{
+		RuntimeByte.nextPosition = startPosition.clone();
+		RuntimeByte.nextPosition.x--;
+	}
+
+	this.position = RuntimeByte.nextPosition.clone();
+	RuntimeByte.nextPosition.z++;
+
+	this.set = function(value)
+	{
+		var tilename = TileName.byId(value);
+		command('setblock '+this.position+' '+tilename+' 0');
+	}
+	this.setTo = function(otherByte)
+	{
+		var otherPos = otherByte.position;
+
+		command('clone '+otherPos+' '+otherPos+' '+this.position);
+	}
+	this.hasValue = function(value, callback)
+	{
+		var tilename = TileName.byId(value);
+		var command = 'testforblock '+this.position+' '+tilename;
+
+		if(typeof callback != 'undefined')
+		{
+			validate(command, callback);
+		}
+
+		return command;
+	}
+}
+RuntimeByte.nextPosition= false;
+
+function RuntimeBoolean()
+{
+	this.base = new RuntimeByte();
+
+	this.set = function(value)
+	{
+		if(value)
+			this.base.set(7);
+		else
+			this.base.set(0);
+	}
+	this.hasValue = function(value, callback)
+	{
+		if(value)
+			return this.base.hasValue(7, callback);
+		else
+			return this.base.hasValue(0, callback);
+	}
+
+	this.isTrue = function(callback)
+	{
+		return this.hasValue(true, callback);
+	}
+	this.isFalse = function(callback)
+	{
+		return this.hasValue(false, callback);
+	}
+
+	this.switch = function(isTrue, isFalse)
+	{
+		var bool = this;
+		delay();
+		sidewards(function()
+		{
+			queryCommand(bool.hasValue(7), false);
+			comparator();
+			call(isTrue, false);
+		});
+		delay();
+		sidewards(function()
+		{
+			command("setblock ~-1 ~ ~2 minecraft:unpowered_repeater 1", false);
+			delay();
+			delay();
+			call(isFalse, false);
+		});
+	}
+}
+
 function RuntimeInteger(options)
 {
 	if(!RuntimeInteger.mobSpawned)
