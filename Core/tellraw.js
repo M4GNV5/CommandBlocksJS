@@ -65,7 +65,7 @@ function TellrawExtra(text)
 
 	this.setOption = function(name, value)
 	{
-		this.obj[name] = value.toString();
+		this.obj[name] = value;
 	}
 }
 function TellrawClickableExtra(callback, text, options)

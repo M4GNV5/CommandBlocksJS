@@ -1,21 +1,23 @@
-﻿using System;
-using System.IO;
-
-using CommandLine;
+﻿using CommandLine;
 using CommandLine.Text;
 using Noesis.Javascript;
+using System;
+using System.IO;
 
 namespace CommandBlocksJS.Cmd
 {
-	class MainClass
+	internal class MainClass
 	{
 		private sealed class Options
 		{
 			[Option('s', "script", MetaValue = "FILE", Required = true, HelpText = "Script file that will be processed to commandblocks.")]
-			public string ScriptFile {get; set;}
+			public string ScriptFile { get; set; }
 
 			[Option('w', "world", Required = true, HelpText = "The Directory of the world the commandblocks will be built in.")]
 			public string WorldDirectory { get; set; }
+
+			[Option('e', "schematic", Required = false, HelpText = "Export schematic true/false.")]
+			public bool IsSchematic { get; set; }
 
 			[Option('x', "posx", Required = false, HelpText = "The X-start-position where to build the commandblocks.")]
 			public int PositionX { get; set; }
@@ -33,22 +35,26 @@ namespace CommandBlocksJS.Cmd
 			public bool Output { get; set; }
 		}
 
-		public static int Main (string[] args) //example: -s myscript.js -w ./myworld -x 1 -y 4 -z 16
+		public static int Main(string[] args) //example: -s myscript.js -w ./myworld -x 1 -y 4 -z 16
 		{
-			try
-			{
-				Options options = new Options ();
-				Parser cmdParser = new Parser ();
+			//try
+			//{
+				Options options = new Options();
+				Parser cmdParser = new Parser();
 
-				if(!cmdParser.ParseArguments(args, options))
+				#if DEBUG
+				args = "-s example.js -w ./world -x 1 -y 4 -z 16 -e true".Split(' ');
+				#endif
+
+				if (!cmdParser.ParseArguments(args, options))
 					throw new ArgumentException("Invalid Commandline parameter!");
 
 				IntVector3 position = default(IntVector3);
 				if (options.Output)
 				{
-					if(options.PositionY != 0)
+					if (options.PositionY != 0)
 					{
-						position = new IntVector3 ();
+						position = new IntVector3();
 						position.x = options.PositionX;
 						position.y = options.PositionY;
 						position.z = options.PositionZ;
@@ -56,14 +62,14 @@ namespace CommandBlocksJS.Cmd
 				}
 
 				JsScriptExecutor executor = new JsScriptExecutor();
-				executor.Run(options.LibPath, options.ScriptFile, options.WorldDirectory, position);
-			}
-			catch(Exception e)
+				executor.Run(options.LibPath, options.ScriptFile, options.WorldDirectory, position, options.IsSchematic);
+			/*}
+			catch (Exception e)
 			{
 				Console.WriteLine("An Error of type {0} occured!", e.GetType());
 				Console.WriteLine("Error Message: {0}", e.Message);
 				return 1;
-			}
+			}*/
 			return 0;
 		}
 	}
