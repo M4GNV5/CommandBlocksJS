@@ -5,7 +5,7 @@ var OutputParser = new function()
 
 	var functionPositions = {};
 
-	this.start = function()
+	this.start = function(schematic)
 	{
 		position = startPosition;
 		var functions = OutputHandler.output;
@@ -25,7 +25,11 @@ var OutputParser = new function()
 			position = functionPositions[i].clone();
 			parseFunction(source);
 		}
-		api.saveWorld();
+
+		if (schematic)
+			api.exportSchematic("commandblocksjs.schematic");
+		else
+			api.saveWorld();
 	}
 	function getMaxSidewards(source)
 	{
@@ -104,9 +108,13 @@ var OutputParser = new function()
 				position = oldPos;
 			break;
 			case 'e': //e for E xecute
-				var ePosition = functionPositions [source.substring(1)];
+				var ePosition = functionPositions[source.substring(1)];
 
-				var eCommand = "setblock " + ePosition + " minecraft:redstone_block 0 replace";
+				var offX = ePosition.x - position.x;
+				var offY = ePosition.y - position.y;
+				var offZ = ePosition.z - position.z;
+
+				var eCommand = "setblock ~" + offX + " ~" + offY + " ~" + offZ + " minecraft:redstone_block 0 replace";
 
 				api.placeCommandBlock(eCommand, position.x, position.y, position.z);
 			break;
