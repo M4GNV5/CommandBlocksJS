@@ -100,19 +100,17 @@ function call(func, placeRepeater)
 		delay();
 	OutputHandler.addToCurrent('e'+funcId+';');
 }
-function sign(text1, text2, text3, text4, direc) 
+function sign(text1, text2, text3, text4, direc)
 { 
-	text1 = text1 || ""; 
-	text2 = text2 || ""; 
-	text3 = text3 || ""; 
-	text4 = text4 || ""; 
-	if(text1.length > 15 || text2.length > 15 || text3.length > 15 || text4.length > 15) 
-		throw "15 is maximum text length for signs!"; // Incorrect as of 1.8
-	direc = direc || direction * 4; 
-	text2 = text2 ? "_"+text2 : ""; 
-	text3 = text3 ? "_"+text3 : ""; 
-	text4 = text4 ? "_"+text4 : ""; 
-	OutputHandler.addToCurrent('n'+text1+text2+text3+text4+'_'+direc+';'); 
+	text1 = text1 || "";
+	text2 = text2 || "";
+	text3 = text3 || "";
+	text4 = text4 || "";
+	direc = direc || direction * 4;
+	text2 = text2 ? "_"+text2 : "";
+	text3 = text3 ? "_"+text3 : "";
+	text4 = text4 ? "_"+text4 : "";
+	OutputHandler.addToCurrent('n'+text1+text2+text3+text4+'_'+direc+';');
 }
 //enregion
 
