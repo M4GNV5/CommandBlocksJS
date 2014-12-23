@@ -54,7 +54,6 @@ namespace CommandBlocksJS.Cmd
 
 				if (blocks.ContainsKey(new IntVector3(x, y - 1, z)))
 				{
-					Console.WriteLine("BLOCK EXISTS! {0} {1} {2}", x, y - 1, z);
 					blocks.Remove(new IntVector3(x, y - 1, z));
 				}
 				blocks.Add(new IntVector3(x, y - 1, z), new AlphaBlock(BlockType.STONE, 0));
@@ -64,7 +63,6 @@ namespace CommandBlocksJS.Cmd
 			blockManager.SetData(x, y, z, data);
 			if (blocks.ContainsKey(new IntVector3(x, y, z)))
 			{
-				Console.WriteLine("BLOCK EXISTS! {0} {1} {2}", x, y, z);
 				blocks.Remove(new IntVector3(x, y, z));
 			}
 			blocks.Add(new IntVector3(x, y, z), new AlphaBlock(id, data));
@@ -78,7 +76,6 @@ namespace CommandBlocksJS.Cmd
 			blockManager.SetBlock(x, y, z, cblock);
 			if (blocks.ContainsKey(new IntVector3(x, y, z)))
 			{
-				Console.WriteLine("BLOCK EXISTS! {0} {1} {2}", x, y, z);
 				blocks.Remove(new IntVector3(x, y, z));
 			}
 			blocks.Add(new IntVector3(x, y, z), cblock);
@@ -102,7 +99,6 @@ namespace CommandBlocksJS.Cmd
 			blockManager.SetBlock(x, y, z, sign);
 			if (blocks.ContainsKey(new IntVector3(x, y, z)))
 			{
-				Console.WriteLine("BLOCK EXISTS! {0} {1} {2}", x, y, z);
 				blocks.Remove(new IntVector3(x, y, z));
 			}
 			blocks.Add(new IntVector3(x, y, z), sign);
