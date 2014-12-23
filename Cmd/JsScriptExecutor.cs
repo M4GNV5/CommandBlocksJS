@@ -28,15 +28,15 @@ namespace CommandBlocksJS.Cmd
 				throw new SystemException("Error in CommandblockJS Core Javascript code! Please make sure you are using the latest build\n\n" + error);
 			}
 
-			//try
-			//{
+			try
+			{
 				jsContext.Run(usercode + "\n cbjsWorker(" + isSchematic.ToString().ToLower() + ");");
-			/*}
+			}
 			catch (JavascriptException e)
 			{
 				string message = string.Format("Javascripterror: '{0}' at Line {1} Column {2} to {3}", e.Message, e.Line, e.StartColumn, e.EndColumn);
 				throw new ApplicationException(message);
-			}*/
+			}
 		}
 	}
 }

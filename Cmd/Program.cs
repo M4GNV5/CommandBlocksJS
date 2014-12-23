@@ -37,8 +37,8 @@ namespace CommandBlocksJS.Cmd
 
 		public static int Main(string[] args) //example: -s myscript.js -w ./myworld -x 1 -y 4 -z 16
 		{
-			//try
-			//{
+			try
+			{
 				Options options = new Options();
 				Parser cmdParser = new Parser();
 
@@ -63,13 +63,13 @@ namespace CommandBlocksJS.Cmd
 
 				JsScriptExecutor executor = new JsScriptExecutor();
 				executor.Run(options.LibPath, options.ScriptFile, options.WorldDirectory, position, options.IsSchematic);
-			/*}
+			}
 			catch (Exception e)
 			{
 				Console.WriteLine("An Error of type {0} occured!", e.GetType());
 				Console.WriteLine("Error Message: {0}", e.Message);
 				return 1;
-			}*/
+			}
 			return 0;
 		}
 	}
