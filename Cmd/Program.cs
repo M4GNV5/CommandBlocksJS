@@ -61,6 +61,9 @@ namespace CommandBlocksJS.Cmd
 					}
 				}
 
+				if(!Directory.Exists(options.WorldDirectory))
+					Directory.CreateDirectory(options.WorldDirectory);
+
 				JsScriptExecutor executor = new JsScriptExecutor();
 				executor.Run(options.LibPath, options.ScriptFile, options.WorldDirectory, position, options.IsSchematic);
 			}
