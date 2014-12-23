@@ -4,3 +4,4 @@ Cmd/bin
 Cmd/obj
 CommandBlocksJS.userprefs
 packages/
+*.suo
