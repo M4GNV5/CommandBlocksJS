@@ -1,4 +1,4 @@
-var OutputParser = function()
+var OutputParser = new function()
 {
 	var position;
 	var direction = 1;
@@ -10,21 +10,16 @@ var OutputParser = function()
 		position = startPosition;
 		var functions = OutputHandler.output;
 
-		var zMinusSidewards = function() { position.z -= sidewards; };
-		var zPlusSidewards = function() { position.z += sidewards; };
-
-		var i;
-
-		for (i = 0; i < functions.length; i++)
+		for (var i = 0; i < functions.length; i++)
 		{
 			functionPositions[i] = position.clone();
 
 			var sidewards = getMaxSidewards(functions[i]);
 
-			updatePosition(zMinusSidewards, zPlusSidewards,zMinusSidewards, zPlusSidewards);
+			updatePosition(function() { position.z -= sidewards }, function() { position.z += sidewards }, function() { position.z -= sidewards }, function() { position.z += sidewards });
 		}
 
-		for (i = 0; i < functions.length; i++)
+		for (var i = 0; i < functions.length; i++)
 		{
 			var source = functions[i];
 			position = functionPositions[i].clone();
@@ -32,7 +27,7 @@ var OutputParser = function()
 		}
 
 		api.save();
-	};
+	}
 	function getMaxSidewards(source)
 	{
 		var sidewards = 2;
@@ -50,26 +45,21 @@ var OutputParser = function()
 
 	function parseFunction(source)
 	{
-		if (source === '')
+		if (source == '')
 			return;
 
 		var calls = source.split(';');
-
-		var a = function() { position.x--; };
-		var b = function() { position.x++; };
-		var c = function() { position.z--; };
-		var d = function() { position.z++; };
 
 		for (var i = 0; i < calls.length; i++)
 		{
 			var _call = calls[i].trim();
 
-			if (_call === '')
+			if (_call == '')
 				continue;
 
 			parseCall(_call);
 
-			updatePosition(a, b, c, d);
+			updatePosition(function() { position.x-- }, function() { position.x++ }, function() { position.z-- }, function() { position.z++ });
 		}
 	}
 
@@ -104,18 +94,12 @@ var OutputParser = function()
 			case 's': //s for S idewards
 				var calls = source.substring(1).split('|');
 
-				var a = function() { position.x--; };
-				var b = function() { position.x++; };
-				var c = function() { position.z--; };
-				var d = function() { position.z++; };
-
 				var oldPos = position.clone();
 				direction++;
 				for (var i = 0; i < calls.length; i++)
 				{
 					parseCall(calls[i].trim());
-
-					updatePosition(a, b, c, d);
+					updatePosition(function() { position.x-- }, function() { position.x++ }, function() { position.z-- }, function() { position.z++ });
 				}
 				direction--;
 				position = oldPos;
@@ -161,4 +145,4 @@ var OutputParser = function()
 				break;
 		}
 	}
-};
+}

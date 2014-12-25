@@ -1,5 +1,5 @@
-﻿//region core classes
-var OutputHandler = function()
+//region core classes
+var OutputHandler = new function()
 {
 	this.output = [];
 	this.functions = [];
@@ -27,7 +27,7 @@ var OutputHandler = function()
 			return id;
 		}
 		return this.functions.indexOf(func);
-	};
+	}
 	this.removeFunction = function(func)
 	{
 		var id = this.functions.indexOf(func);
@@ -38,12 +38,12 @@ var OutputHandler = function()
 
 		this.functions.splice(id, 1);
 		this.output.splice(id, 1);
-	};
+	}
 	this.addToCurrent = function(code)
 	{
 		this.output[this.current] += code;
-	};
-};
+	}
+}
 //endregion
 
 //region core functions
@@ -74,9 +74,9 @@ function sidewards(func)
 	direction++;
 	var code = 's';
 	var oldManager = OutputHandler;
-	var newManager = function()
+	var newManager = new function()
 	{
-		this.addToCurrent = function(data) { code += data.replace(/;/g, '|'); };
+		this.addToCurrent = function(data) { code += data.replace(/;/g, '|'); }
 		this.addFunction = function(func)
 		{
 			direction--;
@@ -85,8 +85,8 @@ function sidewards(func)
 			OutputHandler = newManager;
 			direction++;
 			return id;
-		};
-	};
+		}
+	}
 	OutputHandler = newManager;
 	func();
 	OutputHandler = oldManager;
@@ -125,7 +125,7 @@ function torch(activated)
 {
 	activated = activated || true;
 	var data = (direction == 4) ? direction + 1 : 1;
-	if (activated === false)
+	if (activated == false)
 		block(75, data);
 	else
 		block(76, data);
@@ -135,16 +135,16 @@ function delay(time)
 	time = time || 0;
 	while (time >= 0)
 	{
-		var cdelay = (time > 3) ? 3 : (time === 0) ? 0 : time - 1;
-		var data = cdelay * 4 + direction;
+		var delay = (time > 3) ? 3 : (time == 0) ? 0 : time - 1;
+		var data = delay * 4 + direction;
 		block(93, data);
-		time -= (time > 3) ? cdelay + 1 : cdelay + 2;
+		time -= (time > 3) ? delay + 1 : delay + 2;
 	}
 }
 function comparator(activated)
 {
 	activated = activated || false;
-	if (activated === false)
+	if (activated == false)
 		block(149, direction);
 	else
 		block(150, direction);
@@ -180,7 +180,7 @@ function cbjsWorker(schematic)
 //endregion
 
 //region internal helper classes
-var Naming = function()
+var Naming = new function()
 {
 	this.names = {};
 
@@ -189,8 +189,8 @@ var Naming = function()
 		this.names[name] = this.names[name] || 0;
 		this.names[name]++;
 		return name + this.names[name];
-	};
-};
+	}
+}
 function Vector3(x, y, z)
 {
 	this.x = x || 0;
@@ -201,11 +201,10 @@ function Vector3(x, y, z)
 	{
 		splitter = splitter || ' ';
 		return this.x + splitter + this.y + splitter + this.z;
-	};
-
+	}
 	this.clone = function()
 	{
 		return new Vector3(this.x, this.y, this.z);
-	};
+	}
 }
 //endredion

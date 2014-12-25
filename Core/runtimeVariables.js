@@ -16,33 +16,33 @@ function RuntimeInteger(options)
 	this.set = function(value)
 	{
 		RuntimeInteger.score.set(this.name, value);
-	};
+	}
 	this.add = function(value)
 	{
 		RuntimeInteger.score.add(this.name, value);
-	};
+	}
 	this.remove = function(value)
 	{
 		RuntimeInteger.score.remove(this.name, value);
-	};
+	}
 	this.reset = function()
 	{
 		RuntimeInteger.score.reset(this.name);
-	};
+	}
 
 	this.test = function(callback, min, max)
 	{
 		RuntimeInteger.score.test(this.name, callback, min, max);
-	};
+	}
 	this.operation = function(operation, other, otherPlayer)
 	{
 		RuntimeInteger.score.operation(this.name, operation, otherPlayer, other);
-	};
+	}
 
 	this.hasValue = function(value, callback)
 	{
 		return this.isBetween(value, value, callback);
-	};
+	}
 	this.isBetween = function(min, max, callback)
 	{
 		max = (typeof max == 'undefined' || max === true) ? "" : max;
@@ -52,7 +52,7 @@ function RuntimeInteger(options)
 			validate(command, callback);
 
 		return command;
-	};
+	}
 
 	this.asTellrawExtra = function()
 	{
@@ -71,7 +71,7 @@ function RuntimeInteger(options)
 		extra.obj.score.objective = RuntimeInteger.score.name;
 
 		return extra;
-	};
+	}
 }
 
 function RuntimeBoolean()
@@ -84,28 +84,28 @@ function RuntimeBoolean()
 			this.base.set(1);
 		else
 			this.base.set(0);
-	};
+	}
 	this.hasValue = function(value, callback)
 	{
 		if(value)
 			return this.base.hasValue(1, callback);
 		else
 			return this.base.hasValue(0, callback);
-	};
+	}
 
 	this.isTrue = function(callback)
 	{
 		return this.hasValue(true, callback);
-	};
+	}
 	this.isFalse = function(callback)
 	{
 		return this.hasValue(false, callback);
-	};
+	}
 
 	this.asTellrawExtra = function()
 	{
 		return this.base.asTellrawExtra();
-	};
+	}
 }
 
 function RuntimeString(value)
@@ -132,7 +132,7 @@ function RuntimeString(value)
 	this.set = function(value)
 	{
 		command('entitydata '+this.selector+' {CustomName:"'+value+'"}');
-	};
+	}
 	this.hasValue = function(value, callback)
 	{
 		var hasValueSelector = this.selector.clone();
@@ -144,7 +144,7 @@ function RuntimeString(value)
 		}
 
 		return hasValueSelector;
-	};
+	}
 
 	this.asTellrawExtra = function()
 	{
@@ -158,7 +158,7 @@ function RuntimeString(value)
 		extra.obj.selector = this.selector.toString();
 
 		return extra;
-	};
+	}
 }
 RuntimeString.lastIndex = false;
 RuntimeString.indexScore = false;
