@@ -16,7 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace CommandBlocksJS.Cmd.GUI
+namespace CommandBlocksJS.GUI
 {
 	public class TextBoxStreamWriter : TextWriter
 	{

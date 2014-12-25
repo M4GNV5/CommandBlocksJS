@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Cmd.GUI
+namespace CommandBlocksJS.GUI
 {
 	/// <summary>
 	/// Interaction logic for App.xaml
