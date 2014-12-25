@@ -5,7 +5,7 @@ function tellraw(selector, message, isJson)
 	message = message || "No Message defined!";
 
 	var t = new Tellraw();
-	if (isJson == true)
+	if (isJson === true)
 		t.addExtra(message);
 	else
 		t.addText(message);
@@ -20,26 +20,26 @@ function Tellraw()
 	this.addText = function(text)
 	{
 		this.extras.push({ "text": text.toString() });
-	}
+	};
 	this.addScore = function(selector, objective)
 	{
 		this.extras.push({ "score": { "name": selector.toString(), "objective": objective.toString() } });
-	}
+	};
 	this.addSelector = function(selector)
 	{
 		this.extras.push({ "selector": selector.toString() });
-	}
+	};
 	this.addExtra = function(extra)
 	{
 		this.extras.push(extra.obj);
-	}
+	};
 
 	this.tell = function(selector)
 	{
 		selector = selector || Selector.allPlayer();
 		var extrasArray = JSON.stringify(this.extras);
 		command('tellraw ' + selector + ' {"text":"",extra:' + extrasArray + '}');
-	}
+	};
 }
 function TellrawExtra(text)
 {
@@ -49,24 +49,24 @@ function TellrawExtra(text)
 	this.setText = function(newText)
 	{
 		this.setOption("text", newText);
-	}
+	};
 	this.setClickEvent = function(action, value)
 	{
 		this.setOption("clickEvent", { "action": action, "value": value });
-	}
+	};
 	this.setHoverEvent = function(action, value)
 	{
 		this.setOption("clickEvent", { "action": action, "value": value });
-	}
+	};
 	this.setColor = function(color)
 	{
 		this.setOption("color", color);
-	}
+	};
 
 	this.setOption = function(name, value)
 	{
 		this.obj[name] = value;
-	}
+	};
 }
 function TellrawClickableExtra(callback, text, options)
 {
@@ -97,7 +97,7 @@ function TellrawClickableExtra(callback, text, options)
 	this.setClickEvent = function()
 	{
 		throw "setting the click event command is not supported using TellrawClickableExtra";
-	}
+	};
 }
 TellrawClickableExtra.prototype = Object.create(TellrawExtra.prototype);
 //endregion

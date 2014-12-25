@@ -7,7 +7,7 @@ function Player(selector)
 	this.setGameMode = function(mode)
 	{
 		command("gamemode " + mode + " " + this.selector);
-	}
+	};
 	this.teleport = function(dest)
 	{
 		if (typeof dest == 'string')
@@ -21,7 +21,7 @@ function Player(selector)
 			else
 				command("tp " + this.selector + " " + dest.x + " " + dest.y + " " + dest.z + " " + dest.yrot + " " + dest.xrot);
 		}
-	}
+	};
 	this.clear = function(item, data, maxCount, dataTag)
 	{
 		item = item || '';
@@ -29,11 +29,11 @@ function Player(selector)
 		maxCount = maxCount || '';
 		dataTag = dataTag || '';
 		command("clear " + this.selector + " " + item + " " + data + " " + maxCount + " " + dataTag);
-	}
+	};
 	this.tell = function(text)
 	{
 		command("tell " + this.selector + " " + text);
-	}
+	};
 	this.tellraw = function(param)
 	{
 		if (typeof param == 'object')
@@ -44,7 +44,7 @@ function Player(selector)
 		{
 			tellraw(this.selector, param);
 		}
-	}
+	};
 
 	this.setTeam = function(team)
 	{
@@ -56,7 +56,7 @@ function Player(selector)
 		{
 			command("scoreboard teams join " + team + " " + this.selector);
 		}
-	}
+	};
 	this.setScore = function(score, value)
 	{
 		if (typeof score == 'object')
@@ -67,7 +67,7 @@ function Player(selector)
 		{
 			command("scoreboard players set " + this.selector + " " + team + " " + value);
 		}
-	}
+	};
 	this.addScore = function(score, value)
 	{
 		if (typeof score == 'object')
@@ -78,7 +78,7 @@ function Player(selector)
 		{
 			command("scoreboard players add " + this.selector + " " + team + " " + value);
 		}
-	}
+	};
 	this.removeScore = function(score, value)
 	{
 		if (typeof score == 'object')
@@ -89,16 +89,16 @@ function Player(selector)
 		{
 			command("scoreboard players remove " + this.selector + " " + team + " " + value);
 		}
-	}
+	};
 
 	this.getSelector = function()
 	{
 		return this.selector;
-	}
+	};
 	this.toString = function()
 	{
 		return this.selector;
-	}
+	};
 }
 
 function PlayerArray(name, selector, createObjective)
@@ -120,24 +120,24 @@ function PlayerArray(name, selector, createObjective)
 	this.addPlayer = function(selector)
 	{
 		arrayScore.set(selector, 1);
-	}
+	};
 	this.removePlayer = function(selector)
 	{
 		selector = selector || this.getSelector();
 		arrayScore.set(selector, 0);
-	}
+	};
 
 	this.getScore = function()
 	{
 		return arrayScore;
-	}
+	};
 	this.toTeam = function(teamname)
 	{
 		teamname = teamname || this.name;
 		var team = new Team(teamname, true);
 		team.addPlayer(this.selector);
 		return team;
-	}
+	};
 }
 PlayerArray.prototype = Object.create(Player.prototype);
 
@@ -149,16 +149,16 @@ var Selector = function(selectorChar, attributes)
 	this.setAttribute = function(name, value)
 	{
 		this.attributes[name] = value;
-	}
+	};
 	this.setAttributes = function(newAttributes)
 	{
 		for (var name in newAttributes)
 			this.setAttribute(name, newAttributes[name]);
-	}
+	};
 	this.removeAttribute = function(name)
 	{
 		delete this.attributes[name];
-	}
+	};
 
 	this.clone = function()
 	{
@@ -168,12 +168,12 @@ var Selector = function(selectorChar, attributes)
 				atts[key] = this.attributes[key];
 
 		return new Selector(this.selectorChar, atts);
-	}
+	};
 	this.toString = function()
 	{
 		return Selector.buildSelector(this.selectorChar, this.attributes);
-	}
-}
+	};
+};
 Selector.parse = function(stringSelector)
 {
 	stringSelector = stringSelector.toString() || "@a[]";
@@ -190,7 +190,7 @@ Selector.parse = function(stringSelector)
 	}
 
 	return new Selector(selectorChar, attributes);
-}
+};
 Selector.buildSelector = function(selectorChar, attributes)
 {
 	attributes = attributes || {};
@@ -208,21 +208,21 @@ Selector.buildSelector = function(selectorChar, attributes)
 	sel += "]";
 
 	return sel;
-}
+};
 Selector.player = function(attributes)
 {
 	return Selector.buildSelector('p', attributes);
-}
+};
 Selector.randomPlayer = function(attributes)
 {
 	return Selector.buildSelector('r', attributes);
-}
+};
 Selector.allPlayer = function(attributes)
 {
 	return Selector.buildSelector('a', attributes);
-}
+};
 Selector.entities = function(attributes)
 {
 	return Selector.buildSelector('e', attributes);
-}
+};
 //endregion

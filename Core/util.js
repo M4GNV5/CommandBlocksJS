@@ -87,7 +87,7 @@ function Timer(callback, options)
 		varOptions.name = options.scoreName;
 		timerVar = new RuntimeInteger(varOptions);
 
-		var isRunningOptions = {}
+		var isRunningOptions = {};
 		isRunningOptions.name = varOptions.name + "R";
 		isRunning = new RuntimeInteger(isRunningOptions);
 		isRunning.set(-1);
@@ -100,7 +100,7 @@ function Timer(callback, options)
 
 	var timerFunc = function()
 	{
-		if (options.useScoreboard == false)
+		if (options.useScoreboard === false)
 		{
 			if (options.callAsync)
 				call(callback);
@@ -120,7 +120,7 @@ function Timer(callback, options)
 
 		delay(options.time);
 		call(timerFunc);
-	}
+	};
 
 	this.start = function()
 	{
@@ -133,12 +133,12 @@ function Timer(callback, options)
 		{
 			call(timerFunc);
 		}
-	}
+	};
 	this.stop = function()
 	{
-		if (options.useScoreboard == false)
+		if (options.useScoreboard === false)
 			throw "Cannot stop timer that doesnt use the Scoreboard";
 		isRunning.set(-1);
-	}
+	};
 }
 //endregion

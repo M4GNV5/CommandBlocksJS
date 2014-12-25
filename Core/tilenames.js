@@ -1,4 +1,4 @@
-﻿var TileName = new function()
+﻿var TileName = function()
 {
 	this.data =
 	[
@@ -172,10 +172,10 @@
 	this.byId = function(id)
 	{
 		return this.data[id].toLowerCase();
-	}
+	};
 	this.byName = function(name)
 	{
 		name = name.toUpperCase();
 		return this[name];
-	}
-}
+	};
+};
