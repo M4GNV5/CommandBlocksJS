@@ -1,4 +1,5 @@
-﻿using Noesis.Javascript;
+﻿using CommandblocksJS.Cmd;
+using Noesis.Javascript;
 using System;
 using System.IO;
 using System.Text;
@@ -14,8 +15,10 @@ namespace CommandBlocksJS.Cmd
 
 			JavascriptContext jsContext = new JavascriptContext();
 
-			JsApi api = new JsApi(worldDirectory);
-			jsContext.SetParameter("api", api);
+			if (!isSchematic)
+				jsContext.SetParameter("api", new JsApi(worldDirectory));
+			else
+				jsContext.SetParameter("api", new JsSchematicApi(worldDirectory));
 
 			try
 			{
@@ -30,7 +33,7 @@ namespace CommandBlocksJS.Cmd
 
 			try
 			{
-				jsContext.Run(usercode + "\n cbjsWorker(" + isSchematic.ToString().ToLower() + ");");
+				jsContext.Run(usercode + "\n cbjsWorker();");
 			}
 			catch (JavascriptException e)
 			{

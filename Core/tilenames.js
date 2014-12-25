@@ -164,7 +164,7 @@
 		"STAINED_HARDENED_CLA"
 	];
 
-	for(var i = 0; i < this.data.length; i++)
+	for (var i = 0; i < this.data.length; i++)
 	{
 		this[this.data[i]] = i;
 	}

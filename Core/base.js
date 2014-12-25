@@ -6,11 +6,11 @@ var OutputHandler = new function()
 	this.current = 0;
 
 	this.output[0] = '';
-	this.functions[0] = function() {};
+	this.functions[0] = function() { };
 
 	this.addFunction = function(func)
 	{
-		if(this.functions.indexOf(func) == -1)
+		if (this.functions.indexOf(func) == -1)
 		{
 			this.functions.push(func);
 			var id = this.functions.indexOf(func);
@@ -31,9 +31,9 @@ var OutputHandler = new function()
 	this.removeFunction = function(func)
 	{
 		var id = this.functions.indexOf(func);
-		if(id == -1)
+		if (id == -1)
 			return;
-		if(id == this.current)
+		if (id == this.current)
 			throw "Cant remove current Function!";
 
 		this.functions.splice(id, 1);
@@ -53,21 +53,21 @@ function block(id, data)
 {
 	id = id || 1;
 	data = data || 0;
-	OutputHandler.addToCurrent('b'+id+'_'+data+';');
+	OutputHandler.addToCurrent('b' + id + '_' + data + ';');
 }
 function command(text, placeRepeater)
 {
 	text = text || "say CommandBlocksJS error invalid call 'command();'";
-	if(placeRepeater !== false)
+	if (placeRepeater !== false)
 		delay();
-	OutputHandler.addToCurrent('c'+text+';');
+	OutputHandler.addToCurrent('c' + text + ';');
 }
 function queryCommand(text, placeRepeater)
 {
 	text = text || "say CommandBlocksJS error invalid call 'command();'";
-	if(placeRepeater !== false)
+	if (placeRepeater !== false)
 		delay();
-	OutputHandler.addToCurrent('q'+text+';');
+	OutputHandler.addToCurrent('q' + text + ';');
 }
 function sidewards(func)
 {
@@ -90,27 +90,27 @@ function sidewards(func)
 	OutputHandler = newManager;
 	func();
 	OutputHandler = oldManager;
-	OutputHandler.addToCurrent(code+';');
+	OutputHandler.addToCurrent(code + ';');
 	direction--;
 }
 function call(func, placeRepeater)
 {
 	var funcId = OutputHandler.addFunction(func);
-	if(placeRepeater !== false)
+	if (placeRepeater !== false)
 		delay();
-	OutputHandler.addToCurrent('e'+funcId+';');
+	OutputHandler.addToCurrent('e' + funcId + ';');
 }
 function sign(text1, text2, text3, text4, direc)
-{ 
+{
 	text1 = text1 || "";
 	text2 = text2 || "";
 	text3 = text3 || "";
 	text4 = text4 || "";
 	direc = direc || direction * 4;
-	text2 = text2 ? "_"+text2 : "";
-	text3 = text3 ? "_"+text3 : "";
-	text4 = text4 ? "_"+text4 : "";
-	OutputHandler.addToCurrent('n'+text1+text2+text3+text4+'_'+direc+';');
+	text2 = text2 ? "_" + text2 : "";
+	text3 = text3 ? "_" + text3 : "";
+	text4 = text4 ? "_" + text4 : "";
+	OutputHandler.addToCurrent('n' + text1 + text2 + text3 + text4 + '_' + direc + ';');
 }
 //enregion
 
@@ -118,14 +118,14 @@ function sign(text1, text2, text3, text4, direc)
 function wire(length)
 {
 	length = length || 1;
-	for(var i = 0; i < length; i++)
+	for (var i = 0; i < length; i++)
 		block(55);
 }
 function torch(activated)
 {
 	activated = activated || true;
-	var data = (direction == 4) ? direction+1 : 1;
-	if(activated == false)
+	var data = (direction == 4) ? direction + 1 : 1;
+	if (activated == false)
 		block(75, data);
 	else
 		block(76, data);
@@ -133,18 +133,18 @@ function torch(activated)
 function delay(time)
 {
 	time = time || 0;
-	while(time >= 0)
+	while (time >= 0)
 	{
-		var delay = (time > 3) ? 3 : (time == 0) ? 0 : time-1;
+		var delay = (time > 3) ? 3 : (time == 0) ? 0 : time - 1;
 		var data = delay * 4 + direction;
 		block(93, data);
-		time -= (time > 3) ? delay+1 : delay+2;
+		time -= (time > 3) ? delay + 1 : delay + 2;
 	}
 }
 function comparator(activated)
 {
 	activated = activated || false;
-	if(activated == false)
+	if (activated == false)
 		block(149, direction);
 	else
 		block(150, direction);
@@ -152,7 +152,7 @@ function comparator(activated)
 function invert(blockId, placeRepeater)
 {
 	blockId = blockId || 1;
-	if(placeRepeater !== false)
+	if (placeRepeater !== false)
 		delay();
 	block(blockId);
 	torch();
@@ -174,9 +174,8 @@ function cbjsWorker(schematic)
 			command("setblock ~-3 ~ ~ minecraft:air 0 replace");
 		}
 	}*/
-	api.log("starting");
 	OutputParser.start(schematic);
-	api.log("Successfully executed "+OutputHandler.functions.length+" functions!");
+	api.log("Successfully executed " + OutputHandler.functions.length + " functions!");
 }
 //endregion
 
@@ -189,7 +188,7 @@ var Naming = new function()
 	{
 		this.names[name] = this.names[name] || 0;
 		this.names[name]++;
-		return name+this.names[name];
+		return name + this.names[name];
 	}
 }
 function Vector3(x, y, z)
@@ -201,7 +200,7 @@ function Vector3(x, y, z)
 	this.toString = function(splitter)
 	{
 		splitter = splitter || ' ';
-		return this.x+splitter+this.y+splitter+this.z;
+		return this.x + splitter + this.y + splitter + this.z;
 	}
 	this.clone = function()
 	{
