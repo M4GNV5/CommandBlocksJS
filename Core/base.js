@@ -1,4 +1,4 @@
-﻿//region core classes
+//region core classes
 var OutputHandler = new function()
 {
 	this.output = [];

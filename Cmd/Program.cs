@@ -37,11 +37,10 @@ namespace CommandBlocksJS.Cmd
 
 		public static int Main(string[] args)
 		{
-			#if (!DEBUG)
+#if !DEBUG
 			try
 			{
-			#endif
-
+#endif
 				Options options = new Options();
 				Parser cmdParser = new Parser();
 
@@ -62,7 +61,7 @@ namespace CommandBlocksJS.Cmd
 
 				JsScriptExecutor executor = new JsScriptExecutor();
 				executor.Run(options.LibPath, options.ScriptFile, options.WorldDirectory, position, options.IsSchematic);
-			#if (!DEBUG)
+#if !DEBUG
 			}
 			catch (Exception e)
 			{
@@ -70,7 +69,7 @@ namespace CommandBlocksJS.Cmd
 				Console.WriteLine("Error Message: {0}", e.Message);
 				return 1;
 			}
-			#endif
+#endif
 			return 0;
 		}
 	}

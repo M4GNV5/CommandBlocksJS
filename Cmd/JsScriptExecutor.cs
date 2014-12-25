@@ -19,8 +19,10 @@ namespace CommandBlocksJS.Cmd
 				jsContext.SetParameter("api", new JsApi(worldDirectory));
 			else
 				jsContext.SetParameter("api", new JsSchematicApi(worldDirectory));
-
-			#if (!DEBUG)
+#if DEBUG
+			jsContext.Run(coreCode);
+			jsContext.Run("var startPosition = new Vector3(" + position.x + ", " + position.y + ", " + position.z + ");");
+#else
 			try
 			{
 			#endif
@@ -33,7 +35,11 @@ namespace CommandBlocksJS.Cmd
 				string error = string.Format("Javascripterror: '{0}' at Line {1} Column {2} to {3}", e.Message, e.Line, e.StartColumn, e.EndColumn);
 				throw new SystemException("Error in CommandblockJS Core Javascript code! Please make sure you are using the latest build\n\n" + error);
 			}
+#endif
 
+#if DEBUG
+			jsContext.Run(usercode + "\n cbjsWorker();");
+#else
 			try
 			{
 			#endif
@@ -45,7 +51,7 @@ namespace CommandBlocksJS.Cmd
 				string message = string.Format("Javascripterror: '{0}' at Line {1} Column {2} to {3}", e.Message, e.Line, e.StartColumn, e.EndColumn);
 				throw new ApplicationException(message);
 			}
-			#endif
+#endif
 		}
 	}
 }
