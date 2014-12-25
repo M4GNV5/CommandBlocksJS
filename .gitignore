@@ -5,5 +5,6 @@ Cmd/obj
 CommandBlocksJS.userprefs
 packages/
 *.suo
+*.sublime-workspace
 bin/
 obj/

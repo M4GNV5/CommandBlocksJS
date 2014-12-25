@@ -45,6 +45,7 @@ function RuntimeInteger(options)
 	}
 	this.isBetween = function(min, max, callback)
 	{
+		max = (typeof max == 'undefined' || max === true) ? "" : max;
 		var command ="scoreboard players test "+this.name+" "+RuntimeInteger.score.name+" "+min+" "+max;
 
 		if(typeof callback !== 'undefined')
