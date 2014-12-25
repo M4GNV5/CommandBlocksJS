@@ -1,6 +1,6 @@
 function RuntimeByte()
 {
-	if(!RuntimeByte.nextPosition)
+	if (!RuntimeByte.nextPosition)
 	{
 		RuntimeByte.nextPosition = startPosition.clone();
 		RuntimeByte.nextPosition.x--;
@@ -12,20 +12,20 @@ function RuntimeByte()
 	this.set = function(value)
 	{
 		var tilename = TileName.byId(value);
-		command('setblock '+this.position+' '+tilename+' 0');
+		command('setblock ' + this.position + ' ' + tilename + ' 0');
 	}
 	this.setTo = function(otherByte)
 	{
 		var otherPos = otherByte.position;
 
-		command('clone '+otherPos+' '+otherPos+' '+this.position);
+		command('clone ' + otherPos + ' ' + otherPos + ' ' + this.position);
 	}
 	this.hasValue = function(value, callback)
 	{
 		var tilename = TileName.byId(value);
-		var command = 'testforblock '+this.position+' '+tilename;
+		var command = 'testforblock ' + this.position + ' ' + tilename;
 
-		if(typeof callback != 'undefined')
+		if (typeof callback != 'undefined')
 		{
 			validate(command, callback);
 		}
@@ -33,7 +33,7 @@ function RuntimeByte()
 		return command;
 	}
 }
-RuntimeByte.nextPosition= false;
+RuntimeByte.nextPosition = false;
 
 function RuntimeBoolean()
 {
@@ -41,14 +41,14 @@ function RuntimeBoolean()
 
 	this.set = function(value)
 	{
-		if(value)
+		if (value)
 			this.base.set(7);
 		else
 			this.base.set(0);
 	}
 	this.hasValue = function(value, callback)
 	{
-		if(value)
+		if (value)
 			return this.base.hasValue(7, callback);
 		else
 			return this.base.hasValue(0, callback);
@@ -86,11 +86,11 @@ function RuntimeBoolean()
 
 function RuntimeInteger(options)
 {
-	if(!RuntimeInteger.mobSpawned)
+	if (!RuntimeInteger.mobSpawned)
 	{
 		callOnce(function()
 		{
-			command('summon Chicken ~ ~1 ~ {CustomName:"'+RuntimeInteger.mobName+'",NoAI:true}');
+			command('summon Chicken ~ ~1 ~ {CustomName:"' + RuntimeInteger.mobName + '",NoAI:true}');
 		});
 		delay(2);
 
@@ -103,7 +103,7 @@ function RuntimeInteger(options)
 
 	var score = new Score(options.name, "dummy");
 
-	if(typeof options.startValue != 'undefined' && options.startValue !== false)
+	if (typeof options.startValue != 'undefined' && options.startValue !== false)
 		score.set(RuntimeInteger.mob, options.startValue);
 
 	this.name = options.name;
@@ -143,12 +143,12 @@ function RuntimeInteger(options)
 	{
 		var attributes = {};
 		attributes["name"] = "intmob";
-		attributes["score_"+options.name+"_min"] = min.toString();
-		if(typeof max != 'undefined' && max !== false)
-			attributes["score_"+options.name] = max.toString();
+		attributes["score_" + options.name + "_min"] = min.toString();
+		if (typeof max != 'undefined' && max !== false)
+			attributes["score_" + options.name] = max.toString();
 		var selector = new Selector("e", attributes);
 
-		if(typeof callback != 'undefined')
+		if (typeof callback != 'undefined')
 		{
 			testfor(selector, callback);
 		}
@@ -178,39 +178,39 @@ function RuntimeInteger(options)
 }
 RuntimeInteger.mobSpawned = false;
 RuntimeInteger.mobName = 'intmob'
-RuntimeInteger.mob = '@e[name='+RuntimeInteger.mobName+']';
+RuntimeInteger.mob = '@e[name=' + RuntimeInteger.mobName + ']';
 
 function RuntimeString(value)
 {
-	if(!RuntimeString.lastIndex || !RuntimeString.indexScore)
+	if (!RuntimeString.lastIndex || !RuntimeString.indexScore)
 	{
 		RuntimeString.lastIndex = 0;
 		RuntimeString.indexScore = new Score("strings", "dummy");
 	}
 
 	RuntimeString.lastIndex++;
-	this.selector = Selector.parse("@e[score_strings_min="+RuntimeString.lastIndex+",score_strings="+RuntimeString.lastIndex+"]");
+	this.selector = Selector.parse("@e[score_strings_min=" + RuntimeString.lastIndex + ",score_strings=" + RuntimeString.lastIndex + "]");
 
 	value = value || Naming.next("string");
 
 	callOnce(function()
 	{
-		command('summon Chicken ~ ~1 ~ {CustomName:"'+value+'",NoAI:true}');
+		command('summon Chicken ~ ~1 ~ {CustomName:"' + value + '",NoAI:true}');
 
-		RuntimeString.indexScore.set('@e[name='+value+']', RuntimeString.lastIndex);
+		RuntimeString.indexScore.set('@e[name=' + value + ']', RuntimeString.lastIndex);
 	});
 	delay(4);
 
 	this.set = function(value)
 	{
-		command('entitydata '+this.selector+' {CustomName:"'+value+'"}');
+		command('entitydata ' + this.selector + ' {CustomName:"' + value + '"}');
 	}
 	this.hasValue = function(value, callback)
 	{
 		var hasValueSelector = this.selector.clone();
 		hasValueSelector.setAttribute("name", value);
 
-		if(typeof callback != 'undefined')
+		if (typeof callback != 'undefined')
 		{
 			testfor(hasValueSelector, callback);
 		}

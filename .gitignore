@@ -5,3 +5,5 @@ Cmd/obj
 CommandBlocksJS.userprefs
 packages/
 *.suo
+bin/
+obj/

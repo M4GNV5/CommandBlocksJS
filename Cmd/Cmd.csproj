@@ -34,13 +34,14 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="Noesis.Javascript">
-      <HintPath>..\..\Noesis.Javascript.dll</HintPath>
+      <HintPath>bin\Debug\Noesis.Javascript.dll</HintPath>
     </Reference>
     <Reference Include="Substrate">
-      <HintPath>..\..\Substrate.dll</HintPath>
+      <HintPath>bin\Debug\Substrate.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="JsSchematicApi.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="JsScriptExecutor.cs" />

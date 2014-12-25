@@ -5,18 +5,18 @@ var OutputParser = new function()
 
 	var functionPositions = {};
 
-	this.start = function(schematic)
+	this.start = function()
 	{
 		position = startPosition;
 		var functions = OutputHandler.output;
 
-		for(var i = 0; i < functions.length; i++)
+		for (var i = 0; i < functions.length; i++)
 		{
 			functionPositions[i] = position.clone();
 
 			var sidewards = getMaxSidewards(functions[i]);
 
-			updatePosition(function() {position.z -= sidewards}, function() {position.z += sidewards}, function() {position.z -= sidewards}, function() {position.z += sidewards});
+			updatePosition(function() { position.z -= sidewards }, function() { position.z += sidewards }, function() { position.z -= sidewards }, function() { position.z += sidewards });
 		}
 
 		for (var i = 0; i < functions.length; i++)
@@ -26,10 +26,7 @@ var OutputParser = new function()
 			parseFunction(source);
 		}
 
-		if (schematic)
-			api.exportSchematic("commandblocksjs.schematic");
-		else
-			api.saveWorld();
+		api.save();
 	}
 	function getMaxSidewards(source)
 	{
@@ -62,7 +59,7 @@ var OutputParser = new function()
 
 			parseCall(_call);
 
-			updatePosition(function() {position.x--}, function() {position.x++}, function() {position.z--}, function() {position.z++});
+			updatePosition(function() { position.x-- }, function() { position.x++ }, function() { position.z-- }, function() { position.z++ });
 		}
 	}
 
@@ -76,7 +73,7 @@ var OutputParser = new function()
 			case 'c': //c for C ommandblock
 				var command = source.substring(1);
 				api.placeCommandBlock(command, position.x, position.y, position.z);
-			break;
+				break;
 			case 'q': //q for Q uery command
 				var qCommand = source.substring(1);
 
@@ -89,24 +86,24 @@ var OutputParser = new function()
 				var escapedCommand = qCommand.replace("\"", "\\\"");
 				var resetCommand = "setblock ~ ~-2 ~ minecraft:command_block 0 replace {Command:\"%cmd%\"}".replace("%cmd%", escapedCommand);
 				api.placeCommandBlock(resetCommand, resetCbPos.x, resetCbPos.y, resetCbPos.z);
-			break;
+				break;
 			case 'b': //b for B lock
 				var blockInfo = source.substring(1).split('_');
-				api.placeBlock(blockInfo [0], blockInfo [1], position.x, position.y, position.z);
-			break;
+				api.placeBlock(blockInfo[0], blockInfo[1], position.x, position.y, position.z);
+				break;
 			case 's': //s for S idewards
 				var calls = source.substring(1).split('|');
 
 				var oldPos = position.clone();
 				direction++;
-				for(var i = 0; i < calls.length; i++)
+				for (var i = 0; i < calls.length; i++)
 				{
 					parseCall(calls[i].trim());
-					updatePosition(function() {position.x--}, function() {position.x++}, function() {position.z--}, function() {position.z++});
+					updatePosition(function() { position.x-- }, function() { position.x++ }, function() { position.z-- }, function() { position.z++ });
 				}
 				direction--;
 				position = oldPos;
-			break;
+				break;
 			case 'e': //e for E xecute
 				var ePosition = functionPositions[source.substring(1)];
 
@@ -117,16 +114,16 @@ var OutputParser = new function()
 				var eCommand = "setblock ~" + offX + " ~" + offY + " ~" + offZ + " minecraft:redstone_block 0 replace";
 
 				api.placeCommandBlock(eCommand, position.x, position.y, position.z);
-			break;
+				break;
 			case 'n': //n for N ote (sign)
 				var lines = source.substring(1).split('_');
-				var signDirection = lines[lines.length-1];
-				lines[lines.length-1] = '';
+				var signDirection = lines[lines.length - 1];
+				lines[lines.length - 1] = '';
 				api.placeSign(lines, signDirection, position.x, position.y, position.z);
-			break;
+				break;
 			default:
-				api.log("Unknown Source: '"+source+"'");
-			break;
+				api.log("Unknown Source: '" + source + "'");
+				break;
 		}
 	}
 
@@ -136,16 +133,16 @@ var OutputParser = new function()
 		{
 			case 0:
 				zMinus();
-			break;
+				break;
 			case 1:
 				xPlus();
-			break;
+				break;
 			case 2:
 				zPlus();
-			break;
+				break;
 			case 3:
 				xMinus();
-			break;
+				break;
 		}
 	}
 }

@@ -6,20 +6,20 @@ function Player(selector)
 
 	this.setGameMode = function(mode)
 	{
-		command("gamemode "+mode+" "+this.selector);
+		command("gamemode " + mode + " " + this.selector);
 	}
 	this.teleport = function(dest)
 	{
-		if(typeof dest == 'string')
+		if (typeof dest == 'string')
 		{
-			command("tp "+this.selector+" "+dest);
+			command("tp " + this.selector + " " + dest);
 		}
 		else
 		{
-			if(typeof dest.yrot == 'undefined' || typeof dest.xrot != 'undefined')
-				command("tp "+this.selector+" "+dest.x+" "+dest.y+" "+dest.z);
+			if (typeof dest.yrot == 'undefined' || typeof dest.xrot != 'undefined')
+				command("tp " + this.selector + " " + dest.x + " " + dest.y + " " + dest.z);
 			else
-				command("tp "+this.selector+" "+dest.x+" "+dest.y+" "+dest.z+" "+dest.yrot+" "+dest.xrot);
+				command("tp " + this.selector + " " + dest.x + " " + dest.y + " " + dest.z + " " + dest.yrot + " " + dest.xrot);
 		}
 	}
 	this.clear = function(item, data, maxCount, dataTag)
@@ -28,15 +28,15 @@ function Player(selector)
 		data = data || '';
 		maxCount = maxCount || '';
 		dataTag = dataTag || '';
-		command("clear "+this.selector+" "+item+" "+data+" "+maxCount+" "+dataTag);
+		command("clear " + this.selector + " " + item + " " + data + " " + maxCount + " " + dataTag);
 	}
 	this.tell = function(text)
 	{
-		command("tell "+this.selector+" "+text);
+		command("tell " + this.selector + " " + text);
 	}
 	this.tellraw = function(param)
 	{
-		if(typeof param == 'object')
+		if (typeof param == 'object')
 		{
 			param.tell(this.selector);
 		}
@@ -48,46 +48,46 @@ function Player(selector)
 
 	this.setTeam = function(team)
 	{
-		if(typeof team == 'object')
+		if (typeof team == 'object')
 		{
 			team.join(this.selector);
 		}
 		else
 		{
-			command("scoreboard teams join "+team+" "+this.selector);
+			command("scoreboard teams join " + team + " " + this.selector);
 		}
 	}
 	this.setScore = function(score, value)
 	{
-		if(typeof score == 'object')
+		if (typeof score == 'object')
 		{
 			score.set(this.selector, value);
 		}
 		else
 		{
-			command("scoreboard players set "+this.selector+" "+team+" "+value);
+			command("scoreboard players set " + this.selector + " " + team + " " + value);
 		}
 	}
 	this.addScore = function(score, value)
 	{
-		if(typeof score == 'object')
+		if (typeof score == 'object')
 		{
 			score.add(this.selector, value);
 		}
 		else
 		{
-			command("scoreboard players add "+this.selector+" "+team+" "+value);
+			command("scoreboard players add " + this.selector + " " + team + " " + value);
 		}
 	}
 	this.removeScore = function(score, value)
 	{
-		if(typeof score == 'object')
+		if (typeof score == 'object')
 		{
 			score.remove(this.selector, value);
 		}
 		else
 		{
-			command("scoreboard players remove "+this.selector+" "+team+" "+value);
+			command("scoreboard players remove " + this.selector + " " + team + " " + value);
 		}
 	}
 
@@ -101,20 +101,18 @@ function Player(selector)
 	}
 }
 
-
-
 function PlayerArray(name, selector, createObjective)
 {
 	name = name || Naming.next('array');
 	this.name = name;
 
 	var arrayScore;
-	if(createObjective !== false)
+	if (createObjective !== false)
 		arrayScore = new Score(name, "dummy");
 	else
 		arrayScore = new Score(name);
 
-	if(typeof selector != 'undefined')
+	if (typeof selector != 'undefined')
 		arrayScore.set(selector, 1);
 
 	Player.call(this, arrayScore.getSelector(1));
@@ -143,8 +141,6 @@ function PlayerArray(name, selector, createObjective)
 }
 PlayerArray.prototype = Object.create(Player.prototype);
 
-
-
 var Selector = function(selectorChar, attributes)
 {
 	this.selectorChar = selectorChar || 'a';
@@ -156,7 +152,7 @@ var Selector = function(selectorChar, attributes)
 	}
 	this.setAttributes = function(newAttributes)
 	{
-		for(var name in newAttributes)
+		for (var name in newAttributes)
 			this.setAttribute(name, newAttributes[name]);
 	}
 	this.removeAttribute = function(name)
@@ -167,8 +163,8 @@ var Selector = function(selectorChar, attributes)
 	this.clone = function()
 	{
 		var atts = {};
-		for(var key in this.attributes)
-			if(this.attributes.hasOwnProperty(key))
+		for (var key in this.attributes)
+			if (this.attributes.hasOwnProperty(key))
 				atts[key] = this.attributes[key];
 
 		return new Selector(this.selectorChar, atts);
@@ -185,9 +181,9 @@ Selector.parse = function(stringSelector)
 	var selectorChar = stringSelector[1];
 	var attributes = {};
 
-	var attributeString = stringSelector.substring(3, stringSelector.length-1);
+	var attributeString = stringSelector.substring(3, stringSelector.length - 1);
 	var attributeArray = attributeString.split(',');
-	for(var i = 0; i < attributeArray.length; i++)
+	for (var i = 0; i < attributeArray.length; i++)
 	{
 		var attributeSplit = attributeArray[i].split('=');
 		attributes[attributeSplit[0]] = attributeSplit[1];
@@ -198,17 +194,17 @@ Selector.parse = function(stringSelector)
 Selector.buildSelector = function(selectorChar, attributes)
 {
 	attributes = attributes || {};
-	var sel = "@"+selectorChar;
+	var sel = "@" + selectorChar;
 
-	if(Object.keys(attributes).length < 1)
+	if (Object.keys(attributes).length < 1)
 		return sel;
 
 	sel += "[";
-	for(var key in attributes)
+	for (var key in attributes)
 	{
-		sel += key+"="+attributes[key]+",";
+		sel += key + "=" + attributes[key] + ",";
 	}
-	sel = sel.substring(0, sel.length-1);
+	sel = sel.substring(0, sel.length - 1);
 	sel += "]";
 
 	return sel;

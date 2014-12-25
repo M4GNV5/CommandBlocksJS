@@ -2,7 +2,7 @@
 function say(message)
 {
 	message = message || "CommandBlocksJS error invalid call 'say()'";
-	command("say "+message);
+	command("say " + message);
 }
 
 var Formatting = new function()
@@ -42,15 +42,13 @@ function formatText(text, formatting)
 	formatting = ' ' + formatting || '§c';
 	var words = text.split(' ');
 	text = '';
-	for(var i = 0; i < words.length; i++)
+	for (var i = 0; i < words.length; i++)
 	{
 		text += formatting + words[i];
 	}
 	return text.trim();
 }
 //endregion
-
-
 
 //region title
 function title(target, text, isSubtitle)
@@ -71,7 +69,7 @@ function Title(text, isSubtitle)
 	{
 		player = player || Selector.allPlayer();
 		var json = JSON.stringify(this.obj);
-		command("title "+player+" "+titleType+" "+json);
+		command("title " + player + " " + titleType + " " + json);
 	}
 
 	var notSupported = function() { throw "Setting events is not supported for titles"; };
@@ -83,31 +81,29 @@ Title.prototype = Object.create(TellrawExtra.prototype);
 Title.setTime = function(player, fadeIn, stay, fadeOut)
 {
 	player = player || Selector.allPlayer();
-	command("title "+player+" times "+fadeIn+" "+stay+" "+fadeOut);
+	command("title " + player + " times " + fadeIn + " " + stay + " " + fadeOut);
 }
 Title.reset = function(player)
 {
 	player = player || Selector.allPlayer();
-	command("title "+player+" reset");
+	command("title " + player + " reset");
 }
 Title.clear = function(player)
 {
 	player = player || Selector.allPlayer();
-	command("title "+player+" clear");
+	command("title " + player + " clear");
 }
 //endregion title
-
-
 
 //region scoreboard
 function Score(name, type, displayName, addObjective)
 {
 	name = name || Naming.next("score");
-	if(name.length > 16)
-		throw "Cannot create Score with name '"+name+"' maximum name length is 16";
+	if (name.length > 16)
+		throw "Cannot create Score with name '" + name + "' maximum name length is 16";
 	displayName = displayName || name;
-	if(typeof type != 'undefined' && addObjective !== false)
-		command("scoreboard objectives add "+name+" "+type+" "+displayName);
+	if (typeof type != 'undefined' && addObjective !== false)
+		command("scoreboard objectives add " + name + " " + type + " " + displayName);
 
 	this.name = name;
 	this.type = type;
@@ -115,52 +111,52 @@ function Score(name, type, displayName, addObjective)
 
 	this.set = function(player, value)
 	{
-		command("scoreboard players set "+player+" "+name+" "+value);
+		command("scoreboard players set " + player + " " + name + " " + value);
 	}
 	this.add = function(player, value)
 	{
-		command("scoreboard players add "+player+" "+name+" "+value);
+		command("scoreboard players add " + player + " " + name + " " + value);
 	}
 	this.remove = function(player, value)
 	{
-		command("scoreboard players remove "+player+" "+name+" "+value);
+		command("scoreboard players remove " + player + " " + name + " " + value);
 	}
 	this.reset = function(player)
 	{
-		command("scoreboard players reset "+player+" "+name);
+		command("scoreboard players reset " + player + " " + name);
 	}
 	this.setDisplay = function(slot)
 	{
-		command("scoreboard objectives setdisplay "+slot+" "+name);
+		command("scoreboard objectives setdisplay " + slot + " " + name);
 	}
 	this.enableTrigger = function(player)
 	{
-		if(this.type != 'trigger')
-			throw "Cannot enable trigger for non Trigger objective '"+name+"'";
+		if (this.type != 'trigger')
+			throw "Cannot enable trigger for non Trigger objective '" + name + "'";
 
-		command("scoreboard players enable "+player+" "+name);
+		command("scoreboard players enable " + player + " " + name);
 	}
 	this.test = function(player, callback, min, max)
 	{
 		min = min || 1;
 		max = max || '';
-		var cmd = "scoreboard players test "+player+" "+name+" "+min+" "+max;
+		var cmd = "scoreboard players test " + player + " " + name + " " + min + " " + max;
 		validate(cmd, callback);
 	}
 	this.operation = function(player, operation, otherPlayer, otherObjective)
 	{
-		command("scoreboard players operation "+player+" "+name+" "+operation+" "+otherPlayer+" "+otherObjective);
+		command("scoreboard players operation " + player + " " + name + " " + operation + " " + otherPlayer + " " + otherObjective);
 	}
 
 	this.getSelector = function(min, max)
 	{
-		var minKey = "score_"+name+"_min";
-		var maxKey = "score_"+name;
+		var minKey = "score_" + name + "_min";
+		var maxKey = "score_" + name;
 
 		var attributes = {};
 		attributes[minKey] = min;
 
-		if(typeof max != 'undefined')
+		if (typeof max != 'undefined')
 			attributes[maxKey] = max;
 
 		return new Selector("a", attributes);
@@ -175,31 +171,31 @@ function Team(name, addTeam)
 {
 	name = name || Naming.next("team");
 	addTeam = addTeam || true;
-	if(addTeam !== false)
-		command("scoreboard teams add "+name);
+	if (addTeam !== false)
+		command("scoreboard teams add " + name);
 
 	this.name = name;
 
 	this.empty = function()
 	{
-		command("scoreboard teams empty "+name);
+		command("scoreboard teams empty " + name);
 	}
 	this.join = function(player)
 	{
-		command("scoreboard teams join "+name+" "+player);
+		command("scoreboard teams join " + name + " " + player);
 	}
 	this.leave = function(player)
 	{
-		command("scoreboard teams leave "+name+" "+player);
+		command("scoreboard teams leave " + name + " " + player);
 	}
 	this.setOption = function(option, value)
 	{
-		command("scoreboard teams option "+name+" "+option+" "+value);
+		command("scoreboard teams option " + name + " " + option + " " + value);
 	}
 
 	this.getSelector = function()
 	{
-		return new Selector("a", {team: name});
+		return new Selector("a", { team: name });
 	}
 	this.getPlayer = function()
 	{

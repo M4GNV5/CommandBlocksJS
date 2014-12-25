@@ -6,7 +6,7 @@ using System.IO;
 
 namespace CommandBlocksJS.Cmd
 {
-	internal class MainClass
+	public class MainClass
 	{
 		private sealed class Options
 		{
@@ -35,16 +35,16 @@ namespace CommandBlocksJS.Cmd
 			public bool Output { get; set; }
 		}
 
-		public static int Main(string[] args) //example: -s myscript.js -w ./myworld -x 1 -y 4 -z 16
+		public static int Main(string[] args)
 		{
 			try
 			{
 				Options options = new Options();
 				Parser cmdParser = new Parser();
 
-				#if DEBUG
-				args = "-s example.js -w ./world -x 1 -y 4 -z 16 -e true".Split(' ');
-				#endif
+#if DEBUG
+				args = "-s example.js -w ./world -x 0 -y 1 -z 0 -e true".Split(' ');
+#endif
 
 				if (!cmdParser.ParseArguments(args, options))
 					throw new ArgumentException("Invalid Commandline parameter!");
@@ -60,9 +60,6 @@ namespace CommandBlocksJS.Cmd
 						position.z = options.PositionZ;
 					}
 				}
-
-				if(!Directory.Exists(options.WorldDirectory))
-					Directory.CreateDirectory(options.WorldDirectory);
 
 				JsScriptExecutor executor = new JsScriptExecutor();
 				executor.Run(options.LibPath, options.ScriptFile, options.WorldDirectory, position, options.IsSchematic);

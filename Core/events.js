@@ -8,13 +8,13 @@ function Event(name)
 
 	this.setListener = function(func)
 	{
-		if(typeof func == 'undefined')
-			throw "Cannot add Listener to Event '"+name+"' Listener is undefined!";
+		if (typeof func == 'undefined')
+			throw "Cannot add Listener to Event '" + name + "' Listener is undefined!";
 		this.listener = func;
 	}
 	this.dispatch = function(arg)
 	{
-		if(this.listener)
+		if (this.listener)
 			this.listener(arg);
 	}
 }
@@ -28,26 +28,25 @@ var EventHandler = new function()
 	this.events['onswim'] = new ScoreChangeEvent('onswim', 'stat.swimOneCm');
 	this.events['onsprint'] = new ScoreChangeEvent('onsprint', 'stat.sprintOneCm');
 
-	this.events['ondeath'] = new ScoreChangeEvent('ondeath', 'deathCount', {"resetScore": false});
-	this.events['onkill'] = new ScoreChangeEvent('onkill', 'playerKillCount', {"resetScore": false});
-	this.events['onentitykill'] = new ScoreChangeEvent('onentitykill', 'totalKillCount', {"resetScore": false});
+	this.events['ondeath'] = new ScoreChangeEvent('ondeath', 'deathCount', { "resetScore": false });
+	this.events['onkill'] = new ScoreChangeEvent('onkill', 'playerKillCount', { "resetScore": false });
+	this.events['onentitykill'] = new ScoreChangeEvent('onentitykill', 'totalKillCount', { "resetScore": false });
 
 	this.setEventListener = function(name, listener)
 	{
 		name = name.toLowerCase();
-		if(typeof EventHandler.events[name] == 'undefined')
-			throw "Cannot add Listener to Event '"+name+"' it does not exist!";
+		if (typeof EventHandler.events[name] == 'undefined')
+			throw "Cannot add Listener to Event '" + name + "' it does not exist!";
 		EventHandler.events[name].setListener(listener);
 	}
 	this.dispatch = function(name, arg)
 	{
 		name = name.toLowerCase();
-		if(typeof this.events[name] == 'undefined')
-			throw "Cannot dispatch Event '"+name+"' it does not exist!";
+		if (typeof this.events[name] == 'undefined')
+			throw "Cannot dispatch Event '" + name + "' it does not exist!";
 		this.events[name].dispatch(arg);
 	}
 }
-
 
 function ScoreChangeEvent(name, objectiveType, options)
 {
@@ -62,7 +61,7 @@ function ScoreChangeEvent(name, objectiveType, options)
 	options.refreshTimer = options.refreshTimer || 9;
 	options.removeFromScore = options.removeFromScore || 1;
 
-	var objective = new Score(this.name+"E");
+	var objective = new Score(this.name + "E");
 	var player;
 
 	this.checkForChange = function()
@@ -75,7 +74,7 @@ function ScoreChangeEvent(name, objectiveType, options)
 
 		testfor(reference, function()
 		{
-			if(resetScore == false)
+			if (resetScore == false)
 				objective.remove(reference, removeFromScore);
 			else
 				objective.set(reference, 0);
@@ -95,10 +94,10 @@ function ScoreChangeEvent(name, objectiveType, options)
 			func(player);
 			player.removePlayer();
 		};
-		if(!oldListener)
+		if (!oldListener)
 		{
-			if(options.createObjective !== false)
-				objective = new Score(this.name+"E", objectiveType);
+			if (options.createObjective !== false)
+				objective = new Score(this.name + "E", objectiveType);
 
 			player = new PlayerArray(this.name);
 			timer(options.refreshTimer, this.checkForChange);
