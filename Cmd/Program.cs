@@ -37,14 +37,13 @@ namespace CommandBlocksJS.Cmd
 
 		public static int Main(string[] args)
 		{
+			#if (!DEBUG)
 			try
 			{
+			#endif
+
 				Options options = new Options();
 				Parser cmdParser = new Parser();
-
-#if DEBUG
-				args = "-s example.js -w ./world -x 0 -y 1 -z 0 -e true".Split(' ');
-#endif
 
 				if (!cmdParser.ParseArguments(args, options))
 					throw new ArgumentException("Invalid Commandline parameter!");
@@ -63,6 +62,7 @@ namespace CommandBlocksJS.Cmd
 
 				JsScriptExecutor executor = new JsScriptExecutor();
 				executor.Run(options.LibPath, options.ScriptFile, options.WorldDirectory, position, options.IsSchematic);
+			#if (!DEBUG)
 			}
 			catch (Exception e)
 			{
@@ -70,6 +70,7 @@ namespace CommandBlocksJS.Cmd
 				Console.WriteLine("Error Message: {0}", e.Message);
 				return 1;
 			}
+			#endif
 			return 0;
 		}
 	}

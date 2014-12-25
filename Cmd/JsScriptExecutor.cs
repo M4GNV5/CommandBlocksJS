@@ -20,10 +20,13 @@ namespace CommandBlocksJS.Cmd
 			else
 				jsContext.SetParameter("api", new JsSchematicApi(worldDirectory));
 
+			#if (!DEBUG)
 			try
 			{
+			#endif
 				jsContext.Run(coreCode);
 				jsContext.Run("var startPosition = new Vector3(" + position.x + ", " + position.y + ", " + position.z + ");");
+			#if (!DEBUG)
 			}
 			catch (JavascriptException e)
 			{
@@ -33,13 +36,16 @@ namespace CommandBlocksJS.Cmd
 
 			try
 			{
+			#endif
 				jsContext.Run(usercode + "\n cbjsWorker();");
+			#if (!DEBUG)
 			}
 			catch (JavascriptException e)
 			{
 				string message = string.Format("Javascripterror: '{0}' at Line {1} Column {2} to {3}", e.Message, e.Line, e.StartColumn, e.EndColumn);
 				throw new ApplicationException(message);
 			}
+			#endif
 		}
 	}
 }
