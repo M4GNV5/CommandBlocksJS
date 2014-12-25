@@ -174,6 +174,7 @@ function cbjsWorker(schematic)
 			command("setblock ~-3 ~ ~ minecraft:air 0 replace");
 		}
 	}*/
+	Optimizer.start();
 	OutputParser.start(schematic);
 	api.log("Successfully executed " + OutputHandler.functions.length + " functions!");
 }

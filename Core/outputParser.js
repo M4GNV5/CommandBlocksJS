@@ -31,6 +31,10 @@ var OutputParser = new function()
 	function getMaxSidewards(source)
 	{
 		var sidewards = 2;
+
+		if(source.trim() == "")
+			return 0;
+
 		var splitted = source.split(';');
 		for (var i = 0; i < splitted.length; i++)
 		{
