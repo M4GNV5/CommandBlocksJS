@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2013 for Windows Desktop
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cmd", "Cmd\Cmd.csproj", "{99187E44-6CFD-4E68-9D13-8C3633DE275A}"
 EndProject
@@ -20,7 +20,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerWrapper", "ServerWrapper\ServerWrapper.csproj", "{445B2616-CF1E-4B20-B283-D183F787B0A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI", "GUI\GUI.csproj", "{FCDB301D-B8E9-486D-BB14-95EE8D0776ED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cmd.GUI", "Cmd.GUI\Cmd.GUI.csproj", "{FCDB301D-B8E9-486D-BB14-95EE8D0776ED}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TypeScript Source", "TypeScript Source", "{CC21623E-5062-4395-B7DB-E10BFBE66189}"
+	ProjectSection(SolutionItems) = preProject
+		Beta\base.ts = Beta\base.ts
+		Beta\events.ts = Beta\events.ts
+		Beta\outputParser.ts = Beta\outputParser.ts
+		Beta\player.ts = Beta\player.ts
+		Beta\runtimeVariables.ts = Beta\runtimeVariables.ts
+		Beta\tellraw.ts = Beta\tellraw.ts
+		Beta\test.ts = Beta\test.ts
+		Beta\tilenames.ts = Beta\tilenames.ts
+		Beta\util.ts = Beta\util.ts
+		Beta\vanillaCommands.ts = Beta\vanillaCommands.ts
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
