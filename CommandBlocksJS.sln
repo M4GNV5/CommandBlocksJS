@@ -20,7 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerWrapper", "ServerWrapper\ServerWrapper.csproj", "{445B2616-CF1E-4B20-B283-D183F787B0A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cmd.GUI", "Cmd.GUI\Cmd.GUI.csproj", "{FCDB301D-B8E9-486D-BB14-95EE8D0776ED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI", "GUI\GUI.csproj", "{FCDB301D-B8E9-486D-BB14-95EE8D0776ED}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TypeScript Source", "TypeScript Source", "{CC21623E-5062-4395-B7DB-E10BFBE66189}"
 	ProjectSection(SolutionItems) = preProject
