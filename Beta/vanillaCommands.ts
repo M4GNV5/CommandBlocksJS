@@ -115,8 +115,10 @@ class Score
 	type: string;
 	displayName: string;
 
-	constructor(name: string = Naming.next("score"), type: string = "dummy", displayName: string = name, addObjective: boolean = true)
+	constructor(name: string = Naming.next("score"), type: string = "dummy", displayName: string = undefined, addObjective: boolean = true)
 	{
+		if (displayName === undefined)
+			displayName = name;
 		assert(name.length <= 16, "Cannot create Score with name \"" + name + "\" maximum name length is 16");
 		if (addObjective)
 			command("scoreboard objectives add " + name + " " + type + " " + displayName);
