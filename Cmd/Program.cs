@@ -44,10 +44,6 @@ namespace CommandBlocksJS.Cmd
 				Options options = new Options();
 				Parser cmdParser = new Parser();
 
-#if DEBUG
-				args = "-s example.js -w ./world -x 0 -y 1 -z 0 -e true".Split(' ');
-#endif
-
 				if (!cmdParser.ParseArguments(args, options))
 					throw new ArgumentException("Invalid Commandline parameter!");
 

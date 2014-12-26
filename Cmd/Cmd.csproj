@@ -29,15 +29,15 @@
     <Externalconsole>true</Externalconsole>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CommandLine">
-      <HintPath>..\packages\CommandLineParser.1.9.71\lib\net40\CommandLine.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="Noesis.Javascript">
       <HintPath>bin\Debug\Noesis.Javascript.dll</HintPath>
     </Reference>
     <Reference Include="Substrate">
       <HintPath>bin\Debug\Substrate.dll</HintPath>
+    </Reference>
+    <Reference Include="CommandLine">
+      <HintPath>..\..\CommandLine.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
