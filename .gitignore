@@ -8,3 +8,4 @@ packages/
 *.sublime-workspace
 bin/
 obj/
+Beta/doc/

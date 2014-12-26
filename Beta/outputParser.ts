@@ -93,7 +93,7 @@ class OutputParser
 				break;
 			case 'b': //b for B lock
 				var blockInfo = source.substring(1).split('_');
-				api.placeBlock(blockInfo[0], blockInfo[1], this.position.x, this.position.y, this.position.z);
+				api.placeBlock(parseInt(blockInfo[0]), parseInt(blockInfo[1]), this.position.x, this.position.y, this.position.z);
 				break;
 			case 's': //s for S idewards
 				var calls = source.substring(1).split('|');
@@ -123,7 +123,7 @@ class OutputParser
 				var lines = source.substring(1).split('_');
 				var signDirection = lines[lines.length - 1];
 				lines[lines.length - 1] = '';
-				api.placeSign(lines, signDirection, this.position.x, this.position.y, this.position.z);
+				api.placeSign(lines, parseInt(signDirection), this.position.x, this.position.y, this.position.z);
 				break;
 			default:
 				api.log("Unknown Source: '" + source + "'");
