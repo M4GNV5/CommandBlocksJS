@@ -10,27 +10,27 @@ function say(message: string)
 
 var Formatting =
 	{
-		black: "ง0",
-		darkBlue: "ง1",
-		darkGreen: "ง2",
-		darkAqua: "ง3",
-		darkRed: "ง4",
-		darkPurple: "ง5",
-		gold: "ง6",
-		gray: "ง7",
-		darkGray: "ง8",
-		blue: "ง9",
-		green: "งa",
-		aqua: "งb",
-		red: "งc",
-		lightPurple: "งd",
-		yellow: "งe",
-		white: "งf",
-		obfuscated: "งk",
-		bold: "งl",
-		strikethrough: "งm",
-		underlined: "งn",
-		reset: "งr"
+		black: "ยง0",
+		darkBlue: "ยง1",
+		darkGreen: "ยง2",
+		darkAqua: "ยง3",
+		darkRed: "ยง4",
+		darkPurple: "ยง5",
+		gold: "ยง6",
+		gray: "ยง7",
+		darkGray: "ยง8",
+		blue: "ยง9",
+		green: "ยงa",
+		aqua: "ยงb",
+		red: "ยงc",
+		lightPurple: "ยงd",
+		yellow: "ยงe",
+		white: "ยงf",
+		obfuscated: "ยงk",
+		bold: "ยงl",
+		strikethrough: "ยงm",
+		underlined: "ยงn",
+		reset: "ยงr"
 	};
 
 interface String
@@ -43,7 +43,7 @@ String.prototype.format = function (formatting: string): string
 	return formatText(this, formatting);
 };
 
-function formatText(text: string, formatting: string = "งc"): string
+function formatText(text: string, formatting: string = "ยงc"): string
 {
 	var words = text.split(" ");
 	text = "";
