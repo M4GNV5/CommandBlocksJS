@@ -285,6 +285,8 @@ wire(1);
 function cbjsWorker(): void
 {
 	OutputParser.start();
+
+	EventHandler.emit("end");
 	api.log("Successfully executed " + outputHandler.functions.length + " functions!");
 }
 //endregion

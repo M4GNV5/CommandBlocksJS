@@ -3,41 +3,41 @@
 
 class McEvent
 {
-    listener: Function[] = [];
+	listener: Function[] = [];
 
-    addListener(func: Function): void
-    {
-        this.listener.push(func);
-    }
+	addListener(func: Function): void
+	{
+		this.listener.push(func);
+	}
 
-    trigger(...args: any[]): void
-    {
-        for (var i = 0; i < this.listener.length; i++)
-        {
-            this.listener[i].call(args);
-        }
-    }
+	trigger(...args: any[]): void
+	{
+		for (var i = 0; i < this.listener.length; i++)
+		{
+			this.listener[i].call(args);
+		}
+	}
 }
 
 class EventHandler
 {
-    static events: { [index: string]: McEvent };
+	static events: { [index: string]: McEvent };
 
-    static add(name: string, event: McEvent)
-    {
-        if (EventHandler.events[name] !== null)
-            throw "Cannot add Event \""+name+"\" it already exists!";
-        EventHandler.events[name] = event;
-    }
+	static add(name: string, event: McEvent)
+	{
+		if (EventHandler.events[name] !== null)
+			throw "Cannot add Event \"" + name + "\" it already exists!";
+		EventHandler.events[name] = event;
+	}
 
 	static on(name: string, func: Function): void
 	{
-        this.events[name].addListener(func);
+		this.events[name].addListener(func);
 	}
 
 	static emit(name, ...args: any[]): void
 	{
-        this.events[name].trigger();
+		this.events[name].trigger(args);
 	}
 }
 EventHandler.add("end", new CompiletimeEvent);
@@ -50,67 +50,65 @@ EventHandler.add("ondeath", new ScoreChangeEvent(new Score("ondeath", "deathCoun
 EventHandler.add("onkill", new ScoreChangeEvent(new Score("onkill", "playerKillCount"), 2147483648, 1, false));
 EventHandler.add("onentitykill", new ScoreChangeEvent(new Score("onentitykill", "totalKillCount"), 1, 2147483648, false));
 
-
-
 class CompiletimeEvent extends McEvent
 { }
 
 class ScoreChangeEvent extends McEvent
 {
-    static timer: Timer;
+	static timer: Timer;
 
-    score: Score;
-    triggerAtMin: number;
-    triggerAtMax: number;
-    resetValue: boolean;
-    removeFromValue: number;
+	score: Score;
+	triggerAtMin: number;
+	triggerAtMax: number;
+	resetValue: boolean;
+	removeFromValue: number;
 
-    constructor(
-        score: Score,
-        triggerAtMin: number = 1,
-        triggerAtMax: number = 2147483648‏‏, 
-        resetValue: boolean = true,
-        removeFromValue: number = 1
-        )
-    {
-        super();
+	constructor(
+		score: Score,
+		triggerAtMin: number = 1,
+		triggerAtMax: number = 2147483648,
+		resetValue: boolean = true,
+		removeFromValue: number = 1
+		)
+	{
+		super();
 
-        this.score = score;
+		this.score = score;
 
-        this.triggerAtMin = triggerAtMin;
-        this.triggerAtMax = triggerAtMax;
-        this.resetValue = resetValue;
-        this.removeFromValue = removeFromValue;
+		this.triggerAtMin = triggerAtMin;
+		this.triggerAtMax = triggerAtMax;
+		this.resetValue = resetValue;
+		this.removeFromValue = removeFromValue;
 
-        EventHandler.on("end", function ()
-        {
-            var callback = function ()
-            {
-                for (var name in EventHandler.events)
-                {
-                    var ev = EventHandler.events[name];
-                    if (ev instanceof ScoreChangeEvent)
-                    {
-                        call((<ScoreChangeEvent>ev).timerTick);
-                    }
-                }
-            }
-            var t = new Timer(callback, { time: 1, callAsync: true });
-            ScoreChangeEvent.timer = t;
-            ScoreChangeEvent.timer.start();
-        });
-    }
+		EventHandler.on("end", function ()
+		{
+			var callback = function ()
+			{
+				for (var name in EventHandler.events)
+				{
+					var ev = EventHandler.events[name];
+					if (ev instanceof ScoreChangeEvent)
+					{
+						call((<ScoreChangeEvent>ev).timerTick);
+					}
+				}
+			}
+			var t = new Timer(callback, { time: 1, callAsync: true });
+			ScoreChangeEvent.timer = t;
+			ScoreChangeEvent.timer.start();
+		});
+	}
 
-    timerTick(): void
-    {
-        var sel = this.score.getSelector(this.triggerAtMin, this.triggerAtMax).toString();
-        testforSync(sel);
-        var player = this.score.getPlayer(this.triggerAtMin, this.triggerAtMax);
-        super.trigger(player);
+	timerTick(): void
+	{
+		var sel = this.score.getSelector(this.triggerAtMin, this.triggerAtMax).toString();
+		testforSync(sel);
+		var player = this.score.getPlayer(this.triggerAtMin, this.triggerAtMax);
+		super.trigger(player);
 
-        if (this.resetValue)
-            this.score.reset(sel);
-        else
-            this.score.remove(sel, this.removeFromValue);
-    }
+		if (this.resetValue)
+			this.score.reset(sel);
+		else
+			this.score.remove(sel, this.removeFromValue);
+	}
 }

@@ -204,6 +204,7 @@ wire(1);
  */
 function cbjsWorker() {
     OutputParser.start();
+    EventHandler.emit("end");
     api.log("Successfully executed " + outputHandler.functions.length + " functions!");
 }
 //endregion
@@ -256,258 +257,135 @@ var Vector3 = (function () {
     };
     return Vector3;
 })();
-var EventTypes;
-(function (EventTypes) {
-    EventTypes[EventTypes["Move"] = 0] = "Move";
-    EventTypes[EventTypes["Crouch"] = 1] = "Crouch";
-    EventTypes[EventTypes["Swim"] = 2] = "Swim";
-    EventTypes[EventTypes["Sprint"] = 3] = "Sprint";
-    EventTypes[EventTypes["Death"] = 4] = "Death";
-    EventTypes[EventTypes["Kill"] = 5] = "Kill";
-    EventTypes[EventTypes["EntityKill"] = 6] = "EntityKill";
-})(EventTypes || (EventTypes = {}));
-var EventHandler = (function () {
-    function EventHandler() {
-    }
-    EventHandler.on = function (name, func) {
-        this.events.push({ name: func });
-    };
-    EventHandler.emit = function (name) {
-        var args = [];
-        for (var _i = 1; _i < arguments.length; _i++) {
-            args[_i - 1] = arguments[_i];
+//region utility functions
+function callOnce(callback, placeRepeater) {
+    if (placeRepeater === void 0) { placeRepeater = true; }
+    call(function () {
+        command("setblock ~-3 ~ ~ minecraft:air 0 replace", true);
+        callback();
+    }, placeRepeater);
+}
+function validate(cmd, callback, placeRepeater) {
+    if (placeRepeater === void 0) { placeRepeater = true; }
+    if (placeRepeater !== false)
+        delay();
+    sidewards(function () {
+        queryCommand(cmd, false);
+        comparator();
+        call(callback, false);
+    });
+}
+function validateSync(cmd, placeRepeater) {
+    if (placeRepeater === void 0) { placeRepeater = true; }
+    queryCommand(cmd, placeRepeater);
+    comparator();
+}
+function testfor(statement, callback, placeRepeater) {
+    if (placeRepeater === void 0) { placeRepeater = true; }
+    validate('testfor ' + statement, callback, placeRepeater);
+}
+function testforSync(statement, placeRepeater) {
+    if (placeRepeater === void 0) { placeRepeater = true; }
+    validateSync('testfor ' + statement, placeRepeater);
+}
+function testforNot(statement, callback, placeRepeater) {
+    if (placeRepeater === void 0) { placeRepeater = true; }
+    if (placeRepeater)
+        delay();
+    sidewards(function () {
+        queryCommand("testfor " + statement, false);
+        comparator();
+        block(1);
+    });
+    delay();
+    sidewards(function () {
+        command("setblock ~-1 ~ ~2 minecraft:unpowered_repeater 1", false);
+        delay();
+        delay();
+        call(callback, false);
+    });
+}
+//endregion
+//region timer
+function timer(time, callback) {
+    var t = new Timer(callback, { time: time });
+    t.start();
+    return t;
+}
+var Timer = (function () {
+    function Timer(callback, options) {
+        if (options === void 0) { options = { time: 10, useScoreboard: false, hardTickLength: 10, callAsync: false, scoreName: Naming.next("timer") }; }
+        this.options = options;
+        this.callback = callback;
+        if (options.useScoreboard !== false) {
+            this.scoreTicks = ((options.time / options.hardTickLength) < 1) ? 1 : (options.time / options.hardTickLength);
+            options.time = options.hardTickLength;
+            var varOptions = {};
+            varOptions.name = options.scoreName;
+            this.timerVar = new RuntimeInteger(varOptions);
+            var isRunningOptions = {};
+            isRunningOptions.name = varOptions.name + "R";
+            this.isRunning = new RuntimeInteger(isRunningOptions);
+            this.isRunning.set(-1);
+            callOnce(function () {
+                this.timerVar.set(-1);
+            });
+            delay(3);
+            options.time = (options.time - 5 > 0) ? options.time - 5 : 1;
         }
-        this.events.filter(function (x) { return x.name === name; }).forEach(function (x) { return x.name(args); });
-    };
-    EventHandler.events = [];
-    return EventHandler;
-})();
-/// <reference path="base.ts"/>
-var OutputParser = (function () {
-    function OutputParser() {
     }
-    OutputParser.start = function () {
-        this.position = startPosition;
-        var functions = outputHandler.output;
-        for (var i = 0; i < functions.length; i++) {
-            this.functionPositions[i] = this.position.clone();
-            var sidewards = this.getMaxSidewards(functions[i]);
-            this.updatePosition(function () {
-                this.position.z -= sidewards;
-            }, function () {
-                this.position.z += sidewards;
-            }, function () {
-                this.position.z -= sidewards;
-            }, function () {
-                this.position.z += sidewards;
+    Timer.prototype.timerFunc = function () {
+        if (this.options.useScoreboard == false) {
+            if (this.options.callAsync)
+                call(this.callback);
+            else
+                this.callback();
+        }
+        else {
+            testforSync(this.isRunning.hasValue(1));
+            this.timerVar.add(1);
+            testfor(this.timerVar.isBetween(this.scoreTicks), function () {
+                this.timerVar.set(0);
+                this.callback();
             });
         }
-        for (var i = 0; i < functions.length; i++) {
-            var source = functions[i];
-            this.position = this.functionPositions[i].clone();
-            this.parseFunction(source);
-        }
-        api.save();
+        delay(this.options.time);
+        call(this.timerFunc);
     };
-    OutputParser.getMaxSidewards = function (source) {
-        var sidewards = 2;
-        var splitted = source.split(';');
-        for (var i = 0; i < splitted.length; i++) {
-            var splittedCall = splitted[i].split('|');
-            if (splittedCall.length > sidewards) {
-                sidewards = splittedCall.length;
-            }
+    Timer.prototype.start = function () {
+        if (this.options.useScoreboard) {
+            testfor(this.isRunning.hasValue(-1), this.timerFunc);
+            this.isRunning.set(1);
         }
-        return sidewards;
-    };
-    OutputParser.parseFunction = function (source) {
-        if (source == '')
-            return;
-        var calls = source.split(';');
-        for (var i = 0; i < calls.length; i++) {
-            var _call = calls[i].trim();
-            if (_call == '')
-                continue;
-            this.parseCall(_call);
-            this.updatePosition(function () {
-                this.position.x--;
-            }, function () {
-                this.position.x++;
-            }, function () {
-                this.position.z--;
-            }, function () {
-                this.position.z++;
-            });
+        else {
+            call(this.timerFunc);
         }
     };
-    OutputParser.parseCall = function (source) {
-        if (source.length < 1)
-            return;
-        switch (source[0]) {
-            case 'c':
-                var command = source.substring(1);
-                api.placeCommandBlock(command, this.position.x, this.position.y, this.position.z);
-                break;
-            case 'q':
-                var qCommand = source.substring(1);
-                api.placeCommandBlock(qCommand, this.position.x, this.position.y, this.position.z);
-                var torchPos = new Vector3(this.position.x, this.position.y + 1, this.position.z);
-                api.placeBlock(75, 5, torchPos.x, torchPos.y, torchPos.z);
-                var resetCbPos = new Vector3(this.position.x, this.position.y + 2, this.position.z);
-                var escapedCommand = qCommand.replace("\"", "\\\"");
-                var resetCommand = "setblock ~ ~-2 ~ minecraft:command_block 0 replace {Command:\"%cmd%\"}".replace("%cmd%", escapedCommand);
-                api.placeCommandBlock(resetCommand, resetCbPos.x, resetCbPos.y, resetCbPos.z);
-                break;
-            case 'b':
-                var blockInfo = source.substring(1).split('_');
-                api.placeBlock(parseInt(blockInfo[0]), parseInt(blockInfo[1]), this.position.x, this.position.y, this.position.z);
-                break;
-            case 's':
-                var calls = source.substring(1).split('|');
-                var oldPos = this.position.clone();
-                direction++;
-                for (var i = 0; i < calls.length; i++) {
-                    this.parseCall(calls[i].trim());
-                    this.updatePosition(function () {
-                        this.position.x--;
-                    }, function () {
-                        this.position.x++;
-                    }, function () {
-                        this.position.z--;
-                    }, function () {
-                        this.position.z++;
-                    });
-                }
-                direction--;
-                this.position = oldPos;
-                break;
-            case 'e':
-                var ePosition = this.functionPositions[source.substring(1)];
-                var offX = ePosition.x - this.position.x;
-                var offY = ePosition.y - this.position.y;
-                var offZ = ePosition.z - this.position.z;
-                var eCommand = "setblock ~" + offX + " ~" + offY + " ~" + offZ + " minecraft:redstone_block 0 replace";
-                api.placeCommandBlock(eCommand, this.position.x, this.position.y, this.position.z);
-                break;
-            case 'n':
-                var lines = source.substring(1).split('_');
-                var signDirection = lines[lines.length - 1];
-                lines[lines.length - 1] = '';
-                api.placeSign(lines, parseInt(signDirection), this.position.x, this.position.y, this.position.z);
-                break;
-            default:
-                api.log("Unknown Source: '" + source + "'");
-                break;
-        }
+    Timer.prototype.stop = function () {
+        if (this.options.useScoreboard == false)
+            throw "Cannot stop timer that doesnt use the Scoreboard";
+        this.isRunning.set(-1);
     };
-    OutputParser.updatePosition = function (xMinus, xPlus, zMinus, zPlus) {
-        switch (direction) {
-            case 0:
-                zMinus();
-                break;
-            case 1:
-                xPlus();
-                break;
-            case 2:
-                zPlus();
-                break;
-            case 3:
-                xMinus();
-                break;
-        }
-    };
-    OutputParser.direction = 1;
-    OutputParser.functionPositions = {};
-    return OutputParser;
+    return Timer;
 })();
+function assert(condition, message) {
+    if (message === void 0) { message = "Assertion failed"; }
+    if (!condition)
+        throw message;
+}
+function isSelector(c) {
+    assert(c == "a" || c == "e" || c == "r" || c == "p");
+    return c;
+}
+assert(true, "Assert is not working");
 /// <reference path="base.ts"/>
-/// <reference path="player.ts"/>
+/// <reference path="tellraw.ts"/>
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-//region tellraw.js
-function tellraw(message, selector) {
-    if (selector === void 0) { selector = Selector.allPlayer(); }
-    var t = new Tellraw();
-    if (typeof message === "object")
-        t.addExtra(message);
-    else
-        t.addText(message);
-    t.tell(selector);
-    return t;
-}
-var Tellraw = (function () {
-    function Tellraw() {
-        this.extras = [];
-    }
-    Tellraw.prototype.addText = function (text) {
-        this.extras.push({ "text": text });
-    };
-    Tellraw.prototype.addScore = function (selector, objective) {
-        this.extras.push({ "score": { "name": selector.toString(), "objective": objective } });
-    };
-    Tellraw.prototype.addSelector = function (selector) {
-        this.extras.push({ "selector": selector.toString() });
-    };
-    Tellraw.prototype.addExtra = function (extra) {
-        this.extras.push(extra.obj);
-    };
-    Tellraw.prototype.tell = function (selector) {
-        if (selector === void 0) { selector = Selector.allPlayer(); }
-        var extrasArray = JSON.stringify(this.extras);
-        command('tellraw ' + selector + ' {"text":"",extra:' + extrasArray + '}');
-    };
-    return Tellraw;
-})();
-var TellrawExtra = (function () {
-    function TellrawExtra(text) {
-        if (text === void 0) { text = ""; }
-        this.obj = { "text": text };
-    }
-    TellrawExtra.prototype.setText = function (newText) {
-        this.setOption("text", newText);
-    };
-    TellrawExtra.prototype.setClickEvent = function (action, value) {
-        this.setOption("clickEvent", { "action": action, "value": value });
-    };
-    TellrawExtra.prototype.setHoverEvent = function (action, value) {
-        this.setOption("clickEvent", { "action": action, "value": value });
-    };
-    TellrawExtra.prototype.setColor = function (color) {
-        this.setOption("color", color);
-    };
-    TellrawExtra.prototype.setOption = function (name, value) {
-        this.obj[name] = value;
-    };
-    return TellrawExtra;
-})();
-var TellrawClickableExtra = (function (_super) {
-    __extends(TellrawClickableExtra, _super);
-    function TellrawClickableExtra(callback, text, options) {
-        if (options === void 0) { options = {}; }
-        _super.call(this, text);
-        options.name = options.name || Naming.next("clickExtra").toLowerCase();
-        _super.prototype.setClickEvent.call(this, "run_command", "/trigger " + options.name + "E add 1");
-        var scoreEvent = new ScoreChangeEvent(options.name, "trigger", options);
-        EventHandler.events[scoreEvent.name] = scoreEvent;
-        var score = new Score(options.name + "E", "trigger", undefined, false);
-        scoreEvent.setListener(function (player) {
-            if (options.multipleClicks !== false)
-                score.enableTrigger(Selector.allPlayer());
-            callback(player);
-        });
-        score.enableTrigger(Selector.allPlayer());
-        _super.prototype.setClickEvent = function () {
-            throw "setting the click event command is not supported using TellrawClickableExtra";
-        };
-    }
-    return TellrawClickableExtra;
-})(TellrawExtra);
-/// <reference path="base.ts"/>
-/// <reference path="tellraw.ts"/>
 var GameMode;
 (function (GameMode) {
     GameMode[GameMode["Survival"] = 0] = "Survival";
@@ -704,399 +582,86 @@ var Selector = (function () {
     };
     return Selector;
 })();
-var RuntimeInteger = (function () {
-    function RuntimeInteger(options) {
-        options = options || {};
-        this.name = options.name || Naming.next("int");
-        options.startValue = options.startValue || 0;
-        RuntimeInteger.score.set(this.name, options.startValue);
-    }
-    RuntimeInteger.prototype.set = function (value) {
-        RuntimeInteger.score.set(this.name, value);
-    };
-    RuntimeInteger.prototype.add = function (value) {
-        RuntimeInteger.score.add(this.name, value);
-    };
-    RuntimeInteger.prototype.remove = function (value) {
-        RuntimeInteger.score.remove(this.name, value);
-    };
-    RuntimeInteger.prototype.reset = function () {
-        RuntimeInteger.score.reset(this.name);
-    };
-    RuntimeInteger.prototype.test = function (callback, min, max) {
-        RuntimeInteger.score.test(this.name, callback, min, max);
-    };
-    RuntimeInteger.prototype.operation = function (operation, other, otherPlayer) {
-        RuntimeInteger.score.operation(this.name, operation, otherPlayer, other);
-    };
-    RuntimeInteger.prototype.isExact = function (value, callback) {
-        return this.hasValue(value, callback);
-    };
-    RuntimeInteger.prototype.hasValue = function (value, callback) {
-        return this.isBetween(value, value, callback);
-    };
-    RuntimeInteger.prototype.isBetween = function (min, max, callback) {
-        if (max === void 0) { max = min; }
-        var command = "scoreboard players test " + this.name + " " + RuntimeInteger.score.name + " " + min + " " + max;
-        if (callback !== undefined)
-            validate(command, callback);
-        return command;
-    };
-    RuntimeInteger.prototype.asTellrawExtra = function () {
-        var extra = new TellrawExtra();
-        extra.obj = {
-            score: {
-                name: this.name,
-                objective: RuntimeInteger.score.name
-            }
-        };
-        return extra;
-    };
-    RuntimeInteger.score = new Score("std.values", "dummy");
-    return RuntimeInteger;
-})();
-var RuntimeBoolean = (function () {
-    function RuntimeBoolean() {
-        this.base = new RuntimeInteger();
-    }
-    RuntimeBoolean.prototype.set = function (value) {
-        if (value)
-            this.base.set(1);
-        else
-            this.base.set(0);
-    };
-    RuntimeBoolean.prototype.hasValue = function (value, callback) {
-        if (value)
-            return this.base.hasValue(1, callback);
-        else
-            return this.base.hasValue(0, callback);
-    };
-    RuntimeBoolean.prototype.isTrue = function (callback) {
-        return this.hasValue(true, callback);
-    };
-    RuntimeBoolean.prototype.isFalse = function (callback) {
-        return this.hasValue(false, callback);
-    };
-    RuntimeBoolean.prototype.asTellrawExtra = function () {
-        return this.base.asTellrawExtra();
-    };
-    return RuntimeBoolean;
-})();
-var RuntimeString = (function () {
-    function RuntimeString(value) {
-        if (value === void 0) { value = Naming.next("string"); }
-        RuntimeString.lastIndex++;
-        this.selector = Selector.parse("@e[score_strings_min=" + RuntimeString.lastIndex + ",score_strings=" + RuntimeString.lastIndex + "]");
-        callOnce(function () {
-            command('summon Chicken ~ ~1 ~ {CustomName:"' + value + '",NoAI:true,Invincible:true}');
-            RuntimeString.indexScore.set('@e[name=' + value + ']', RuntimeString.lastIndex);
-        });
-        delay(4);
-    }
-    RuntimeString.prototype.set = function (value) {
-        command('entitydata ' + this.selector + ' {CustomName:"' + value + '"}');
-    };
-    RuntimeString.prototype.hasValue = function (value, callback) {
-        var hasValueSelector = this.selector.clone();
-        hasValueSelector.setAttribute("name", value);
-        testfor(hasValueSelector.toString(), callback);
-        return hasValueSelector;
-    };
-    RuntimeString.prototype.asTellrawExtra = function () {
-        var extra = new TellrawExtra();
-        extra.obj = {
-            selector: this.selector.toString()
-        };
-        return extra;
-    };
-    RuntimeString.lastIndex = 0;
-    RuntimeString.indexScore = new Score("std.strings", "dummy");
-    return RuntimeString;
-})();
-function assert(condition, message) {
-    if (message === void 0) { message = "Assertion failed"; }
-    if (!condition)
-        throw message;
-}
-function isSelector(c) {
-    assert(c == "a" || c == "e" || c == "r" || c == "p");
-    return c;
-}
-assert(true, "Assert is not working");
-var TileNames;
-(function (TileNames) {
-    TileNames[TileNames["AIR"] = 0] = "AIR";
-    TileNames[TileNames["STONE"] = 1] = "STONE";
-    TileNames[TileNames["GRASS"] = 2] = "GRASS";
-    TileNames[TileNames["DIRT"] = 3] = "DIRT";
-    TileNames[TileNames["COBBLESTONE"] = 4] = "COBBLESTONE";
-    TileNames[TileNames["PLANKS"] = 5] = "PLANKS";
-    TileNames[TileNames["SAPLING"] = 6] = "SAPLING";
-    TileNames[TileNames["BEDROCK"] = 7] = "BEDROCK";
-    TileNames[TileNames["FLOWING_WATER"] = 8] = "FLOWING_WATER";
-    TileNames[TileNames["WATER"] = 9] = "WATER";
-    TileNames[TileNames["FLOWING_LAVA"] = 10] = "FLOWING_LAVA";
-    TileNames[TileNames["LAVA"] = 11] = "LAVA";
-    TileNames[TileNames["SAND"] = 12] = "SAND";
-    TileNames[TileNames["GRAVEL"] = 13] = "GRAVEL";
-    TileNames[TileNames["GOLD_ORE"] = 14] = "GOLD_ORE";
-    TileNames[TileNames["IRON_ORE"] = 15] = "IRON_ORE";
-    TileNames[TileNames["COAL_ORE"] = 16] = "COAL_ORE";
-    TileNames[TileNames["LOG"] = 17] = "LOG";
-    TileNames[TileNames["LEAVES"] = 18] = "LEAVES";
-    TileNames[TileNames["SPONGE"] = 19] = "SPONGE";
-    TileNames[TileNames["GLASS"] = 20] = "GLASS";
-    TileNames[TileNames["LAPIS_ORE"] = 21] = "LAPIS_ORE";
-    TileNames[TileNames["LAPIS_BLOCK"] = 22] = "LAPIS_BLOCK";
-    TileNames[TileNames["DISPENSER"] = 23] = "DISPENSER";
-    TileNames[TileNames["SANDSTONE"] = 24] = "SANDSTONE";
-    TileNames[TileNames["NOTEBLOCK"] = 25] = "NOTEBLOCK";
-    TileNames[TileNames["BED"] = 26] = "BED";
-    TileNames[TileNames["GOLDEN_RAIL"] = 27] = "GOLDEN_RAIL";
-    TileNames[TileNames["DETECTOR_RAIL"] = 28] = "DETECTOR_RAIL";
-    TileNames[TileNames["STICKY_PISTON"] = 29] = "STICKY_PISTON";
-    TileNames[TileNames["WEB"] = 30] = "WEB";
-    TileNames[TileNames["TALLGRASS"] = 31] = "TALLGRASS";
-    TileNames[TileNames["DEADBUSH"] = 32] = "DEADBUSH";
-    TileNames[TileNames["PISTON"] = 33] = "PISTON";
-    TileNames[TileNames["PISTON_HEAD"] = 34] = "PISTON_HEAD";
-    TileNames[TileNames["WOOL"] = 35] = "WOOL";
-    TileNames[TileNames["PISTON_MOVING"] = 36] = "PISTON_MOVING";
-    TileNames[TileNames["YELLOW_FLOWER"] = 37] = "YELLOW_FLOWER";
-    TileNames[TileNames["RED_FLOWER"] = 38] = "RED_FLOWER";
-    TileNames[TileNames["BROWN_MUSHROOM"] = 39] = "BROWN_MUSHROOM";
-    TileNames[TileNames["RED_MUSHROOM"] = 40] = "RED_MUSHROOM";
-    TileNames[TileNames["GOLD_BLOCK"] = 41] = "GOLD_BLOCK";
-    TileNames[TileNames["IRON_BLOCK"] = 42] = "IRON_BLOCK";
-    TileNames[TileNames["DOUBLE_STONE_SLAB"] = 43] = "DOUBLE_STONE_SLAB";
-    TileNames[TileNames["STONE_SLAB"] = 44] = "STONE_SLAB";
-    TileNames[TileNames["BRICK_BLOCK"] = 45] = "BRICK_BLOCK";
-    TileNames[TileNames["TNT"] = 46] = "TNT";
-    TileNames[TileNames["BOOKSHELF"] = 47] = "BOOKSHELF";
-    TileNames[TileNames["MOSSY_COBBLESTONE"] = 48] = "MOSSY_COBBLESTONE";
-    TileNames[TileNames["OBSIDIAN"] = 49] = "OBSIDIAN";
-    TileNames[TileNames["TORCH"] = 50] = "TORCH";
-    TileNames[TileNames["FIRE"] = 51] = "FIRE";
-    TileNames[TileNames["MOB_SPAWNER"] = 52] = "MOB_SPAWNER";
-    TileNames[TileNames["OAK_STAIRS"] = 53] = "OAK_STAIRS";
-    TileNames[TileNames["CHEST"] = 54] = "CHEST";
-    TileNames[TileNames["REDSTONE_WIRE"] = 55] = "REDSTONE_WIRE";
-    TileNames[TileNames["DIAMOND_ORE"] = 56] = "DIAMOND_ORE";
-    TileNames[TileNames["DIAMOND_BLOCK"] = 57] = "DIAMOND_BLOCK";
-    TileNames[TileNames["CRAFTING_TABLE"] = 58] = "CRAFTING_TABLE";
-    TileNames[TileNames["WHEAT"] = 59] = "WHEAT";
-    TileNames[TileNames["FARMLAND"] = 60] = "FARMLAND";
-    TileNames[TileNames["FURNACE"] = 61] = "FURNACE";
-    TileNames[TileNames["LIT_FURNACE"] = 62] = "LIT_FURNACE";
-    TileNames[TileNames["STANDING_SIGN"] = 63] = "STANDING_SIGN";
-    TileNames[TileNames["WOODEN_DOOR"] = 64] = "WOODEN_DOOR";
-    TileNames[TileNames["LADDER"] = 65] = "LADDER";
-    TileNames[TileNames["RAIL"] = 66] = "RAIL";
-    TileNames[TileNames["STONE_STAIRS"] = 67] = "STONE_STAIRS";
-    TileNames[TileNames["WALL_SIGN"] = 68] = "WALL_SIGN";
-    TileNames[TileNames["LEVER"] = 69] = "LEVER";
-    TileNames[TileNames["STONE_PRESSURE_PLATE"] = 70] = "STONE_PRESSURE_PLATE";
-    TileNames[TileNames["IRON_DOOR"] = 71] = "IRON_DOOR";
-    TileNames[TileNames["WOODEN_PRESSURE_PLATE"] = 72] = "WOODEN_PRESSURE_PLATE";
-    TileNames[TileNames["REDSTONE_ORE"] = 73] = "REDSTONE_ORE";
-    TileNames[TileNames["LIT_REDSTONE_ORE"] = 74] = "LIT_REDSTONE_ORE";
-    TileNames[TileNames["UNLIT_REDSTONE_TORCH"] = 75] = "UNLIT_REDSTONE_TORCH";
-    TileNames[TileNames["REDSTONE_TORCH"] = 76] = "REDSTONE_TORCH";
-    TileNames[TileNames["STONE_BUTTON"] = 77] = "STONE_BUTTON";
-    TileNames[TileNames["SNOW_LAYER"] = 78] = "SNOW_LAYER";
-    TileNames[TileNames["ICE"] = 79] = "ICE";
-    TileNames[TileNames["SNOW"] = 80] = "SNOW";
-    TileNames[TileNames["CACTUS"] = 81] = "CACTUS";
-    TileNames[TileNames["CLAY"] = 82] = "CLAY";
-    TileNames[TileNames["REEDS"] = 83] = "REEDS";
-    TileNames[TileNames["JUKEBOX"] = 84] = "JUKEBOX";
-    TileNames[TileNames["FENCE"] = 85] = "FENCE";
-    TileNames[TileNames["PUMPKIN"] = 86] = "PUMPKIN";
-    TileNames[TileNames["NETHERRACK"] = 87] = "NETHERRACK";
-    TileNames[TileNames["SOUL_SAND"] = 88] = "SOUL_SAND";
-    TileNames[TileNames["GLOWSTONE"] = 89] = "GLOWSTONE";
-    TileNames[TileNames["PORTAL"] = 90] = "PORTAL";
-    TileNames[TileNames["LIT_PUMPKIN"] = 91] = "LIT_PUMPKIN";
-    TileNames[TileNames["CAKE"] = 92] = "CAKE";
-    TileNames[TileNames["UNPOWERED_REPEATER"] = 93] = "UNPOWERED_REPEATER";
-    TileNames[TileNames["POWERED_REPEATER"] = 94] = "POWERED_REPEATER";
-    TileNames[TileNames["STAINED_GLASS"] = 95] = "STAINED_GLASS";
-    TileNames[TileNames["TRAPDOOR"] = 96] = "TRAPDOOR";
-    TileNames[TileNames["MONSTER_EGG"] = 97] = "MONSTER_EGG";
-    TileNames[TileNames["STONE_BRICK"] = 98] = "STONE_BRICK";
-    TileNames[TileNames["HUGE_RED_MUSHROOM"] = 99] = "HUGE_RED_MUSHROOM";
-    TileNames[TileNames["HUGE_BROWN_MUSHROOM"] = 100] = "HUGE_BROWN_MUSHROOM";
-    TileNames[TileNames["IRON_BARS"] = 101] = "IRON_BARS";
-    TileNames[TileNames["GLASS_PANE"] = 102] = "GLASS_PANE";
-    TileNames[TileNames["MELON_BLOCK"] = 103] = "MELON_BLOCK";
-    TileNames[TileNames["PUMPKIN_STEM"] = 104] = "PUMPKIN_STEM";
-    TileNames[TileNames["MELON_STEM"] = 105] = "MELON_STEM";
-    TileNames[TileNames["VINE"] = 106] = "VINE";
-    TileNames[TileNames["FENCE_GATE"] = 107] = "FENCE_GATE";
-    TileNames[TileNames["BRICK_STAIRS"] = 108] = "BRICK_STAIRS";
-    TileNames[TileNames["STONE_BRICK_STAIRS"] = 109] = "STONE_BRICK_STAIRS";
-    TileNames[TileNames["MYCELIUM"] = 110] = "MYCELIUM";
-    TileNames[TileNames["WATERLILY"] = 111] = "WATERLILY";
-    TileNames[TileNames["NETHER_BRICK"] = 112] = "NETHER_BRICK";
-    TileNames[TileNames["NETHER_BRICK_FENCE"] = 113] = "NETHER_BRICK_FENCE";
-    TileNames[TileNames["NETHER_BRICK_STAIRS"] = 114] = "NETHER_BRICK_STAIRS";
-    TileNames[TileNames["NETHER_WART"] = 115] = "NETHER_WART";
-    TileNames[TileNames["ENCHANTING_TABLE"] = 116] = "ENCHANTING_TABLE";
-    TileNames[TileNames["BREWING_STAND"] = 117] = "BREWING_STAND";
-    TileNames[TileNames["CAULDRON"] = 118] = "CAULDRON";
-    TileNames[TileNames["END_PORTAL"] = 119] = "END_PORTAL";
-    TileNames[TileNames["END_PORTAL_FRAME"] = 120] = "END_PORTAL_FRAME";
-    TileNames[TileNames["END_STONE"] = 121] = "END_STONE";
-    TileNames[TileNames["DRAGON_EGG"] = 122] = "DRAGON_EGG";
-    TileNames[TileNames["REDSTONE_LAMP"] = 123] = "REDSTONE_LAMP";
-    TileNames[TileNames["LIT_REDSTONE_LAMP"] = 124] = "LIT_REDSTONE_LAMP";
-    TileNames[TileNames["DOUBLE_WOODEN_SLAB"] = 125] = "DOUBLE_WOODEN_SLAB";
-    TileNames[TileNames["WOODEN_SLAB"] = 126] = "WOODEN_SLAB";
-    TileNames[TileNames["COCOA"] = 127] = "COCOA";
-    TileNames[TileNames["SANDSTONE_STAIRS"] = 128] = "SANDSTONE_STAIRS";
-    TileNames[TileNames["EMERALD_ORE"] = 129] = "EMERALD_ORE";
-    TileNames[TileNames["ENDER_CHEST"] = 130] = "ENDER_CHEST";
-    TileNames[TileNames["TRIPWIRE_HOOK"] = 131] = "TRIPWIRE_HOOK";
-    TileNames[TileNames["TRIPWIRE"] = 132] = "TRIPWIRE";
-    TileNames[TileNames["EMERALD_BLOCK"] = 133] = "EMERALD_BLOCK";
-    TileNames[TileNames["SPRUCE_STAIRS"] = 134] = "SPRUCE_STAIRS";
-    TileNames[TileNames["BIRCH_STAIRS"] = 135] = "BIRCH_STAIRS";
-    TileNames[TileNames["JUNGLE_STAIRS"] = 136] = "JUNGLE_STAIRS";
-    TileNames[TileNames["COMMAND_BLOCK"] = 137] = "COMMAND_BLOCK";
-    TileNames[TileNames["BEACON"] = 138] = "BEACON";
-    TileNames[TileNames["COBBLESTONE_WALL"] = 139] = "COBBLESTONE_WALL";
-    TileNames[TileNames["FLOWER_POT"] = 140] = "FLOWER_POT";
-    TileNames[TileNames["CARROTS"] = 141] = "CARROTS";
-    TileNames[TileNames["POTATOES"] = 142] = "POTATOES";
-    TileNames[TileNames["WOODEN_BUTTON"] = 143] = "WOODEN_BUTTON";
-    TileNames[TileNames["SKULL"] = 144] = "SKULL";
-    TileNames[TileNames["ANVIL"] = 145] = "ANVIL";
-    TileNames[TileNames["TRAPPED_CHEST"] = 146] = "TRAPPED_CHEST";
-    TileNames[TileNames["LIGHT_WEIGHTED_PRESSURE_PLATE"] = 147] = "LIGHT_WEIGHTED_PRESSURE_PLATE";
-    TileNames[TileNames["HEAVY_WEIGHTED_PRESSURE_PLATE"] = 148] = "HEAVY_WEIGHTED_PRESSURE_PLATE";
-    TileNames[TileNames["UNPOWERED_COMPARATOR"] = 149] = "UNPOWERED_COMPARATOR";
-    TileNames[TileNames["POWERED_COMPARATOR"] = 150] = "POWERED_COMPARATOR";
-    TileNames[TileNames["DAYLIGHT_SENSOR"] = 151] = "DAYLIGHT_SENSOR";
-    TileNames[TileNames["REDSTONE_BLOCK"] = 152] = "REDSTONE_BLOCK";
-    TileNames[TileNames["QUARTZ_ORE"] = 153] = "QUARTZ_ORE";
-    TileNames[TileNames["HOPPER"] = 154] = "HOPPER";
-    TileNames[TileNames["QUARTZ_BLOCK"] = 155] = "QUARTZ_BLOCK";
-    TileNames[TileNames["QUARTZ_STAIRS"] = 156] = "QUARTZ_STAIRS";
-    TileNames[TileNames["ACTIVATOR_RAIL"] = 157] = "ACTIVATOR_RAIL";
-    TileNames[TileNames["DROPPER"] = 158] = "DROPPER";
-    TileNames[TileNames["STAINED_HARDENED_CLAY"] = 159] = "STAINED_HARDENED_CLAY";
-})(TileNames || (TileNames = {}));
-//region utility functions
-function callOnce(callback, placeRepeater) {
-    if (placeRepeater === void 0) { placeRepeater = true; }
-    call(function () {
-        command("setblock ~-3 ~ ~ minecraft:air 0 replace", true);
-        callback();
-    }, placeRepeater);
-}
-function validate(cmd, callback, placeRepeater) {
-    if (placeRepeater === void 0) { placeRepeater = true; }
-    if (placeRepeater !== false)
-        delay();
-    sidewards(function () {
-        queryCommand(cmd, false);
-        comparator();
-        call(callback, false);
-    });
-}
-function validateSync(cmd, placeRepeater) {
-    if (placeRepeater === void 0) { placeRepeater = true; }
-    queryCommand(cmd, placeRepeater);
-    comparator();
-}
-function testfor(statement, callback, placeRepeater) {
-    if (placeRepeater === void 0) { placeRepeater = true; }
-    validate('testfor ' + statement, callback, placeRepeater);
-}
-function testforSync(statement, placeRepeater) {
-    if (placeRepeater === void 0) { placeRepeater = true; }
-    validateSync('testfor ' + statement, placeRepeater);
-}
-function testforNot(statement, callback, placeRepeater) {
-    if (placeRepeater === void 0) { placeRepeater = true; }
-    if (placeRepeater)
-        delay();
-    sidewards(function () {
-        queryCommand("testfor " + statement, false);
-        comparator();
-        block(1);
-    });
-    delay();
-    sidewards(function () {
-        command("setblock ~-1 ~ ~2 minecraft:unpowered_repeater 1", false);
-        delay();
-        delay();
-        call(callback, false);
-    });
-}
-//endregion
-//region timer
-function timer(time, callback) {
-    var t = new Timer(callback, { time: time });
-    t.start();
+/// <reference path="base.ts"/>
+/// <reference path="player.ts"/>
+//region tellraw.js
+function tellraw(message, selector) {
+    if (selector === void 0) { selector = Selector.allPlayer(); }
+    var t = new Tellraw();
+    if (typeof message === "object")
+        t.addExtra(message);
+    else
+        t.addText(message);
+    t.tell(selector);
     return t;
 }
-var Timer = (function () {
-    function Timer(callback, options) {
-        if (options === void 0) { options = { time: 10, useScoreboard: false, hardTickLength: 10, callAsync: false, scoreName: Naming.next("timer") }; }
-        this.options = options;
-        this.callback = callback;
-        if (options.useScoreboard !== false) {
-            this.scoreTicks = ((options.time / options.hardTickLength) < 1) ? 1 : (options.time / options.hardTickLength);
-            options.time = options.hardTickLength;
-            var varOptions = {};
-            varOptions.name = options.scoreName;
-            this.timerVar = new RuntimeInteger(varOptions);
-            var isRunningOptions = {};
-            isRunningOptions.name = varOptions.name + "R";
-            this.isRunning = new RuntimeInteger(isRunningOptions);
-            this.isRunning.set(-1);
-            callOnce(function () {
-                this.timerVar.set(-1);
-            });
-            delay(3);
-            options.time = (options.time - 5 > 0) ? options.time - 5 : 1;
-        }
+var Tellraw = (function () {
+    function Tellraw() {
+        this.extras = [];
     }
-    Timer.prototype.timerFunc = function () {
-        if (this.options.useScoreboard == false) {
-            if (this.options.callAsync)
-                call(this.callback);
-            else
-                this.callback();
-        }
-        else {
-            testforSync(this.isRunning.hasValue(1));
-            this.timerVar.add(1);
-            testfor(this.timerVar.isBetween(this.scoreTicks), function () {
-                this.timerVar.set(0);
-                this.callback();
-            });
-        }
-        delay(this.options.time);
-        call(this.timerFunc);
+    Tellraw.prototype.addText = function (text) {
+        this.extras.push({ "text": text });
     };
-    Timer.prototype.start = function () {
-        if (this.options.useScoreboard) {
-            testfor(this.isRunning.hasValue(-1), this.timerFunc);
-            this.isRunning.set(1);
-        }
-        else {
-            call(this.timerFunc);
-        }
+    Tellraw.prototype.addScore = function (selector, objective) {
+        this.extras.push({ "score": { "name": selector.toString(), "objective": objective } });
     };
-    Timer.prototype.stop = function () {
-        if (this.options.useScoreboard == false)
-            throw "Cannot stop timer that doesnt use the Scoreboard";
-        this.isRunning.set(-1);
+    Tellraw.prototype.addSelector = function (selector) {
+        this.extras.push({ "selector": selector.toString() });
     };
-    return Timer;
+    Tellraw.prototype.addExtra = function (extra) {
+        this.extras.push(extra.obj);
+    };
+    Tellraw.prototype.tell = function (selector) {
+        if (selector === void 0) { selector = Selector.allPlayer(); }
+        var extrasArray = JSON.stringify(this.extras);
+        command('tellraw ' + selector + ' {"text":"",extra:' + extrasArray + '}');
+    };
+    return Tellraw;
 })();
+var TellrawExtra = (function () {
+    function TellrawExtra(text) {
+        if (text === void 0) { text = ""; }
+        this.obj = { "text": text };
+    }
+    TellrawExtra.prototype.setText = function (newText) {
+        this.setOption("text", newText);
+    };
+    TellrawExtra.prototype.setClickEvent = function (action, value) {
+        this.setOption("clickEvent", { "action": action, "value": value });
+    };
+    TellrawExtra.prototype.setHoverEvent = function (action, value) {
+        this.setOption("clickEvent", { "action": action, "value": value });
+    };
+    TellrawExtra.prototype.setColor = function (color) {
+        this.setOption("color", color);
+    };
+    TellrawExtra.prototype.setOption = function (name, value) {
+        this.obj[name] = value;
+    };
+    return TellrawExtra;
+})();
+var TellrawClickableExtra = (function (_super) {
+    __extends(TellrawClickableExtra, _super);
+    function TellrawClickableExtra(callback, text, options) {
+        if (options === void 0) { options = {}; }
+        _super.call(this, text);
+        options.name = options.name || Naming.next("clickExtra").toLowerCase();
+        _super.prototype.setClickEvent.call(this, "run_command", "/trigger " + options.name + "E add 1");
+        var scoreEvent = new ScoreChangeEvent(new Score(options.name, "trigger"), options);
+        EventHandler.events[(options.name)] = scoreEvent;
+        var score = new Score(options.name + "E", "trigger", undefined, false);
+        scoreEvent.addListener(function (player) {
+            if (options.multipleClicks !== false)
+                score.enableTrigger(Selector.allPlayer());
+            callback(player);
+        });
+        score.enableTrigger(Selector.allPlayer());
+        _super.prototype.setClickEvent = function () {
+            throw "setting the click event command is not supported using TellrawClickableExtra";
+        };
+    }
+    return TellrawClickableExtra;
+})(TellrawExtra);
 /// <reference path="base.ts"/>
 /// <reference path="test.ts"/>
 /// <reference path="tellraw.ts"/>
@@ -1276,3 +841,507 @@ var Team = (function () {
     };
     return Team;
 })();
+/// <reference path="util.ts"/>
+/// <reference path="vanillaCommands.ts"/>
+var McEvent = (function () {
+    function McEvent() {
+        this.listener = [];
+    }
+    McEvent.prototype.addListener = function (func) {
+        this.listener.push(func);
+    };
+    McEvent.prototype.trigger = function () {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i - 0] = arguments[_i];
+        }
+        for (var i = 0; i < this.listener.length; i++) {
+            this.listener[i].call(args);
+        }
+    };
+    return McEvent;
+})();
+var EventHandler = (function () {
+    function EventHandler() {
+    }
+    EventHandler.add = function (name, event) {
+        if (EventHandler.events[name] !== null)
+            throw "Cannot add Event \"" + name + "\" it already exists!";
+        EventHandler.events[name] = event;
+    };
+    EventHandler.on = function (name, func) {
+        this.events[name].addListener(func);
+    };
+    EventHandler.emit = function (name) {
+        var args = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            args[_i - 1] = arguments[_i];
+        }
+        this.events[name].trigger(args);
+    };
+    return EventHandler;
+})();
+EventHandler.add("end", new CompiletimeEvent());
+EventHandler.add("onmove", new ScoreChangeEvent(new Score("onmove", "stat.walkOneCm")));
+EventHandler.add("oncrouch", new ScoreChangeEvent(new Score("oncrouch", "stat.crouchOneCm")));
+EventHandler.add("onswim", new ScoreChangeEvent(new Score("onswim", "stat.swimOneCm")));
+EventHandler.add("onsprint", new ScoreChangeEvent(new Score("onsprint", "stat.sprintOneCm")));
+EventHandler.add("ondeath", new ScoreChangeEvent(new Score("ondeath", "deathCount"), 1, 2147483648, false));
+EventHandler.add("onkill", new ScoreChangeEvent(new Score("onkill", "playerKillCount"), 2147483648, 1, false));
+EventHandler.add("onentitykill", new ScoreChangeEvent(new Score("onentitykill", "totalKillCount"), 1, 2147483648, false));
+var CompiletimeEvent = (function (_super) {
+    __extends(CompiletimeEvent, _super);
+    function CompiletimeEvent() {
+        _super.apply(this, arguments);
+    }
+    return CompiletimeEvent;
+})(McEvent);
+var ScoreChangeEvent = (function (_super) {
+    __extends(ScoreChangeEvent, _super);
+    function ScoreChangeEvent(score, triggerAtMin, triggerAtMax, resetValue, removeFromValue) {
+        if (triggerAtMin === void 0) { triggerAtMin = 1; }
+        if (triggerAtMax === void 0) { triggerAtMax = 2147483648; }
+        if (resetValue === void 0) { resetValue = true; }
+        if (removeFromValue === void 0) { removeFromValue = 1; }
+        _super.call(this);
+        this.score = score;
+        this.triggerAtMin = triggerAtMin;
+        this.triggerAtMax = triggerAtMax;
+        this.resetValue = resetValue;
+        this.removeFromValue = removeFromValue;
+        EventHandler.on("end", function () {
+            var callback = function () {
+                for (var name in EventHandler.events) {
+                    var ev = EventHandler.events[name];
+                    if (ev instanceof ScoreChangeEvent) {
+                        call(ev.timerTick);
+                    }
+                }
+            };
+            var t = new Timer(callback, { time: 1, callAsync: true });
+            ScoreChangeEvent.timer = t;
+            ScoreChangeEvent.timer.start();
+        });
+    }
+    ScoreChangeEvent.prototype.timerTick = function () {
+        var sel = this.score.getSelector(this.triggerAtMin, this.triggerAtMax).toString();
+        testforSync(sel);
+        var player = this.score.getPlayer(this.triggerAtMin, this.triggerAtMax);
+        _super.prototype.trigger.call(this, player);
+        if (this.resetValue)
+            this.score.reset(sel);
+        else
+            this.score.remove(sel, this.removeFromValue);
+    };
+    return ScoreChangeEvent;
+})(McEvent);
+/// <reference path="base.ts"/>
+var OutputParser = (function () {
+    function OutputParser() {
+    }
+    OutputParser.start = function () {
+        this.position = startPosition;
+        var functions = outputHandler.output;
+        for (var i = 0; i < functions.length; i++) {
+            this.functionPositions[i] = this.position.clone();
+            var sidewards = this.getMaxSidewards(functions[i]);
+            this.updatePosition(function () {
+                this.position.z -= sidewards;
+            }, function () {
+                this.position.z += sidewards;
+            }, function () {
+                this.position.z -= sidewards;
+            }, function () {
+                this.position.z += sidewards;
+            });
+        }
+        for (var i = 0; i < functions.length; i++) {
+            var source = functions[i];
+            this.position = this.functionPositions[i].clone();
+            this.parseFunction(source);
+        }
+        api.save();
+    };
+    OutputParser.getMaxSidewards = function (source) {
+        var sidewards = 2;
+        var splitted = source.split(';');
+        for (var i = 0; i < splitted.length; i++) {
+            var splittedCall = splitted[i].split('|');
+            if (splittedCall.length > sidewards) {
+                sidewards = splittedCall.length;
+            }
+        }
+        return sidewards;
+    };
+    OutputParser.parseFunction = function (source) {
+        if (source == '')
+            return;
+        var calls = source.split(';');
+        for (var i = 0; i < calls.length; i++) {
+            var _call = calls[i].trim();
+            if (_call == '')
+                continue;
+            this.parseCall(_call);
+            this.updatePosition(function () {
+                this.position.x--;
+            }, function () {
+                this.position.x++;
+            }, function () {
+                this.position.z--;
+            }, function () {
+                this.position.z++;
+            });
+        }
+    };
+    OutputParser.parseCall = function (source) {
+        if (source.length < 1)
+            return;
+        switch (source[0]) {
+            case 'c':
+                var command = source.substring(1);
+                api.placeCommandBlock(command, this.position.x, this.position.y, this.position.z);
+                break;
+            case 'q':
+                var qCommand = source.substring(1);
+                api.placeCommandBlock(qCommand, this.position.x, this.position.y, this.position.z);
+                var torchPos = new Vector3(this.position.x, this.position.y + 1, this.position.z);
+                api.placeBlock(75, 5, torchPos.x, torchPos.y, torchPos.z);
+                var resetCbPos = new Vector3(this.position.x, this.position.y + 2, this.position.z);
+                var escapedCommand = qCommand.replace("\"", "\\\"");
+                var resetCommand = "setblock ~ ~-2 ~ minecraft:command_block 0 replace {Command:\"%cmd%\"}".replace("%cmd%", escapedCommand);
+                api.placeCommandBlock(resetCommand, resetCbPos.x, resetCbPos.y, resetCbPos.z);
+                break;
+            case 'b':
+                var blockInfo = source.substring(1).split('_');
+                api.placeBlock(parseInt(blockInfo[0]), parseInt(blockInfo[1]), this.position.x, this.position.y, this.position.z);
+                break;
+            case 's':
+                var calls = source.substring(1).split('|');
+                var oldPos = this.position.clone();
+                direction++;
+                for (var i = 0; i < calls.length; i++) {
+                    this.parseCall(calls[i].trim());
+                    this.updatePosition(function () {
+                        this.position.x--;
+                    }, function () {
+                        this.position.x++;
+                    }, function () {
+                        this.position.z--;
+                    }, function () {
+                        this.position.z++;
+                    });
+                }
+                direction--;
+                this.position = oldPos;
+                break;
+            case 'e':
+                var ePosition = this.functionPositions[source.substring(1)];
+                var offX = ePosition.x - this.position.x;
+                var offY = ePosition.y - this.position.y;
+                var offZ = ePosition.z - this.position.z;
+                var eCommand = "setblock ~" + offX + " ~" + offY + " ~" + offZ + " minecraft:redstone_block 0 replace";
+                api.placeCommandBlock(eCommand, this.position.x, this.position.y, this.position.z);
+                break;
+            case 'n':
+                var lines = source.substring(1).split('_');
+                var signDirection = lines[lines.length - 1];
+                lines[lines.length - 1] = '';
+                api.placeSign(lines, parseInt(signDirection), this.position.x, this.position.y, this.position.z);
+                break;
+            default:
+                api.log("Unknown Source: '" + source + "'");
+                break;
+        }
+    };
+    OutputParser.updatePosition = function (xMinus, xPlus, zMinus, zPlus) {
+        switch (direction) {
+            case 0:
+                zMinus();
+                break;
+            case 1:
+                xPlus();
+                break;
+            case 2:
+                zPlus();
+                break;
+            case 3:
+                xMinus();
+                break;
+        }
+    };
+    OutputParser.direction = 1;
+    OutputParser.functionPositions = {};
+    return OutputParser;
+})();
+var RuntimeInteger = (function () {
+    function RuntimeInteger(options) {
+        options = options || {};
+        this.name = options.name || Naming.next("int");
+        options.startValue = options.startValue || 0;
+        RuntimeInteger.score.set(this.name, options.startValue);
+    }
+    RuntimeInteger.prototype.set = function (value) {
+        RuntimeInteger.score.set(this.name, value);
+    };
+    RuntimeInteger.prototype.add = function (value) {
+        RuntimeInteger.score.add(this.name, value);
+    };
+    RuntimeInteger.prototype.remove = function (value) {
+        RuntimeInteger.score.remove(this.name, value);
+    };
+    RuntimeInteger.prototype.reset = function () {
+        RuntimeInteger.score.reset(this.name);
+    };
+    RuntimeInteger.prototype.test = function (callback, min, max) {
+        RuntimeInteger.score.test(this.name, callback, min, max);
+    };
+    RuntimeInteger.prototype.operation = function (operation, other, otherPlayer) {
+        RuntimeInteger.score.operation(this.name, operation, otherPlayer, other);
+    };
+    RuntimeInteger.prototype.isExact = function (value, callback) {
+        return this.hasValue(value, callback);
+    };
+    RuntimeInteger.prototype.hasValue = function (value, callback) {
+        return this.isBetween(value, value, callback);
+    };
+    RuntimeInteger.prototype.isBetween = function (min, max, callback) {
+        if (max === void 0) { max = min; }
+        var command = "scoreboard players test " + this.name + " " + RuntimeInteger.score.name + " " + min + " " + max;
+        if (callback !== undefined)
+            validate(command, callback);
+        return command;
+    };
+    RuntimeInteger.prototype.asTellrawExtra = function () {
+        var extra = new TellrawExtra();
+        extra.obj = {
+            score: {
+                name: this.name,
+                objective: RuntimeInteger.score.name
+            }
+        };
+        return extra;
+    };
+    RuntimeInteger.score = new Score("std.values", "dummy");
+    return RuntimeInteger;
+})();
+var RuntimeBoolean = (function () {
+    function RuntimeBoolean() {
+        this.base = new RuntimeInteger();
+    }
+    RuntimeBoolean.prototype.set = function (value) {
+        if (value)
+            this.base.set(1);
+        else
+            this.base.set(0);
+    };
+    RuntimeBoolean.prototype.hasValue = function (value, callback) {
+        if (value)
+            return this.base.hasValue(1, callback);
+        else
+            return this.base.hasValue(0, callback);
+    };
+    RuntimeBoolean.prototype.isTrue = function (callback) {
+        return this.hasValue(true, callback);
+    };
+    RuntimeBoolean.prototype.isFalse = function (callback) {
+        return this.hasValue(false, callback);
+    };
+    RuntimeBoolean.prototype.asTellrawExtra = function () {
+        return this.base.asTellrawExtra();
+    };
+    return RuntimeBoolean;
+})();
+var RuntimeString = (function () {
+    function RuntimeString(value) {
+        if (value === void 0) { value = Naming.next("string"); }
+        RuntimeString.lastIndex++;
+        this.selector = Selector.parse("@e[score_strings_min=" + RuntimeString.lastIndex + ",score_strings=" + RuntimeString.lastIndex + "]");
+        callOnce(function () {
+            command('summon Chicken ~ ~1 ~ {CustomName:"' + value + '",NoAI:true,Invincible:true}');
+            RuntimeString.indexScore.set('@e[name=' + value + ']', RuntimeString.lastIndex);
+        });
+        delay(4);
+    }
+    RuntimeString.prototype.set = function (value) {
+        command('entitydata ' + this.selector + ' {CustomName:"' + value + '"}');
+    };
+    RuntimeString.prototype.hasValue = function (value, callback) {
+        var hasValueSelector = this.selector.clone();
+        hasValueSelector.setAttribute("name", value);
+        testfor(hasValueSelector.toString(), callback);
+        return hasValueSelector;
+    };
+    RuntimeString.prototype.asTellrawExtra = function () {
+        var extra = new TellrawExtra();
+        extra.obj = {
+            selector: this.selector.toString()
+        };
+        return extra;
+    };
+    RuntimeString.lastIndex = 0;
+    RuntimeString.indexScore = new Score("std.strings", "dummy");
+    return RuntimeString;
+})();
+var TileNames;
+(function (TileNames) {
+    TileNames[TileNames["AIR"] = 0] = "AIR";
+    TileNames[TileNames["STONE"] = 1] = "STONE";
+    TileNames[TileNames["GRASS"] = 2] = "GRASS";
+    TileNames[TileNames["DIRT"] = 3] = "DIRT";
+    TileNames[TileNames["COBBLESTONE"] = 4] = "COBBLESTONE";
+    TileNames[TileNames["PLANKS"] = 5] = "PLANKS";
+    TileNames[TileNames["SAPLING"] = 6] = "SAPLING";
+    TileNames[TileNames["BEDROCK"] = 7] = "BEDROCK";
+    TileNames[TileNames["FLOWING_WATER"] = 8] = "FLOWING_WATER";
+    TileNames[TileNames["WATER"] = 9] = "WATER";
+    TileNames[TileNames["FLOWING_LAVA"] = 10] = "FLOWING_LAVA";
+    TileNames[TileNames["LAVA"] = 11] = "LAVA";
+    TileNames[TileNames["SAND"] = 12] = "SAND";
+    TileNames[TileNames["GRAVEL"] = 13] = "GRAVEL";
+    TileNames[TileNames["GOLD_ORE"] = 14] = "GOLD_ORE";
+    TileNames[TileNames["IRON_ORE"] = 15] = "IRON_ORE";
+    TileNames[TileNames["COAL_ORE"] = 16] = "COAL_ORE";
+    TileNames[TileNames["LOG"] = 17] = "LOG";
+    TileNames[TileNames["LEAVES"] = 18] = "LEAVES";
+    TileNames[TileNames["SPONGE"] = 19] = "SPONGE";
+    TileNames[TileNames["GLASS"] = 20] = "GLASS";
+    TileNames[TileNames["LAPIS_ORE"] = 21] = "LAPIS_ORE";
+    TileNames[TileNames["LAPIS_BLOCK"] = 22] = "LAPIS_BLOCK";
+    TileNames[TileNames["DISPENSER"] = 23] = "DISPENSER";
+    TileNames[TileNames["SANDSTONE"] = 24] = "SANDSTONE";
+    TileNames[TileNames["NOTEBLOCK"] = 25] = "NOTEBLOCK";
+    TileNames[TileNames["BED"] = 26] = "BED";
+    TileNames[TileNames["GOLDEN_RAIL"] = 27] = "GOLDEN_RAIL";
+    TileNames[TileNames["DETECTOR_RAIL"] = 28] = "DETECTOR_RAIL";
+    TileNames[TileNames["STICKY_PISTON"] = 29] = "STICKY_PISTON";
+    TileNames[TileNames["WEB"] = 30] = "WEB";
+    TileNames[TileNames["TALLGRASS"] = 31] = "TALLGRASS";
+    TileNames[TileNames["DEADBUSH"] = 32] = "DEADBUSH";
+    TileNames[TileNames["PISTON"] = 33] = "PISTON";
+    TileNames[TileNames["PISTON_HEAD"] = 34] = "PISTON_HEAD";
+    TileNames[TileNames["WOOL"] = 35] = "WOOL";
+    TileNames[TileNames["PISTON_MOVING"] = 36] = "PISTON_MOVING";
+    TileNames[TileNames["YELLOW_FLOWER"] = 37] = "YELLOW_FLOWER";
+    TileNames[TileNames["RED_FLOWER"] = 38] = "RED_FLOWER";
+    TileNames[TileNames["BROWN_MUSHROOM"] = 39] = "BROWN_MUSHROOM";
+    TileNames[TileNames["RED_MUSHROOM"] = 40] = "RED_MUSHROOM";
+    TileNames[TileNames["GOLD_BLOCK"] = 41] = "GOLD_BLOCK";
+    TileNames[TileNames["IRON_BLOCK"] = 42] = "IRON_BLOCK";
+    TileNames[TileNames["DOUBLE_STONE_SLAB"] = 43] = "DOUBLE_STONE_SLAB";
+    TileNames[TileNames["STONE_SLAB"] = 44] = "STONE_SLAB";
+    TileNames[TileNames["BRICK_BLOCK"] = 45] = "BRICK_BLOCK";
+    TileNames[TileNames["TNT"] = 46] = "TNT";
+    TileNames[TileNames["BOOKSHELF"] = 47] = "BOOKSHELF";
+    TileNames[TileNames["MOSSY_COBBLESTONE"] = 48] = "MOSSY_COBBLESTONE";
+    TileNames[TileNames["OBSIDIAN"] = 49] = "OBSIDIAN";
+    TileNames[TileNames["TORCH"] = 50] = "TORCH";
+    TileNames[TileNames["FIRE"] = 51] = "FIRE";
+    TileNames[TileNames["MOB_SPAWNER"] = 52] = "MOB_SPAWNER";
+    TileNames[TileNames["OAK_STAIRS"] = 53] = "OAK_STAIRS";
+    TileNames[TileNames["CHEST"] = 54] = "CHEST";
+    TileNames[TileNames["REDSTONE_WIRE"] = 55] = "REDSTONE_WIRE";
+    TileNames[TileNames["DIAMOND_ORE"] = 56] = "DIAMOND_ORE";
+    TileNames[TileNames["DIAMOND_BLOCK"] = 57] = "DIAMOND_BLOCK";
+    TileNames[TileNames["CRAFTING_TABLE"] = 58] = "CRAFTING_TABLE";
+    TileNames[TileNames["WHEAT"] = 59] = "WHEAT";
+    TileNames[TileNames["FARMLAND"] = 60] = "FARMLAND";
+    TileNames[TileNames["FURNACE"] = 61] = "FURNACE";
+    TileNames[TileNames["LIT_FURNACE"] = 62] = "LIT_FURNACE";
+    TileNames[TileNames["STANDING_SIGN"] = 63] = "STANDING_SIGN";
+    TileNames[TileNames["WOODEN_DOOR"] = 64] = "WOODEN_DOOR";
+    TileNames[TileNames["LADDER"] = 65] = "LADDER";
+    TileNames[TileNames["RAIL"] = 66] = "RAIL";
+    TileNames[TileNames["STONE_STAIRS"] = 67] = "STONE_STAIRS";
+    TileNames[TileNames["WALL_SIGN"] = 68] = "WALL_SIGN";
+    TileNames[TileNames["LEVER"] = 69] = "LEVER";
+    TileNames[TileNames["STONE_PRESSURE_PLATE"] = 70] = "STONE_PRESSURE_PLATE";
+    TileNames[TileNames["IRON_DOOR"] = 71] = "IRON_DOOR";
+    TileNames[TileNames["WOODEN_PRESSURE_PLATE"] = 72] = "WOODEN_PRESSURE_PLATE";
+    TileNames[TileNames["REDSTONE_ORE"] = 73] = "REDSTONE_ORE";
+    TileNames[TileNames["LIT_REDSTONE_ORE"] = 74] = "LIT_REDSTONE_ORE";
+    TileNames[TileNames["UNLIT_REDSTONE_TORCH"] = 75] = "UNLIT_REDSTONE_TORCH";
+    TileNames[TileNames["REDSTONE_TORCH"] = 76] = "REDSTONE_TORCH";
+    TileNames[TileNames["STONE_BUTTON"] = 77] = "STONE_BUTTON";
+    TileNames[TileNames["SNOW_LAYER"] = 78] = "SNOW_LAYER";
+    TileNames[TileNames["ICE"] = 79] = "ICE";
+    TileNames[TileNames["SNOW"] = 80] = "SNOW";
+    TileNames[TileNames["CACTUS"] = 81] = "CACTUS";
+    TileNames[TileNames["CLAY"] = 82] = "CLAY";
+    TileNames[TileNames["REEDS"] = 83] = "REEDS";
+    TileNames[TileNames["JUKEBOX"] = 84] = "JUKEBOX";
+    TileNames[TileNames["FENCE"] = 85] = "FENCE";
+    TileNames[TileNames["PUMPKIN"] = 86] = "PUMPKIN";
+    TileNames[TileNames["NETHERRACK"] = 87] = "NETHERRACK";
+    TileNames[TileNames["SOUL_SAND"] = 88] = "SOUL_SAND";
+    TileNames[TileNames["GLOWSTONE"] = 89] = "GLOWSTONE";
+    TileNames[TileNames["PORTAL"] = 90] = "PORTAL";
+    TileNames[TileNames["LIT_PUMPKIN"] = 91] = "LIT_PUMPKIN";
+    TileNames[TileNames["CAKE"] = 92] = "CAKE";
+    TileNames[TileNames["UNPOWERED_REPEATER"] = 93] = "UNPOWERED_REPEATER";
+    TileNames[TileNames["POWERED_REPEATER"] = 94] = "POWERED_REPEATER";
+    TileNames[TileNames["STAINED_GLASS"] = 95] = "STAINED_GLASS";
+    TileNames[TileNames["TRAPDOOR"] = 96] = "TRAPDOOR";
+    TileNames[TileNames["MONSTER_EGG"] = 97] = "MONSTER_EGG";
+    TileNames[TileNames["STONE_BRICK"] = 98] = "STONE_BRICK";
+    TileNames[TileNames["HUGE_RED_MUSHROOM"] = 99] = "HUGE_RED_MUSHROOM";
+    TileNames[TileNames["HUGE_BROWN_MUSHROOM"] = 100] = "HUGE_BROWN_MUSHROOM";
+    TileNames[TileNames["IRON_BARS"] = 101] = "IRON_BARS";
+    TileNames[TileNames["GLASS_PANE"] = 102] = "GLASS_PANE";
+    TileNames[TileNames["MELON_BLOCK"] = 103] = "MELON_BLOCK";
+    TileNames[TileNames["PUMPKIN_STEM"] = 104] = "PUMPKIN_STEM";
+    TileNames[TileNames["MELON_STEM"] = 105] = "MELON_STEM";
+    TileNames[TileNames["VINE"] = 106] = "VINE";
+    TileNames[TileNames["FENCE_GATE"] = 107] = "FENCE_GATE";
+    TileNames[TileNames["BRICK_STAIRS"] = 108] = "BRICK_STAIRS";
+    TileNames[TileNames["STONE_BRICK_STAIRS"] = 109] = "STONE_BRICK_STAIRS";
+    TileNames[TileNames["MYCELIUM"] = 110] = "MYCELIUM";
+    TileNames[TileNames["WATERLILY"] = 111] = "WATERLILY";
+    TileNames[TileNames["NETHER_BRICK"] = 112] = "NETHER_BRICK";
+    TileNames[TileNames["NETHER_BRICK_FENCE"] = 113] = "NETHER_BRICK_FENCE";
+    TileNames[TileNames["NETHER_BRICK_STAIRS"] = 114] = "NETHER_BRICK_STAIRS";
+    TileNames[TileNames["NETHER_WART"] = 115] = "NETHER_WART";
+    TileNames[TileNames["ENCHANTING_TABLE"] = 116] = "ENCHANTING_TABLE";
+    TileNames[TileNames["BREWING_STAND"] = 117] = "BREWING_STAND";
+    TileNames[TileNames["CAULDRON"] = 118] = "CAULDRON";
+    TileNames[TileNames["END_PORTAL"] = 119] = "END_PORTAL";
+    TileNames[TileNames["END_PORTAL_FRAME"] = 120] = "END_PORTAL_FRAME";
+    TileNames[TileNames["END_STONE"] = 121] = "END_STONE";
+    TileNames[TileNames["DRAGON_EGG"] = 122] = "DRAGON_EGG";
+    TileNames[TileNames["REDSTONE_LAMP"] = 123] = "REDSTONE_LAMP";
+    TileNames[TileNames["LIT_REDSTONE_LAMP"] = 124] = "LIT_REDSTONE_LAMP";
+    TileNames[TileNames["DOUBLE_WOODEN_SLAB"] = 125] = "DOUBLE_WOODEN_SLAB";
+    TileNames[TileNames["WOODEN_SLAB"] = 126] = "WOODEN_SLAB";
+    TileNames[TileNames["COCOA"] = 127] = "COCOA";
+    TileNames[TileNames["SANDSTONE_STAIRS"] = 128] = "SANDSTONE_STAIRS";
+    TileNames[TileNames["EMERALD_ORE"] = 129] = "EMERALD_ORE";
+    TileNames[TileNames["ENDER_CHEST"] = 130] = "ENDER_CHEST";
+    TileNames[TileNames["TRIPWIRE_HOOK"] = 131] = "TRIPWIRE_HOOK";
+    TileNames[TileNames["TRIPWIRE"] = 132] = "TRIPWIRE";
+    TileNames[TileNames["EMERALD_BLOCK"] = 133] = "EMERALD_BLOCK";
+    TileNames[TileNames["SPRUCE_STAIRS"] = 134] = "SPRUCE_STAIRS";
+    TileNames[TileNames["BIRCH_STAIRS"] = 135] = "BIRCH_STAIRS";
+    TileNames[TileNames["JUNGLE_STAIRS"] = 136] = "JUNGLE_STAIRS";
+    TileNames[TileNames["COMMAND_BLOCK"] = 137] = "COMMAND_BLOCK";
+    TileNames[TileNames["BEACON"] = 138] = "BEACON";
+    TileNames[TileNames["COBBLESTONE_WALL"] = 139] = "COBBLESTONE_WALL";
+    TileNames[TileNames["FLOWER_POT"] = 140] = "FLOWER_POT";
+    TileNames[TileNames["CARROTS"] = 141] = "CARROTS";
+    TileNames[TileNames["POTATOES"] = 142] = "POTATOES";
+    TileNames[TileNames["WOODEN_BUTTON"] = 143] = "WOODEN_BUTTON";
+    TileNames[TileNames["SKULL"] = 144] = "SKULL";
+    TileNames[TileNames["ANVIL"] = 145] = "ANVIL";
+    TileNames[TileNames["TRAPPED_CHEST"] = 146] = "TRAPPED_CHEST";
+    TileNames[TileNames["LIGHT_WEIGHTED_PRESSURE_PLATE"] = 147] = "LIGHT_WEIGHTED_PRESSURE_PLATE";
+    TileNames[TileNames["HEAVY_WEIGHTED_PRESSURE_PLATE"] = 148] = "HEAVY_WEIGHTED_PRESSURE_PLATE";
+    TileNames[TileNames["UNPOWERED_COMPARATOR"] = 149] = "UNPOWERED_COMPARATOR";
+    TileNames[TileNames["POWERED_COMPARATOR"] = 150] = "POWERED_COMPARATOR";
+    TileNames[TileNames["DAYLIGHT_SENSOR"] = 151] = "DAYLIGHT_SENSOR";
+    TileNames[TileNames["REDSTONE_BLOCK"] = 152] = "REDSTONE_BLOCK";
+    TileNames[TileNames["QUARTZ_ORE"] = 153] = "QUARTZ_ORE";
+    TileNames[TileNames["HOPPER"] = 154] = "HOPPER";
+    TileNames[TileNames["QUARTZ_BLOCK"] = 155] = "QUARTZ_BLOCK";
+    TileNames[TileNames["QUARTZ_STAIRS"] = 156] = "QUARTZ_STAIRS";
+    TileNames[TileNames["ACTIVATOR_RAIL"] = 157] = "ACTIVATOR_RAIL";
+    TileNames[TileNames["DROPPER"] = 158] = "DROPPER";
+    TileNames[TileNames["STAINED_HARDENED_CLAY"] = 159] = "STAINED_HARDENED_CLAY";
+})(TileNames || (TileNames = {}));
