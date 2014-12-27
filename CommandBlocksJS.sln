@@ -36,6 +36,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TypeScript Source", "TypeSc
 		Beta\vanillaCommands.ts = Beta\vanillaCommands.ts
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example", "Example", "{B43733F6-14BE-4D9F-91C2-BD20B324E764}"
+	ProjectSection(SolutionItems) = preProject
+		Beta\Example\example.ts = Beta\Example\example.ts
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +84,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B43733F6-14BE-4D9F-91C2-BD20B324E764} = {CC21623E-5062-4395-B7DB-E10BFBE66189}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = ServerWrapper\ServerWrapper.csproj
