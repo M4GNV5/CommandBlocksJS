@@ -21,5 +21,4 @@
 
 /// <reference path="./MinecraftCommand.ts"/>
 
-/// <reference path="./../base.ts"/>
-/// <reference path="./../util.ts"/>
+/// <reference path="./base.ts"/>

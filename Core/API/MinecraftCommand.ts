@@ -1,3 +1,5 @@
+/// <reference path="./API.ts"/>
+
 class MinecraftCommand
 {
 	cmd: string;
@@ -15,10 +17,16 @@ class MinecraftCommand
 	}
 	validate(callback: Function): void
 	{
-		validate(this.cmd, callback);
+        sidewards(function ()
+        {
+            queryCommand(this.cmd, false);
+            comparator();
+            call(callback, false);
+        });
 	}
 	validateSync(): void
 	{
-		validateSync(this.cmd);
+        queryCommand(this.cmd);
+        comparator();
 	}
 }
