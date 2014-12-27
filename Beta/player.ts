@@ -15,7 +15,7 @@ class Player
 	selector: Selector;
 	constructor(selector: any)
 	{
-		if (selector instanceof String)
+		if (typeof selector == "string")
 			this.selector = Selector.parse(selector);
 		else if (selector instanceof Selector)
 			this.selector = selector;
@@ -131,9 +131,8 @@ class PlayerArray extends Player
 
 	constructor(name: string = Naming.next('array'), selector = Selector.allPlayer(), createObjective: boolean = true)
 	{
-		super(selector);
+		super(selector.toString());
 
-		this.name = name;
 		this.name = name;
 
 		var arrayScore;

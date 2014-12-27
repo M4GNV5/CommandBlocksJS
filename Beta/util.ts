@@ -105,35 +105,36 @@ class Timer
 			this.isRunning = new RuntimeInteger(isRunningOptions);
 			this.isRunning.set(-1);
 
-			callOnce(function () { this.timerVar.set(-1); });
+			var _timerVar = this.timerVar;
+			callOnce(function () { _timerVar.set(-1); });
 			delay(3);
 
 			options.time = (options.time - 5 > 0) ? options.time - 5 : 1;
 		}
 	}
 
-	timerFunc()
+	timerFunc(self)
 	{
-		if (this.options.useScoreboard == false)
+		if (self.options.useScoreboard === false)
 		{
-			if (this.options.callAsync)
-				call(this.callback);
+			if (self.options.callAsync)
+				call(self.callback);
 			else
-				this.callback();
+				self.callback();
 		}
 		else
 		{
-			testforSync(this.isRunning.hasValue(1));
-			this.timerVar.add(1);
-			testfor(this.timerVar.isBetween(this.scoreTicks), function ()
+			testforSync(self.isRunning.hasValue(1));
+			self.timerVar.add(1);
+			testfor(self.timerVar.isBetween(self.scoreTicks), function ()
 			{
-				this.timerVar.set(0);
-				this.callback();
+				self.timerVar.set(0);
+				self.callback();
 			});
 		}
 
-		delay(this.options.time);
-		call(this.timerFunc);
+		delay(self.options.time);
+		call(arguments.callee.caller);
 	}
 
 	start()
@@ -145,7 +146,8 @@ class Timer
 		}
 		else
 		{
-			call(this.timerFunc);
+			var that = this;
+			call(function () { that.timerFunc(that); });
 		}
 	}
 

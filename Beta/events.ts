@@ -14,20 +14,21 @@ class McEvent
 	{
 		for (var i = 0; i < this.listener.length; i++)
 		{
-			this.listener[i].call(args);
+			var that = this;
+			call(function () { that.listener[i].apply(undefined, args); } );
 		}
 	}
 }
 
 class EventHandler
 {
-	static events: { [index: string]: McEvent };
+    static events: { [index: string]: McEvent } = {};
 
-	static add(name: string, event: McEvent)
+	static add(name: string, ev: McEvent)
 	{
-		if (EventHandler.events[name] !== null)
+		if (EventHandler.events[name] !== undefined)
 			throw "Cannot add Event \"" + name + "\" it already exists!";
-		EventHandler.events[name] = event;
+        EventHandler.events[name] = ev;
 	}
 
 	static on(name: string, func: Function): void
@@ -40,18 +41,11 @@ class EventHandler
 		this.events[name].trigger(args);
 	}
 }
-EventHandler.add("end", new CompiletimeEvent);
-
-EventHandler.add("onmove", new ScoreChangeEvent(new Score("onmove", "stat.walkOneCm")));
-EventHandler.add("oncrouch", new ScoreChangeEvent(new Score("oncrouch", "stat.crouchOneCm")));
-EventHandler.add("onswim", new ScoreChangeEvent(new Score("onswim", "stat.swimOneCm")));
-EventHandler.add("onsprint", new ScoreChangeEvent(new Score("onsprint", "stat.sprintOneCm")));
-EventHandler.add("ondeath", new ScoreChangeEvent(new Score("ondeath", "deathCount"), 1, 2147483648, false));
-EventHandler.add("onkill", new ScoreChangeEvent(new Score("onkill", "playerKillCount"), 2147483648, 1, false));
-EventHandler.add("onentitykill", new ScoreChangeEvent(new Score("onentitykill", "totalKillCount"), 1, 2147483648, false));
 
 class CompiletimeEvent extends McEvent
 { }
+
+EventHandler.add("end", new CompiletimeEvent());
 
 class ScoreChangeEvent extends McEvent
 {
@@ -89,7 +83,8 @@ class ScoreChangeEvent extends McEvent
 					var ev = EventHandler.events[name];
 					if (ev instanceof ScoreChangeEvent)
 					{
-						call((<ScoreChangeEvent>ev).timerTick);
+						var scoreEvent: ScoreChangeEvent = <ScoreChangeEvent>ev;
+						call(function () { scoreEvent.timerTick.call(scoreEvent); });
 					}
 				}
 			}
@@ -112,3 +107,11 @@ class ScoreChangeEvent extends McEvent
 			this.score.remove(sel, this.removeFromValue);
 	}
 }
+
+EventHandler.add("onmove", new ScoreChangeEvent(new Score("onmove", "stat.walkOneCm")));
+EventHandler.add("oncrouch", new ScoreChangeEvent(new Score("oncrouch", "stat.crouchOneCm")));
+EventHandler.add("onswim", new ScoreChangeEvent(new Score("onswim", "stat.swimOneCm")));
+EventHandler.add("onsprint", new ScoreChangeEvent(new Score("onsprint", "stat.sprintOneCm")));
+EventHandler.add("ondeath", new ScoreChangeEvent(new Score("ondeath", "deathCount"), 1, 2147483648, false));
+EventHandler.add("onkill", new ScoreChangeEvent(new Score("onkill", "playerKillCount"), 2147483648, 1, false));
+EventHandler.add("onentitykill", new ScoreChangeEvent(new Score("onentitykill", "totalKillCount"), 1, 2147483648, false));

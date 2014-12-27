@@ -20,7 +20,12 @@ class OutputParser
 
 			var sidewards = this.getMaxSidewards(functions[i]);
 
-			this.updatePosition(function () { this.position.z -= sidewards }, function () { this.position.z += sidewards }, function () { this.position.z -= sidewards }, function () { this.position.z += sidewards });
+            this.updatePosition(
+                function () { OutputParser.position.z -= sidewards },
+                function () { OutputParser.position.z += sidewards },
+                function () { OutputParser.position.z -= sidewards },
+                function () { OutputParser.position.z += sidewards }
+            );
 		}
 
 		for (var i = 0; i < functions.length; i++)
@@ -63,7 +68,12 @@ class OutputParser
 
 			this.parseCall(_call);
 
-			this.updatePosition(function () { this.position.x-- }, function () { this.position.x++ }, function () { this.position.z-- }, function () { this.position.z++ });
+            this.updatePosition(
+                function () { OutputParser.position.x-- },
+                function () { OutputParser.position.x++ },
+                function () { OutputParser.position.z-- },
+                function () { OutputParser.position.z++ }
+           );
 		}
 	}
 
@@ -103,7 +113,12 @@ class OutputParser
 				for (var i = 0; i < calls.length; i++)
 				{
 					this.parseCall(calls[i].trim());
-					this.updatePosition(function () { this.position.x-- }, function () { this.position.x++ }, function () { this.position.z-- }, function () { this.position.z++ });
+                    this.updatePosition(
+                        function () { OutputParser.position.x-- },
+                        function () { OutputParser.position.x++ },
+                        function () { OutputParser.position.z-- },
+                        function () { OutputParser.position.z++ }
+                    );
 				}
 				direction--;
 				this.position = oldPos;

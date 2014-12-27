@@ -25,10 +25,8 @@ namespace CommandBlocksJS.Cmd
 #else
 			try
 			{
-			#endif
 				jsContext.Run(coreCode);
 				jsContext.Run("var startPosition = new Vector3(" + position.x + ", " + position.y + ", " + position.z + ");");
-			#if (!DEBUG)
 			}
 			catch (JavascriptException e)
 			{
@@ -42,9 +40,7 @@ namespace CommandBlocksJS.Cmd
 #else
 			try
 			{
-			#endif
 				jsContext.Run(usercode + "\n cbjsWorker();");
-			#if (!DEBUG)
 			}
 			catch (JavascriptException e)
 			{

@@ -80,8 +80,10 @@ class OutputHandler
 			this.current = id;
 
 			wire(2);
-			command("setblock ~-3 ~ ~ minecraft:air 0 replace");
-			func();
+            command("setblock ~-3 ~ ~ minecraft:air 0 replace");
+
+            func();
+
 
 			this.current = last;
 			return id;

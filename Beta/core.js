@@ -1,12 +1,13 @@
+﻿
 //region core classes
 /**
- * Class for managing functions.
- */
+* Class for managing functions.
+*/
 var OutputHandler = (function () {
     function OutputHandler() {
         this.output = [''];
         this.functions = [function () {
-        }];
+            }];
         this.current = 0;
     }
     OutputHandler.prototype.addFunction = function (func) {
@@ -14,76 +15,89 @@ var OutputHandler = (function () {
             this.functions.push(func);
             var id = this.functions.indexOf(func);
             this.output[id] = '';
+
             var last = this.current;
             this.current = id;
+
             wire(2);
             command("setblock ~-3 ~ ~ minecraft:air 0 replace");
+
             func();
+
             this.current = last;
             return id;
         }
         return this.functions.indexOf(func);
     };
+
     OutputHandler.prototype.removeFunction = function (func) {
         var id = this.functions.indexOf(func);
         if (id == -1)
             return;
         if (id == this.current)
             throw "Cant remove current Function!";
+
         this.functions.splice(id, 1);
         this.output.splice(id, 1);
     };
+
     OutputHandler.prototype.addToCurrent = function (code) {
         this.output[this.current] += code;
     };
     return OutputHandler;
 })();
+
 /**
- * Static OutputHandler instance.
- */
+* Static OutputHandler instance.
+*/
 var outputHandler = new OutputHandler();
+
 //endregion
 //region core functions
 /**
- * Initial direction.
- */
+* Initial direction.
+*/
 var direction = 1;
+
 /**
- * Places a block.
- * @param id Minecraft ID of the block.
- * @param data Block data/damage.
- */
+* Places a block.
+* @param id Minecraft ID of the block.
+* @param data Block data/damage.
+*/
 function block(id, data) {
-    if (id === void 0) { id = 1; }
-    if (data === void 0) { data = 0; }
+    if (typeof id === "undefined") { id = 1; }
+    if (typeof data === "undefined") { data = 0; }
     outputHandler.addToCurrent('b' + id + '_' + data + ';');
 }
+
 /**
- * Places a command block.
- * @param text Content of the command block.
- * @param placeRepeater Whether or not to place a repeater before calling the function.
- */
+* Places a command block.
+* @param text Content of the command block.
+* @param placeRepeater Whether or not to place a repeater before calling the function.
+*/
 function command(text, placeRepeater) {
-    if (placeRepeater === void 0) { placeRepeater = true; }
+    if (typeof placeRepeater === "undefined") { placeRepeater = true; }
     if (placeRepeater)
         delay();
     outputHandler.addToCurrent('c' + text + ';');
 }
+
 /**
- * Querys a command block.
- * @param text Content of the command block.
- * @param placeRepeater Whether or not to place a repeater before calling the function.
- */
+* Querys a command block.
+* @param text Content of the command block.
+* @param placeRepeater Whether or not to place a repeater before calling the function.
+*/
 function queryCommand(text, placeRepeater) {
-    if (placeRepeater === void 0) { placeRepeater = true; }
+    if (typeof placeRepeater === "undefined") { placeRepeater = true; }
     if (placeRepeater)
         delay();
     outputHandler.addToCurrent('q' + text + ';');
 }
+
 /**
- * Places parallel code to the structure.
- * @param func Function to add. Will be run immediately.
- */
+* Places parallel code to the structure.
+* @param func Function to add. Will be run immediately.
+*/
 function sidewards(func) {
     direction++;
     var code = 's';
@@ -107,63 +121,68 @@ function sidewards(func) {
     outputHandler.addToCurrent(code + ';');
     direction--;
 }
+
 /**
- * Adds the function to the structure and calls the redstone.
- * @param func JavaScript/TypeScript function.
- * @param placeRepeater Whether or not to place a repeater before calling the function.
- */
+* Adds the function to the structure and calls the redstone.
+* @param func JavaScript/TypeScript function.
+* @param placeRepeater Whether or not to place a repeater before calling the function.
+*/
 function call(func, placeRepeater) {
-    if (placeRepeater === void 0) { placeRepeater = true; }
+    if (typeof placeRepeater === "undefined") { placeRepeater = true; }
     var funcId = outputHandler.addFunction(func);
     if (placeRepeater)
         delay();
     outputHandler.addToCurrent('e' + funcId + ';');
 }
+
 /**
- * Places a sign (for notes etc.)
- * @param text1 First line of the sign.
- * @param text2 Second line of the sign.
- * @param text3 Third line of the sign.
- * @param text4 Fourth line of the sign.
- * @param direc Direction where the sign faces.
- */
+* Places a sign (for notes etc.)
+* @param text1 First line of the sign.
+* @param text2 Second line of the sign.
+* @param text3 Third line of the sign.
+* @param text4 Fourth line of the sign.
+* @param direc Direction where the sign faces.
+*/
 function sign(text1, text2, text3, text4, direc) {
-    if (text1 === void 0) { text1 = ""; }
-    if (text2 === void 0) { text2 = ""; }
-    if (text3 === void 0) { text3 = ""; }
-    if (text4 === void 0) { text4 = ""; }
-    if (direc === void 0) { direc = direction * 4; }
+    if (typeof text1 === "undefined") { text1 = ""; }
+    if (typeof text2 === "undefined") { text2 = ""; }
+    if (typeof text3 === "undefined") { text3 = ""; }
+    if (typeof text4 === "undefined") { text4 = ""; }
+    if (typeof direc === "undefined") { direc = direction * 4; }
     outputHandler.addToCurrent('n' + text1 + text2 + text3 + text4 + '_' + direc + ';');
 }
+
 //enregion
 //region wrapper functions
 /**
- * Places ´length´ redstone dust.
- * @param length Length of the wire.
- */
+* Places ´length´ redstone dust.
+* @param length Length of the wire.
+*/
 function wire(length) {
-    if (length === void 0) { length = 1; }
+    if (typeof length === "undefined") { length = 1; }
     for (var i = 0; i < length; i++)
         block(55);
 }
+
 /**
- * Places a redstone torch.
- * @param activated If false, the redstone torch will initially be turned off.
- */
+* Places a redstone torch.
+* @param activated If false, the redstone torch will initially be turned off.
+*/
 function torch(activated) {
-    if (activated === void 0) { activated = true; }
+    if (typeof activated === "undefined") { activated = true; }
     var data = (direction == 4) ? direction + 1 : 1;
     if (activated)
         block(76, data);
     else
         block(75, data);
 }
+
 /**
- * Places repeaters to delay ´time´. Will do nothing if ´time´ is zero.
- * @param time Time in 1/10th of a second.
- */
+* Places repeaters to delay ´time´. Will do nothing if ´time´ is zero.
+* @param time Time in 1/10th of a second.
+*/
 function delay(time) {
-    if (time === void 0) { time = 0; }
+    if (typeof time === "undefined") { time = 0; }
     while (time >= 0) {
         var delay = (time > 3) ? 3 : (time == 0) ? 0 : time - 1;
         var data = delay * 4 + direction;
@@ -171,54 +190,60 @@ function delay(time) {
         time -= (time > 3) ? delay + 1 : delay + 2;
     }
 }
+
 /**
- * Places a comparator.
- * @param activated If true, the comparator's state will initially be turned on.
- */
+* Places a comparator.
+* @param activated If true, the comparator's state will initially be turned on.
+*/
 function comparator(activated) {
-    if (activated === void 0) { activated = false; }
+    if (typeof activated === "undefined") { activated = false; }
     if (activated)
         block(150, direction);
     else
         block(149, direction);
 }
+
 /**
- * Inverts the signal. (NOT)
- * @param blockId Block where redstone torch will be on.
- * @param placeRepeater Whether or not to place a repeater before the block.
- */
+* Inverts the signal. (NOT)
+* @param blockId Block where redstone torch will be on.
+* @param placeRepeater Whether or not to place a repeater before the block.
+*/
 function invert(blockId, placeRepeater) {
-    if (blockId === void 0) { blockId = 1; }
-    if (placeRepeater === void 0) { placeRepeater = true; }
+    if (typeof blockId === "undefined") { blockId = 1; }
+    if (typeof placeRepeater === "undefined") { placeRepeater = true; }
     if (placeRepeater)
         delay();
     block(blockId);
     torch();
 }
+
 //endregion
 //region main code
 block(143, 5);
 wire(1);
+
 /**
- * Entry point of every script. Will append automatically.
- */
+* Entry point of every script. Will append automatically.
+*/
 function cbjsWorker() {
     OutputParser.start();
+
     EventHandler.emit("end");
     api.log("Successfully executed " + outputHandler.functions.length + " functions!");
 }
+
 //endregion
 //region internal helper classes
 /**
- * Class for generating unique names. Useful for scoreboards.
- */
+* Class for generating unique names. Useful for scoreboards.
+*/
 var Naming = (function () {
     function Naming() {
     }
     /**
-     * Generates unique names with ´name´ as prefix. Will start at zero when giving a new name.
-     * @param name Prefix for unique name.
-     */
+    * Generates unique names with ´name´ as prefix. Will start at zero when giving a new name.
+    * @param name Prefix for unique name.
+    */
     Naming.next = function (name) {
         this.names[name] = this.names[name] || 0;
         this.names[name]++;
@@ -227,6 +252,7 @@ var Naming = (function () {
     Naming.names = {};
     return Naming;
 })();
+
 var Vector3 = (function () {
     function Vector3(x, y, z) {
         this.x = 0;
@@ -237,67 +263,82 @@ var Vector3 = (function () {
         this.z = z;
     }
     Vector3.prototype.toString = function (separator) {
-        if (separator === void 0) { separator = ' '; }
+        if (typeof separator === "undefined") { separator = ' '; }
         return this.x + separator + this.y + separator + this.z;
     };
+
     Vector3.prototype.add = function (b) {
         this.x += b.x;
         this.y += b.y;
         this.z += b.z;
+
         return this;
     };
+
     Vector3.prototype.subtract = function (b) {
         this.x -= b.x;
         this.y -= b.y;
         this.z -= b.z;
+
         return this;
     };
+
     Vector3.prototype.clone = function () {
         return new Vector3(this.x, this.y, this.z);
     };
     return Vector3;
 })();
+//endredion
 //region utility functions
 function callOnce(callback, placeRepeater) {
-    if (placeRepeater === void 0) { placeRepeater = true; }
+    if (typeof placeRepeater === "undefined") { placeRepeater = true; }
     call(function () {
         command("setblock ~-3 ~ ~ minecraft:air 0 replace", true);
         callback();
     }, placeRepeater);
 }
+
 function validate(cmd, callback, placeRepeater) {
-    if (placeRepeater === void 0) { placeRepeater = true; }
+    if (typeof placeRepeater === "undefined") { placeRepeater = true; }
     if (placeRepeater !== false)
         delay();
+
     sidewards(function () {
         queryCommand(cmd, false);
         comparator();
         call(callback, false);
     });
 }
+
 function validateSync(cmd, placeRepeater) {
-    if (placeRepeater === void 0) { placeRepeater = true; }
+    if (typeof placeRepeater === "undefined") { placeRepeater = true; }
     queryCommand(cmd, placeRepeater);
     comparator();
 }
+
 function testfor(statement, callback, placeRepeater) {
-    if (placeRepeater === void 0) { placeRepeater = true; }
+    if (typeof placeRepeater === "undefined") { placeRepeater = true; }
     validate('testfor ' + statement, callback, placeRepeater);
 }
+
 function testforSync(statement, placeRepeater) {
-    if (placeRepeater === void 0) { placeRepeater = true; }
+    if (typeof placeRepeater === "undefined") { placeRepeater = true; }
     validateSync('testfor ' + statement, placeRepeater);
 }
+
 function testforNot(statement, callback, placeRepeater) {
-    if (placeRepeater === void 0) { placeRepeater = true; }
+    if (typeof placeRepeater === "undefined") { placeRepeater = true; }
     if (placeRepeater)
         delay();
+
     sidewards(function () {
         queryCommand("testfor " + statement, false);
         comparator();
         block(1);
     });
+
     delay();
+
     sidewards(function () {
         command("setblock ~-1 ~ ~2 minecraft:unpowered_repeater 1", false);
         delay();
@@ -305,6 +346,7 @@ function testforNot(statement, callback, placeRepeater) {
         call(callback, false);
     });
 }
+
 //endregion
 //region timer
 function timer(time, callback) {
@@ -312,55 +354,66 @@ function timer(time, callback) {
     t.start();
     return t;
 }
+
 var Timer = (function () {
     function Timer(callback, options) {
-        if (options === void 0) { options = { time: 10, useScoreboard: false, hardTickLength: 10, callAsync: false, scoreName: Naming.next("timer") }; }
+        if (typeof options === "undefined") { options = { time: 10, useScoreboard: false, hardTickLength: 10, callAsync: false, scoreName: Naming.next("timer") }; }
         this.options = options;
         this.callback = callback;
+
         if (options.useScoreboard !== false) {
             this.scoreTicks = ((options.time / options.hardTickLength) < 1) ? 1 : (options.time / options.hardTickLength);
             options.time = options.hardTickLength;
+
             var varOptions = {};
             varOptions.name = options.scoreName;
             this.timerVar = new RuntimeInteger(varOptions);
+
             var isRunningOptions = {};
             isRunningOptions.name = varOptions.name + "R";
             this.isRunning = new RuntimeInteger(isRunningOptions);
             this.isRunning.set(-1);
+
+            var _timerVar = this.timerVar;
             callOnce(function () {
-                this.timerVar.set(-1);
+                _timerVar.set(-1);
             });
             delay(3);
+
             options.time = (options.time - 5 > 0) ? options.time - 5 : 1;
         }
     }
-    Timer.prototype.timerFunc = function () {
-        if (this.options.useScoreboard == false) {
-            if (this.options.callAsync)
-                call(this.callback);
+    Timer.prototype.timerFunc = function (self) {
+        if (self.options.useScoreboard === false) {
+            if (self.options.callAsync)
+                call(self.callback);
             else
-                this.callback();
-        }
-        else {
-            testforSync(this.isRunning.hasValue(1));
-            this.timerVar.add(1);
-            testfor(this.timerVar.isBetween(this.scoreTicks), function () {
-                this.timerVar.set(0);
-                this.callback();
+                self.callback();
+        } else {
+            testforSync(self.isRunning.hasValue(1));
+            self.timerVar.add(1);
+            testfor(self.timerVar.isBetween(self.scoreTicks), function () {
+                self.timerVar.set(0);
+                self.callback();
             });
         }
-        delay(this.options.time);
-        call(this.timerFunc);
+
+        delay(self.options.time);
+        call(arguments.callee.caller);
     };
+
     Timer.prototype.start = function () {
         if (this.options.useScoreboard) {
             testfor(this.isRunning.hasValue(-1), this.timerFunc);
             this.isRunning.set(1);
-        }
-        else {
-            call(this.timerFunc);
+        } else {
+            var that = this;
+            call(function () {
+                that.timerFunc(that);
+            });
         }
     };
+
     Timer.prototype.stop = function () {
         if (this.options.useScoreboard == false)
             throw "Cannot stop timer that doesnt use the Scoreboard";
@@ -368,15 +421,18 @@ var Timer = (function () {
     };
     return Timer;
 })();
+//endregion
 function assert(condition, message) {
-    if (message === void 0) { message = "Assertion failed"; }
+    if (typeof message === "undefined") { message = "Assertion failed"; }
     if (!condition)
         throw message;
 }
+
 function isSelector(c) {
     assert(c == "a" || c == "e" || c == "r" || c == "p");
     return c;
 }
+
 assert(true, "Assert is not working");
 /// <reference path="base.ts"/>
 /// <reference path="tellraw.ts"/>
@@ -393,10 +449,11 @@ var GameMode;
     GameMode[GameMode["Adventure"] = 2] = "Adventure";
     GameMode[GameMode["Spectator"] = 3] = "Spectator";
 })(GameMode || (GameMode = {}));
+
 //region player.js
 var Player = (function () {
     function Player(selector) {
-        if (selector instanceof String)
+        if (typeof selector == "string")
             this.selector = Selector.parse(selector);
         else if (selector instanceof Selector)
             this.selector = selector;
@@ -406,195 +463,227 @@ var Player = (function () {
     Player.prototype.setGameMode = function (mode) {
         command("gamemode " + mode.toString() + " " + this.selector);
     };
+
     Player.prototype.teleport = function (dest) {
         if (typeof dest == 'string') {
             command("tp " + this.selector + " " + dest);
-        }
-        else {
+        } else {
             if (typeof dest.yrot == 'undefined' || typeof dest.xrot != 'undefined')
                 command("tp " + this.selector + " " + dest.x + " " + dest.y + " " + dest.z);
             else
                 command("tp " + this.selector + " " + dest.x + " " + dest.y + " " + dest.z + " " + dest.yrot + " " + dest.xrot);
         }
     };
+
     Player.prototype.clear = function (item, data, maxCount, dataTag) {
-        if (item === void 0) { item = ""; }
-        if (data === void 0) { data = ""; }
-        if (maxCount === void 0) { maxCount = ""; }
-        if (dataTag === void 0) { dataTag = ""; }
+        if (typeof item === "undefined") { item = ""; }
+        if (typeof data === "undefined") { data = ""; }
+        if (typeof maxCount === "undefined") { maxCount = ""; }
+        if (typeof dataTag === "undefined") { dataTag = ""; }
         command("clear " + this.selector + " " + item + " " + data + " " + maxCount + " " + dataTag);
     };
+
     Player.prototype.tell = function (text) {
         command("tell " + this.selector + " " + text);
     };
+
     Player.prototype.tellraw = function (param) {
         if (typeof param == 'object') {
             param.tell(this.selector);
-        }
-        else {
+        } else {
             tellraw(this.selector, param);
         }
     };
+
     Player.prototype.setTeam = function (team) {
         if (typeof team == 'object') {
             team.join(this.selector);
-        }
-        else {
+        } else {
             command("scoreboard teams join " + team + " " + this.selector);
         }
     };
+
     Player.prototype.setScore = function (score, value) {
         if (typeof score == 'object') {
             score.set(this.selector, value);
-        }
-        else {
+        } else {
             command("scoreboard players set " + this.selector + " " + score + " " + value);
         }
     };
+
     Player.prototype.addScore = function (score, value) {
         if (typeof score == 'object') {
             score.add(this.selector, value);
-        }
-        else {
+        } else {
             command("scoreboard players add " + this.selector + " " + score + " " + value);
         }
     };
+
     Player.prototype.removeScore = function (score, value) {
         if (typeof score == 'object') {
             score.remove(this.selector, value);
-        }
-        else {
+        } else {
             command("scoreboard players remove " + this.selector + " " + score + " " + value);
         }
     };
+
     Player.prototype.getSelector = function () {
         return this.selector;
     };
+
     Player.prototype.toString = function () {
         return this.selector.toString();
     };
     return Player;
 })();
+
 var PlayerArray = (function (_super) {
     __extends(PlayerArray, _super);
     function PlayerArray(name, selector, createObjective) {
-        if (name === void 0) { name = Naming.next('array'); }
-        if (selector === void 0) { selector = Selector.allPlayer(); }
-        if (createObjective === void 0) { createObjective = true; }
-        _super.call(this, selector);
+        if (typeof name === "undefined") { name = Naming.next('array'); }
+        if (typeof selector === "undefined") { selector = Selector.allPlayer(); }
+        if (typeof createObjective === "undefined") { createObjective = true; }
+        _super.call(this, selector.toString());
+
         this.name = name;
-        this.name = name;
+
         var arrayScore;
         if (createObjective)
             arrayScore = new Score(name, "dummy");
         else
             arrayScore = new Score(name);
+
         if (typeof selector != 'undefined')
             arrayScore.set(selector, 1);
+
         Player.call(this, arrayScore.getSelector(1));
     }
     PlayerArray.prototype.addPlayer = function (selector) {
-        if (selector === void 0) { selector = this.getSelector(); }
+        if (typeof selector === "undefined") { selector = this.getSelector(); }
         this.arrayScore.set(selector.toString(), 1);
     };
+
     PlayerArray.prototype.removePlayer = function (selector) {
-        if (selector === void 0) { selector = this.getSelector(); }
+        if (typeof selector === "undefined") { selector = this.getSelector(); }
         this.arrayScore.set(selector.toString(), 0);
     };
+
     PlayerArray.prototype.getScore = function () {
         return this.arrayScore;
     };
+
     PlayerArray.prototype.toTeam = function (teamname) {
-        if (teamname === void 0) { teamname = this.name; }
+        if (typeof teamname === "undefined") { teamname = this.name; }
         var team = new Team(teamname);
         team.join(this.selector.toString());
         return team;
     };
     return PlayerArray;
 })(Player);
+
 var Selector = (function () {
     function Selector(selectorChar, attributes) {
-        if (selectorChar === void 0) { selectorChar = "a"; }
-        if (attributes === void 0) { attributes = {}; }
+        if (typeof selectorChar === "undefined") { selectorChar = "a"; }
+        if (typeof attributes === "undefined") { attributes = {}; }
         this.selectorChar = selectorChar;
         this.attributes = attributes;
     }
     Selector.prototype.setAttribute = function (name, value) {
         this.attributes[name] = value;
     };
+
     Selector.prototype.setAttributes = function (newAttributes) {
         for (var name in newAttributes)
             this.setAttribute(name, newAttributes[name]);
     };
+
     Selector.prototype.removeAttribute = function (name) {
         delete this.attributes[name];
     };
+
     Selector.prototype.clone = function () {
         var atts = {};
         for (var key in this.attributes)
             if (this.attributes.hasOwnProperty(key))
                 atts[key] = this.attributes[key];
+
         return new Selector(this.selectorChar, atts);
     };
+
     Selector.prototype.toString = function () {
         return Selector.buildSelector(this.selectorChar, this.attributes);
     };
+
     Selector.parse = function (stringSelector) {
         stringSelector = stringSelector.toString() || "@a[]";
+
         var selectorChar = stringSelector[1];
         var attributes = {};
+
         var attributeString = stringSelector.substring(3, stringSelector.length - 1);
         var attributeArray = attributeString.split(',');
         for (var i = 0; i < attributeArray.length; i++) {
             var attributeSplit = attributeArray[i].split('=');
             attributes[attributeSplit[0]] = attributeSplit[1];
         }
+
         return new Selector(selectorChar, attributes);
     };
+
     Selector.buildSelector = function (selectorChar, attributes) {
-        if (attributes === void 0) { attributes = {}; }
+        if (typeof attributes === "undefined") { attributes = {}; }
         var sel = "@" + selectorChar;
+
         if (Object.keys(attributes).length < 1)
             return sel;
+
         sel += "[";
         for (var key in attributes) {
             sel += key + "=" + attributes[key] + ",";
         }
         sel = sel.substring(0, sel.length - 1);
         sel += "]";
+
         return sel;
     };
+
     Selector.player = function (attributes) {
-        if (attributes === void 0) { attributes = {}; }
+        if (typeof attributes === "undefined") { attributes = {}; }
         return Selector.buildSelector("p", attributes);
     };
+
     Selector.randomPlayer = function (attributes) {
-        if (attributes === void 0) { attributes = {}; }
+        if (typeof attributes === "undefined") { attributes = {}; }
         return Selector.buildSelector("r", attributes);
     };
+
     Selector.allPlayer = function (attributes) {
-        if (attributes === void 0) { attributes = {}; }
+        if (typeof attributes === "undefined") { attributes = {}; }
         return Selector.buildSelector("a", attributes);
     };
+
     Selector.entities = function (attributes) {
-        if (attributes === void 0) { attributes = {}; }
+        if (typeof attributes === "undefined") { attributes = {}; }
         return Selector.buildSelector("e", attributes);
     };
     return Selector;
 })();
+//endregion
 /// <reference path="base.ts"/>
 /// <reference path="player.ts"/>
 //region tellraw.js
 function tellraw(message, selector) {
-    if (selector === void 0) { selector = Selector.allPlayer(); }
+    if (typeof selector === "undefined") { selector = Selector.allPlayer(); }
     var t = new Tellraw();
     if (typeof message === "object")
         t.addExtra(message);
     else
         t.addText(message);
+
     t.tell(selector);
     return t;
 }
+
 var Tellraw = (function () {
     function Tellraw() {
         this.extras = [];
@@ -602,17 +691,21 @@ var Tellraw = (function () {
     Tellraw.prototype.addText = function (text) {
         this.extras.push({ "text": text });
     };
+
     Tellraw.prototype.addScore = function (selector, objective) {
         this.extras.push({ "score": { "name": selector.toString(), "objective": objective } });
     };
+
     Tellraw.prototype.addSelector = function (selector) {
         this.extras.push({ "selector": selector.toString() });
     };
+
     Tellraw.prototype.addExtra = function (extra) {
         this.extras.push(extra.obj);
     };
+
     Tellraw.prototype.tell = function (selector) {
-        if (selector === void 0) { selector = Selector.allPlayer(); }
+        if (typeof selector === "undefined") { selector = Selector.allPlayer(); }
         var extrasArray = JSON.stringify(this.extras);
         command('tellraw ' + selector + ' {"text":"",extra:' + extrasArray + '}');
     };
@@ -620,48 +713,61 @@ var Tellraw = (function () {
 })();
 var TellrawExtra = (function () {
     function TellrawExtra(text) {
-        if (text === void 0) { text = ""; }
+        if (typeof text === "undefined") { text = ""; }
         this.obj = { "text": text };
     }
     TellrawExtra.prototype.setText = function (newText) {
         this.setOption("text", newText);
     };
+
     TellrawExtra.prototype.setClickEvent = function (action, value) {
         this.setOption("clickEvent", { "action": action, "value": value });
     };
+
     TellrawExtra.prototype.setHoverEvent = function (action, value) {
         this.setOption("clickEvent", { "action": action, "value": value });
     };
+
     TellrawExtra.prototype.setColor = function (color) {
         this.setOption("color", color);
     };
+
     TellrawExtra.prototype.setOption = function (name, value) {
         this.obj[name] = value;
     };
     return TellrawExtra;
 })();
+
 var TellrawClickableExtra = (function (_super) {
     __extends(TellrawClickableExtra, _super);
     function TellrawClickableExtra(callback, text, options) {
-        if (options === void 0) { options = {}; }
+        if (typeof options === "undefined") { options = {}; }
         _super.call(this, text);
+
         options.name = options.name || Naming.next("clickExtra").toLowerCase();
+
         _super.prototype.setClickEvent.call(this, "run_command", "/trigger " + options.name + "E add 1");
+
         var scoreEvent = new ScoreChangeEvent(new Score(options.name, "trigger"), options);
         EventHandler.events[(options.name)] = scoreEvent;
+
         var score = new Score(options.name + "E", "trigger", undefined, false);
+
         scoreEvent.addListener(function (player) {
             if (options.multipleClicks !== false)
                 score.enableTrigger(Selector.allPlayer());
             callback(player);
         });
+
         score.enableTrigger(Selector.allPlayer());
+
         _super.prototype.setClickEvent = function () {
             throw "setting the click event command is not supported using TellrawClickableExtra";
         };
     }
     return TellrawClickableExtra;
 })(TellrawExtra);
+//endregion
 /// <reference path="base.ts"/>
 /// <reference path="test.ts"/>
 /// <reference path="tellraw.ts"/>
@@ -669,6 +775,7 @@ var TellrawClickableExtra = (function (_super) {
 function say(message) {
     command("say " + message);
 }
+
 var Formatting = {
     black: "§0",
     darkBlue: "§1",
@@ -692,11 +799,13 @@ var Formatting = {
     underlined: "§n",
     reset: "§r"
 };
+
 String.prototype.format = function (formatting) {
     return formatText(this, formatting);
 };
+
 function formatText(text, formatting) {
-    if (formatting === void 0) { formatting = "§c"; }
+    if (typeof formatting === "undefined") { formatting = "§c"; }
     var words = text.split(" ");
     text = "";
     for (var i = 0; i < words.length; i++) {
@@ -704,25 +813,31 @@ function formatText(text, formatting) {
     }
     return text.trim();
 }
+
 //endregion
 //region title
 function title(target, text, isSubtitle) {
     target = target || Selector.allPlayer();
     text = text || "No Text defined!";
+
     var t = new Title(text, isSubtitle);
     t.show(target);
     return t;
 }
+
 var TitleType;
 (function (TitleType) {
     TitleType[TitleType["Subtitle"] = 0] = "Subtitle";
     TitleType[TitleType["Title"] = 1] = "Title";
 })(TitleType || (TitleType = {}));
+
 var Title = (function (_super) {
     __extends(Title, _super);
     function Title(text, type) {
         _super.call(this, text);
+
         this.titleType = type;
+
         _super.prototype.setClickEvent = function () {
             throw "Setting events is not supported for titles";
         };
@@ -731,40 +846,45 @@ var Title = (function (_super) {
         };
     }
     Title.prototype.show = function (player) {
-        if (player === void 0) { player = Selector.allPlayer(); }
+        if (typeof player === "undefined") { player = Selector.allPlayer(); }
         var json = JSON.stringify(this.obj);
         command("title " + player + " " + this.titleType.toString().toLowerCase() + " " + json);
     };
+
     Title.setTime = function (player, fadeIn, stay, fadeOut) {
-        if (player === void 0) { player = Selector.allPlayer(); }
-        if (fadeIn === void 0) { fadeIn = 1; }
-        if (stay === void 0) { stay = 5; }
-        if (fadeOut === void 0) { fadeOut = 1; }
+        if (typeof player === "undefined") { player = Selector.allPlayer(); }
+        if (typeof fadeIn === "undefined") { fadeIn = 1; }
+        if (typeof stay === "undefined") { stay = 5; }
+        if (typeof fadeOut === "undefined") { fadeOut = 1; }
         command("title " + player + " times " + fadeIn + " " + stay + " " + fadeOut);
     };
+
     Title.reset = function (player) {
-        if (player === void 0) { player = Selector.allPlayer(); }
+        if (typeof player === "undefined") { player = Selector.allPlayer(); }
         command("title " + player + " reset");
     };
+
     Title.clear = function (player) {
-        if (player === void 0) { player = Selector.allPlayer(); }
+        if (typeof player === "undefined") { player = Selector.allPlayer(); }
         command("title " + player + " clear");
     };
     return Title;
 })(TellrawExtra);
+
 //endregion title
 //region scoreboard
 var Score = (function () {
     function Score(name, type, displayName, addObjective) {
-        if (name === void 0) { name = Naming.next("score"); }
-        if (type === void 0) { type = "dummy"; }
-        if (displayName === void 0) { displayName = undefined; }
-        if (addObjective === void 0) { addObjective = true; }
+        if (typeof name === "undefined") { name = Naming.next("score"); }
+        if (typeof type === "undefined") { type = "dummy"; }
+        if (typeof displayName === "undefined") { displayName = undefined; }
+        if (typeof addObjective === "undefined") { addObjective = true; }
         if (displayName === undefined)
             displayName = name;
         assert(name.length <= 16, "Cannot create Score with name \"" + name + "\" maximum name length is 16");
         if (addObjective)
             command("scoreboard objectives add " + name + " " + type + " " + displayName);
+
         this.name = name;
         this.type = type;
         this.displayName = displayName;
@@ -772,40 +892,53 @@ var Score = (function () {
     Score.prototype.set = function (player, value) {
         command("scoreboard players set " + player + " " + this.name + " " + value);
     };
+
     Score.prototype.add = function (player, value) {
         command("scoreboard players add " + player + " " + this.name + " " + value);
     };
+
     Score.prototype.remove = function (player, value) {
         command("scoreboard players remove " + player + " " + this.name + " " + value);
     };
+
     Score.prototype.reset = function (player) {
         command("scoreboard players reset " + player + " " + this.name);
     };
+
     Score.prototype.setDisplay = function (slot) {
         command("scoreboard objectives setdisplay " + slot + " " + this.name);
     };
+
     Score.prototype.enableTrigger = function (player) {
         if (this.type != "trigger")
             throw "Cannot enable trigger for non Trigger objective \"" + this.name + "\"";
+
         command("scoreboard players enable " + player + " " + this.name);
     };
+
     Score.prototype.test = function (player, callback, min, max) {
-        if (min === void 0) { min = 1; }
-        if (max === void 0) { max = 2147483648; }
+        if (typeof min === "undefined") { min = 1; }
+        if (typeof max === "undefined") { max = 2147483648; }
         validate("scoreboard players test " + player + " " + this.name + " " + min + " " + max, callback);
     };
+
     Score.prototype.operation = function (player, operation, otherPlayer, otherObjective) {
         command("scoreboard players operation " + player + " " + this.name + " " + operation + " " + otherPlayer + " " + otherObjective);
     };
+
     Score.prototype.getSelector = function (min, max) {
         var minKey = "score_" + this.name + "_min";
         var maxKey = "score_" + this.name;
+
         var attributes = {};
         attributes[minKey] = min;
+
         if (typeof max != "undefined")
             attributes[maxKey] = max;
+
         return new Selector("a", attributes);
     };
+
     Score.prototype.getPlayer = function (min, max) {
         var reference = this.getSelector(min, max);
         return new PlayerArray(this.name, reference.toString());
@@ -814,8 +947,8 @@ var Score = (function () {
 })();
 var Team = (function () {
     function Team(name, addTeam) {
-        if (name === void 0) { name = Naming.next("team"); }
-        if (addTeam === void 0) { addTeam = true; }
+        if (typeof name === "undefined") { name = Naming.next("team"); }
+        if (typeof addTeam === "undefined") { addTeam = true; }
         this.name = name;
         if (addTeam)
             command("scoreboard teams add " + this.name);
@@ -823,24 +956,30 @@ var Team = (function () {
     Team.prototype.empty = function () {
         command("scoreboard teams empty " + this.name);
     };
+
     Team.prototype.join = function (player) {
         command("scoreboard teams join " + this.name + " " + player);
     };
+
     Team.prototype.leave = function (player) {
         command("scoreboard teams leave " + this.name + " " + player);
     };
+
     Team.prototype.setOption = function (option, value) {
         command("scoreboard teams option " + this.name + " " + option + " " + value);
     };
+
     Team.prototype.getSelector = function () {
         return new Selector("a", { team: this.name });
     };
+
     Team.prototype.getPlayer = function () {
         var reference = this.getSelector();
         return new PlayerArray(this.name, reference.toString());
     };
     return Team;
 })();
+//endregion
 /// <reference path="util.ts"/>
 /// <reference path="vanillaCommands.ts"/>
 var McEvent = (function () {
@@ -850,45 +989,46 @@ var McEvent = (function () {
     McEvent.prototype.addListener = function (func) {
         this.listener.push(func);
     };
+
     McEvent.prototype.trigger = function () {
         var args = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            args[_i - 0] = arguments[_i];
+        for (var _i = 0; _i < (arguments.length - 0); _i++) {
+            args[_i] = arguments[_i + 0];
         }
         for (var i = 0; i < this.listener.length; i++) {
-            this.listener[i].call(args);
+            var that = this;
+            call(function () {
+                that.listener[i].apply(undefined, args);
+            });
         }
     };
     return McEvent;
 })();
+
 var EventHandler = (function () {
     function EventHandler() {
     }
-    EventHandler.add = function (name, event) {
-        if (EventHandler.events[name] !== null)
+    EventHandler.add = function (name, ev) {
+        if (EventHandler.events[name] !== undefined)
             throw "Cannot add Event \"" + name + "\" it already exists!";
-        EventHandler.events[name] = event;
+        EventHandler.events[name] = ev;
     };
+
     EventHandler.on = function (name, func) {
         this.events[name].addListener(func);
     };
+
     EventHandler.emit = function (name) {
         var args = [];
-        for (var _i = 1; _i < arguments.length; _i++) {
-            args[_i - 1] = arguments[_i];
+        for (var _i = 0; _i < (arguments.length - 1); _i++) {
+            args[_i] = arguments[_i + 1];
         }
         this.events[name].trigger(args);
     };
+    EventHandler.events = {};
     return EventHandler;
 })();
-EventHandler.add("end", new CompiletimeEvent());
-EventHandler.add("onmove", new ScoreChangeEvent(new Score("onmove", "stat.walkOneCm")));
-EventHandler.add("oncrouch", new ScoreChangeEvent(new Score("oncrouch", "stat.crouchOneCm")));
-EventHandler.add("onswim", new ScoreChangeEvent(new Score("onswim", "stat.swimOneCm")));
-EventHandler.add("onsprint", new ScoreChangeEvent(new Score("onsprint", "stat.sprintOneCm")));
-EventHandler.add("ondeath", new ScoreChangeEvent(new Score("ondeath", "deathCount"), 1, 2147483648, false));
-EventHandler.add("onkill", new ScoreChangeEvent(new Score("onkill", "playerKillCount"), 2147483648, 1, false));
-EventHandler.add("onentitykill", new ScoreChangeEvent(new Score("onentitykill", "totalKillCount"), 1, 2147483648, false));
+
 var CompiletimeEvent = (function (_super) {
     __extends(CompiletimeEvent, _super);
     function CompiletimeEvent() {
@@ -896,25 +1036,34 @@ var CompiletimeEvent = (function (_super) {
     }
     return CompiletimeEvent;
 })(McEvent);
+
+EventHandler.add("end", new CompiletimeEvent());
+
 var ScoreChangeEvent = (function (_super) {
     __extends(ScoreChangeEvent, _super);
     function ScoreChangeEvent(score, triggerAtMin, triggerAtMax, resetValue, removeFromValue) {
-        if (triggerAtMin === void 0) { triggerAtMin = 1; }
-        if (triggerAtMax === void 0) { triggerAtMax = 2147483648; }
-        if (resetValue === void 0) { resetValue = true; }
-        if (removeFromValue === void 0) { removeFromValue = 1; }
+        if (typeof triggerAtMin === "undefined") { triggerAtMin = 1; }
+        if (typeof triggerAtMax === "undefined") { triggerAtMax = 2147483648; }
+        if (typeof resetValue === "undefined") { resetValue = true; }
+        if (typeof removeFromValue === "undefined") { removeFromValue = 1; }
         _super.call(this);
+
         this.score = score;
+
         this.triggerAtMin = triggerAtMin;
         this.triggerAtMax = triggerAtMax;
         this.resetValue = resetValue;
         this.removeFromValue = removeFromValue;
+
         EventHandler.on("end", function () {
             var callback = function () {
                 for (var name in EventHandler.events) {
                     var ev = EventHandler.events[name];
                     if (ev instanceof ScoreChangeEvent) {
-                        call(ev.timerTick);
+                        var scoreEvent = ev;
+                        call(function () {
+                            scoreEvent.timerTick.call(scoreEvent);
+                        });
                     }
                 }
             };
@@ -928,6 +1077,7 @@ var ScoreChangeEvent = (function (_super) {
         testforSync(sel);
         var player = this.score.getPlayer(this.triggerAtMin, this.triggerAtMax);
         _super.prototype.trigger.call(this, player);
+
         if (this.resetValue)
             this.score.reset(sel);
         else
@@ -935,31 +1085,45 @@ var ScoreChangeEvent = (function (_super) {
     };
     return ScoreChangeEvent;
 })(McEvent);
+
+EventHandler.add("onmove", new ScoreChangeEvent(new Score("onmove", "stat.walkOneCm")));
+EventHandler.add("oncrouch", new ScoreChangeEvent(new Score("oncrouch", "stat.crouchOneCm")));
+EventHandler.add("onswim", new ScoreChangeEvent(new Score("onswim", "stat.swimOneCm")));
+EventHandler.add("onsprint", new ScoreChangeEvent(new Score("onsprint", "stat.sprintOneCm")));
+EventHandler.add("ondeath", new ScoreChangeEvent(new Score("ondeath", "deathCount"), 1, 2147483648, false));
+EventHandler.add("onkill", new ScoreChangeEvent(new Score("onkill", "playerKillCount"), 2147483648, 1, false));
+EventHandler.add("onentitykill", new ScoreChangeEvent(new Score("onentitykill", "totalKillCount"), 1, 2147483648, false));
 /// <reference path="base.ts"/>
+
 var OutputParser = (function () {
     function OutputParser() {
     }
     OutputParser.start = function () {
         this.position = startPosition;
         var functions = outputHandler.output;
+
         for (var i = 0; i < functions.length; i++) {
             this.functionPositions[i] = this.position.clone();
+
             var sidewards = this.getMaxSidewards(functions[i]);
+
             this.updatePosition(function () {
-                this.position.z -= sidewards;
+                OutputParser.position.z -= sidewards;
             }, function () {
-                this.position.z += sidewards;
+                OutputParser.position.z += sidewards;
             }, function () {
-                this.position.z -= sidewards;
+                OutputParser.position.z -= sidewards;
             }, function () {
-                this.position.z += sidewards;
+                OutputParser.position.z += sidewards;
             });
         }
+
         for (var i = 0; i < functions.length; i++) {
             var source = functions[i];
             this.position = this.functionPositions[i].clone();
             this.parseFunction(source);
         }
+
         api.save();
     };
     OutputParser.getMaxSidewards = function (source) {
@@ -973,29 +1137,37 @@ var OutputParser = (function () {
         }
         return sidewards;
     };
+
     OutputParser.parseFunction = function (source) {
         if (source == '')
             return;
+
         var calls = source.split(';');
+
         for (var i = 0; i < calls.length; i++) {
             var _call = calls[i].trim();
+
             if (_call == '')
                 continue;
+
             this.parseCall(_call);
+
             this.updatePosition(function () {
-                this.position.x--;
+                OutputParser.position.x--;
             }, function () {
-                this.position.x++;
+                OutputParser.position.x++;
             }, function () {
-                this.position.z--;
+                OutputParser.position.z--;
             }, function () {
-                this.position.z++;
+                OutputParser.position.z++;
             });
         }
     };
+
     OutputParser.parseCall = function (source) {
         if (source.length < 1)
             return;
+
         switch (source[0]) {
             case 'c':
                 var command = source.substring(1);
@@ -1003,9 +1175,12 @@ var OutputParser = (function () {
                 break;
             case 'q':
                 var qCommand = source.substring(1);
+
                 api.placeCommandBlock(qCommand, this.position.x, this.position.y, this.position.z);
+
                 var torchPos = new Vector3(this.position.x, this.position.y + 1, this.position.z);
                 api.placeBlock(75, 5, torchPos.x, torchPos.y, torchPos.z);
+
                 var resetCbPos = new Vector3(this.position.x, this.position.y + 2, this.position.z);
                 var escapedCommand = qCommand.replace("\"", "\\\"");
                 var resetCommand = "setblock ~ ~-2 ~ minecraft:command_block 0 replace {Command:\"%cmd%\"}".replace("%cmd%", escapedCommand);
@@ -1017,18 +1192,19 @@ var OutputParser = (function () {
                 break;
             case 's':
                 var calls = source.substring(1).split('|');
+
                 var oldPos = this.position.clone();
                 direction++;
                 for (var i = 0; i < calls.length; i++) {
                     this.parseCall(calls[i].trim());
                     this.updatePosition(function () {
-                        this.position.x--;
+                        OutputParser.position.x--;
                     }, function () {
-                        this.position.x++;
+                        OutputParser.position.x++;
                     }, function () {
-                        this.position.z--;
+                        OutputParser.position.z--;
                     }, function () {
-                        this.position.z++;
+                        OutputParser.position.z++;
                     });
                 }
                 direction--;
@@ -1036,10 +1212,13 @@ var OutputParser = (function () {
                 break;
             case 'e':
                 var ePosition = this.functionPositions[source.substring(1)];
+
                 var offX = ePosition.x - this.position.x;
                 var offY = ePosition.y - this.position.y;
                 var offZ = ePosition.z - this.position.z;
+
                 var eCommand = "setblock ~" + offX + " ~" + offY + " ~" + offZ + " minecraft:redstone_block 0 replace";
+
                 api.placeCommandBlock(eCommand, this.position.x, this.position.y, this.position.z);
                 break;
             case 'n':
@@ -1053,6 +1232,7 @@ var OutputParser = (function () {
                 break;
         }
     };
+
     OutputParser.updatePosition = function (xMinus, xPlus, zMinus, zPlus) {
         switch (direction) {
             case 0:
@@ -1070,47 +1250,61 @@ var OutputParser = (function () {
         }
     };
     OutputParser.direction = 1;
+
     OutputParser.functionPositions = {};
     return OutputParser;
 })();
 var RuntimeInteger = (function () {
     function RuntimeInteger(options) {
         options = options || {};
+
         this.name = options.name || Naming.next("int");
+
         options.startValue = options.startValue || 0;
         RuntimeInteger.score.set(this.name, options.startValue);
     }
     RuntimeInteger.prototype.set = function (value) {
         RuntimeInteger.score.set(this.name, value);
     };
+
     RuntimeInteger.prototype.add = function (value) {
         RuntimeInteger.score.add(this.name, value);
     };
+
     RuntimeInteger.prototype.remove = function (value) {
         RuntimeInteger.score.remove(this.name, value);
     };
+
     RuntimeInteger.prototype.reset = function () {
         RuntimeInteger.score.reset(this.name);
     };
+
     RuntimeInteger.prototype.test = function (callback, min, max) {
         RuntimeInteger.score.test(this.name, callback, min, max);
     };
+
     RuntimeInteger.prototype.operation = function (operation, other, otherPlayer) {
         RuntimeInteger.score.operation(this.name, operation, otherPlayer, other);
     };
+
     RuntimeInteger.prototype.isExact = function (value, callback) {
         return this.hasValue(value, callback);
     };
+
     RuntimeInteger.prototype.hasValue = function (value, callback) {
         return this.isBetween(value, value, callback);
     };
+
     RuntimeInteger.prototype.isBetween = function (min, max, callback) {
-        if (max === void 0) { max = min; }
+        if (typeof max === "undefined") { max = min; }
         var command = "scoreboard players test " + this.name + " " + RuntimeInteger.score.name + " " + min + " " + max;
+
         if (callback !== undefined)
             validate(command, callback);
+
         return command;
     };
+
     RuntimeInteger.prototype.asTellrawExtra = function () {
         var extra = new TellrawExtra();
         extra.obj = {
@@ -1119,11 +1313,13 @@ var RuntimeInteger = (function () {
                 objective: RuntimeInteger.score.name
             }
         };
+
         return extra;
     };
     RuntimeInteger.score = new Score("std.values", "dummy");
     return RuntimeInteger;
 })();
+
 var RuntimeBoolean = (function () {
     function RuntimeBoolean() {
         this.base = new RuntimeInteger();
@@ -1140,24 +1336,29 @@ var RuntimeBoolean = (function () {
         else
             return this.base.hasValue(0, callback);
     };
+
     RuntimeBoolean.prototype.isTrue = function (callback) {
         return this.hasValue(true, callback);
     };
     RuntimeBoolean.prototype.isFalse = function (callback) {
         return this.hasValue(false, callback);
     };
+
     RuntimeBoolean.prototype.asTellrawExtra = function () {
         return this.base.asTellrawExtra();
     };
     return RuntimeBoolean;
 })();
+
 var RuntimeString = (function () {
     function RuntimeString(value) {
-        if (value === void 0) { value = Naming.next("string"); }
+        if (typeof value === "undefined") { value = Naming.next("string"); }
         RuntimeString.lastIndex++;
         this.selector = Selector.parse("@e[score_strings_min=" + RuntimeString.lastIndex + ",score_strings=" + RuntimeString.lastIndex + "]");
+
         callOnce(function () {
             command('summon Chicken ~ ~1 ~ {CustomName:"' + value + '",NoAI:true,Invincible:true}');
+
             RuntimeString.indexScore.set('@e[name=' + value + ']', RuntimeString.lastIndex);
         });
         delay(4);
@@ -1165,17 +1366,22 @@ var RuntimeString = (function () {
     RuntimeString.prototype.set = function (value) {
         command('entitydata ' + this.selector + ' {CustomName:"' + value + '"}');
     };
+
     RuntimeString.prototype.hasValue = function (value, callback) {
         var hasValueSelector = this.selector.clone();
         hasValueSelector.setAttribute("name", value);
+
         testfor(hasValueSelector.toString(), callback);
+
         return hasValueSelector;
     };
+
     RuntimeString.prototype.asTellrawExtra = function () {
         var extra = new TellrawExtra();
         extra.obj = {
             selector: this.selector.toString()
         };
+
         return extra;
     };
     RuntimeString.lastIndex = 0;

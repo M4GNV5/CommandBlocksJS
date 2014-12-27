@@ -21,7 +21,7 @@ EventHandler.on('onentitykill', function (player)
 	// tell the player he just earned karma
 	tellraw(player.getSelector(), "You just earned one Karma".format(Formatting.red));
 	// add 1 karma
-	karma.add(player.getSelector(), 1);
+	karma.add(player.getSelector().toString(), 1);
 });
 // subscribe to the 'ondeath' event
 EventHandler.on('ondeath', function (player)
@@ -41,5 +41,5 @@ EventHandler.on('ondeath', function (player)
 	karmaMessage.tell("@a");
 
 	// reset karma
-	karma.set(playerSelector, 0);
+	karma.set(playerSelector.toString(), 0);
 });
