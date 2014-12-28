@@ -1,3 +1,5 @@
+//#runtimeVariables.ts
+
 class RuntimeInteger
 {
 	static score: Score = new Score("std.values", "dummy");

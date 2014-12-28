@@ -1,3 +1,5 @@
+//#base.ts
+
 interface CsApi
 {
 	/**
@@ -80,10 +82,9 @@ class OutputHandler
 			this.current = id;
 
 			wire(2);
-            command("setblock ~-3 ~ ~ minecraft:air 0 replace");
+			command("setblock ~-3 ~ ~ minecraft:air 0 replace");
 
-            func();
-
+			func();
 
 			this.current = last;
 			return id;

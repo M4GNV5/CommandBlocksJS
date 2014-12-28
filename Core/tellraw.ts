@@ -1,3 +1,5 @@
+//#tellraw.ts
+
 /// <reference path="base.ts"/>
 /// <reference path="player.ts"/>
 

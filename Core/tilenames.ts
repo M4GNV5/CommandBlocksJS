@@ -1,3 +1,5 @@
+//#tilenames.ts
+
 enum TileNames
 {
 	AIR = 0,

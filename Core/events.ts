@@ -1,4 +1,6 @@
-﻿/// <reference path="util.ts"/>
+﻿//#events.ts
+
+/// <reference path="util.ts"/>
 /// <reference path="vanillaCommands.ts"/>
 /// <reference path="runtimeVariables.ts"/>
 
@@ -31,13 +33,13 @@ class McEvent
 
 class EventHandler
 {
-    static events: { [index: string]: McEvent } = {};
+	static events: { [index: string]: McEvent } = {};
 
 	static add(name: string, ev: McEvent)
 	{
 		if (EventHandler.events[name] !== undefined)
 			throw "Cannot add Event \"" + name + "\" it already exists!";
-        EventHandler.events[name] = ev;
+		EventHandler.events[name] = ev;
 	}
 
 	static on(name: string, func: Function): void
@@ -92,7 +94,7 @@ class ScoreChangeEvent extends McEvent
 			{
 				var name = Naming.next("onscore");
 				this.score = new Score(name, this.scoreType);
-				this.listenerArg = new PlayerArray( name + "A");
+				this.listenerArg = new PlayerArray(name + "A");
 				this.isRunning = new RuntimeInteger(0, name);
 			}
 			this.listener.push(func);

@@ -1,3 +1,5 @@
+//#util.ts
+
 //region utility functions
 function callOnce(callback: Function, placeRepeater: boolean = true): void
 {

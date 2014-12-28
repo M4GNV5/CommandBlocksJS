@@ -1,8 +1,12 @@
+//#vanillaCommands.ts
+
 /// <reference path="base.ts"/>
 /// <reference path="test.ts"/>
 /// <reference path="tellraw.ts"/>
 
 //region chat
+
+/** Executes /say "message". */
 function say(message: string)
 {
 	command("say " + message);
@@ -38,6 +42,7 @@ interface String
 	format(formatting: string): string;
 }
 
+/** Prepends §format to every word. */
 String.prototype.format = function (formatting: string): string
 {
 	return formatText(this, formatting);
@@ -189,7 +194,7 @@ class Score
 	getPlayer(min: number, max?: number): PlayerArray
 	{
 		var reference = this.getSelector(min, max);
-		return new PlayerArray(this.name+"A", reference.toString());
+		return new PlayerArray(this.name + "A", reference.toString());
 	}
 }
 class Team
