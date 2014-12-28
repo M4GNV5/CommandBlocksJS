@@ -1,14 +1,28 @@
+//#outputParser.ts
+
 /// <reference path="base.ts"/>
 
+/**
+ * Start position of structure.
+ */
 declare var startPosition: Vector3;
 
+/**
+ * Core class for generating world/schematic.
+ */
 class OutputParser
 {
+	/** Current position. */
 	static position;
+	/** Current direction. */
 	static direction: number = 1;
 
+	/** Minecraft positions of function beginning. */
 	static functionPositions = {};
 
+	/**
+	 * Converts all serialized functions to a world/schematic.
+	 */
 	static start(): void
 	{
 		this.position = startPosition;
@@ -20,12 +34,12 @@ class OutputParser
 
 			var sidewards = this.getMaxSidewards(functions[i]);
 
-            this.updatePosition(
-                function () { OutputParser.position.z -= sidewards },
-                function () { OutputParser.position.z += sidewards },
-                function () { OutputParser.position.z -= sidewards },
-                function () { OutputParser.position.z += sidewards }
-            );
+			this.updatePosition(
+				function () { OutputParser.position.z -= sidewards },
+				function () { OutputParser.position.z += sidewards },
+				function () { OutputParser.position.z -= sidewards },
+				function () { OutputParser.position.z += sidewards }
+				);
 		}
 
 		for (var i = 0; i < functions.length; i++)
@@ -37,6 +51,11 @@ class OutputParser
 
 		api.save();
 	}
+
+	/**
+	 * Gets the count the function goes sidewards.
+	 * @param source Serialized function.
+	 */
 	static getMaxSidewards(source: string): number
 	{
 		var sidewards = 2;
@@ -52,6 +71,9 @@ class OutputParser
 		return sidewards;
 	}
 
+	/**
+	 * Parses a serialized function.
+	 */
 	static parseFunction(source: string): void
 	{
 		if (source == '')
@@ -68,15 +90,18 @@ class OutputParser
 
 			this.parseCall(_call);
 
-            this.updatePosition(
-                function () { OutputParser.position.x-- },
-                function () { OutputParser.position.x++ },
-                function () { OutputParser.position.z-- },
-                function () { OutputParser.position.z++ }
-           );
+			this.updatePosition(
+				function () { OutputParser.position.x-- },
+				function () { OutputParser.position.x++ },
+				function () { OutputParser.position.z-- },
+				function () { OutputParser.position.z++ }
+				);
 		}
 	}
 
+	/**
+	 * Parses a serialized function step.
+	 */
 	static parseCall(source: string): void
 	{
 		if (source.length < 1)
@@ -113,12 +138,12 @@ class OutputParser
 				for (var i = 0; i < calls.length; i++)
 				{
 					this.parseCall(calls[i].trim());
-                    this.updatePosition(
-                        function () { OutputParser.position.x-- },
-                        function () { OutputParser.position.x++ },
-                        function () { OutputParser.position.z-- },
-                        function () { OutputParser.position.z++ }
-                    );
+					this.updatePosition(
+						function () { OutputParser.position.x-- },
+						function () { OutputParser.position.x++ },
+						function () { OutputParser.position.z-- },
+						function () { OutputParser.position.z++ }
+						);
 				}
 				direction--;
 				this.position = oldPos;
@@ -146,6 +171,9 @@ class OutputParser
 		}
 	}
 
+	/**
+	 * Moves the current cursor position.
+	 */
 	static updatePosition(xMinus: Function, xPlus: Function, zMinus: Function, zPlus: Function): void
 	{
 		switch (direction)
