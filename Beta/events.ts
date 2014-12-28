@@ -1,9 +1,11 @@
 ﻿/// <reference path="util.ts"/>
 /// <reference path="vanillaCommands.ts"/>
+/// <reference path="runtimeVariables.ts"/>
 
 class McEvent
 {
 	listener: Function[] = [];
+	callAsync: boolean = false;
 
 	addListener(func: Function): void
 	{
@@ -14,8 +16,15 @@ class McEvent
 	{
 		for (var i = 0; i < this.listener.length; i++)
 		{
-			var that = this;
-			call(function () { that.listener[i].apply(undefined, args); } );
+			if (this.callAsync)
+			{
+				var that = this;
+				call(function () { that.listener[i].apply(undefined, args); });
+			}
+			else
+			{
+				this.listener[i].apply(undefined, args);
+			}
 		}
 	}
 }
@@ -52,66 +61,98 @@ class ScoreChangeEvent extends McEvent
 	static timer: Timer;
 
 	score: Score;
+	listenerArg: PlayerArray;
+	isRunning: RuntimeInteger;
+
+	scoreType: string;
 	triggerAtMin: number;
 	triggerAtMax: number;
 	resetValue: boolean;
 	removeFromValue: number;
 
 	constructor(
-		score: Score,
+		scoreType: string,
 		triggerAtMin: number = 1,
-		triggerAtMax: number = 2147483648,
+		triggerAtMax: number = 2147483647,
 		resetValue: boolean = true,
 		removeFromValue: number = 1
 		)
 	{
 		super();
 
-		this.score = score;
-
+		this.scoreType = scoreType;
 		this.triggerAtMin = triggerAtMin;
 		this.triggerAtMax = triggerAtMax;
 		this.resetValue = resetValue;
 		this.removeFromValue = removeFromValue;
 
-		EventHandler.on("end", function ()
+		this.addListener = function (func: Function)
 		{
-			var callback = function ()
+			if (typeof this.isRunning == "undefined")
 			{
-				for (var name in EventHandler.events)
-				{
-					var ev = EventHandler.events[name];
-					if (ev instanceof ScoreChangeEvent)
-					{
-						var scoreEvent: ScoreChangeEvent = <ScoreChangeEvent>ev;
-						call(function () { scoreEvent.timerTick.call(scoreEvent); });
-					}
-				}
+				var name = Naming.next("onscore");
+				this.score = new Score(name, this.scoreType);
+				this.listenerArg = new PlayerArray( name + "A");
+				this.isRunning = new RuntimeInteger(0, name);
 			}
-			var t = new Timer(callback, { time: 1, callAsync: true });
-			ScoreChangeEvent.timer = t;
-			ScoreChangeEvent.timer.start();
-		});
+			this.listener.push(func);
+		};
 	}
 
 	timerTick(): void
 	{
+		validateSync(this.isRunning.hasValue(0));
+
 		var sel = this.score.getSelector(this.triggerAtMin, this.triggerAtMax).toString();
 		testforSync(sel);
-		var player = this.score.getPlayer(this.triggerAtMin, this.triggerAtMax);
-		super.trigger(player);
+
+		this.isRunning.set(this.listener.length);
+
+		this.listenerArg.removePlayer("@a");
+		this.listenerArg.addPlayer(sel);
 
 		if (this.resetValue)
 			this.score.reset(sel);
 		else
 			this.score.remove(sel, this.removeFromValue);
+
+		for (var i = 0; i < this.listener.length; i++)
+		{
+			var that = this;
+			call(function ()
+			{
+				that.listener[i].call(undefined, that.listenerArg);
+				that.isRunning.remove(1);
+			});
+		}
 	}
 }
+EventHandler.on("end", function ()
+{
+	var callback = function ()
+	{
+		for (var name in EventHandler.events)
+		{
+			var ev = EventHandler.events[name];
+			if (ev instanceof ScoreChangeEvent)
+			{
+				var scoreEvent: ScoreChangeEvent = <ScoreChangeEvent>ev;
+				if (scoreEvent.listener.length < 1)
+					continue;
 
-EventHandler.add("onmove", new ScoreChangeEvent(new Score("onmove", "stat.walkOneCm")));
-EventHandler.add("oncrouch", new ScoreChangeEvent(new Score("oncrouch", "stat.crouchOneCm")));
-EventHandler.add("onswim", new ScoreChangeEvent(new Score("onswim", "stat.swimOneCm")));
-EventHandler.add("onsprint", new ScoreChangeEvent(new Score("onsprint", "stat.sprintOneCm")));
-EventHandler.add("ondeath", new ScoreChangeEvent(new Score("ondeath", "deathCount"), 1, 2147483648, false));
-EventHandler.add("onkill", new ScoreChangeEvent(new Score("onkill", "playerKillCount"), 2147483648, 1, false));
-EventHandler.add("onentitykill", new ScoreChangeEvent(new Score("onentitykill", "totalKillCount"), 1, 2147483648, false));
+				call(function () { scoreEvent.timerTick.call(scoreEvent); });
+			}
+		}
+	}
+	var t = new Timer(callback, { time: 5 });
+	ScoreChangeEvent.timer = t;
+	ScoreChangeEvent.timer.start();
+});
+
+EventHandler.add("move", new ScoreChangeEvent("stat.walkOneCm"));
+EventHandler.add("crouch", new ScoreChangeEvent("stat.crouchOneCm"));
+EventHandler.add("swim", new ScoreChangeEvent("stat.swimOneCm"));
+EventHandler.add("sprint", new ScoreChangeEvent("stat.sprintOneCm"));
+EventHandler.add("death", new ScoreChangeEvent("deathCount", 1, 2147483647, false));
+EventHandler.add("kill", new ScoreChangeEvent("playerKillCount", 2147483647, 1, false));
+EventHandler.add("entitykill", new ScoreChangeEvent("totalKillCount", 1, 2147483647, false));

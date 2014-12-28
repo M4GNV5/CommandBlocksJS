@@ -15,16 +15,18 @@ var karma = new Score("karma", "dummy", "Karma");
 // set display slot to sidebar
 karma.setDisplay("sidebar");
 
+command("scoreboard objectives setdisplay sidebar onscore1");
+
 // subscribe to the 'onentitykill' event
-EventHandler.on('onentitykill', function (player)
+EventHandler.on('entitykill', function (player)
 {
 	// tell the player he just earned karma
-	tellraw(player.getSelector(), "You just earned one Karma".format(Formatting.red));
+	tellraw("You just earned one Karma".format(Formatting.red), player.getSelector());
 	// add 1 karma
 	karma.add(player.getSelector().toString(), 1);
 });
 // subscribe to the 'ondeath' event
-EventHandler.on('ondeath', function (player)
+EventHandler.on('death', function (player)
 {
 	// save selector of the dead player in local variable
 	var playerSelector = player.getSelector();

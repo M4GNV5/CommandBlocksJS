@@ -3,14 +3,11 @@ class RuntimeInteger
 	static score: Score = new Score("std.values", "dummy");
 	name: string;
 
-	constructor(options?: { name?: string; startValue?: number })
+	constructor(startValue: number = 0, name: string = Naming.next("int"))
 	{
-		options = options || {};
+		this.name = name;
 
-		this.name = options.name || Naming.next("int");
-
-		options.startValue = options.startValue || 0;
-		RuntimeInteger.score.set(this.name, options.startValue);
+		RuntimeInteger.score.set(this.name, startValue);
 	}
 
 	set(value: number): void

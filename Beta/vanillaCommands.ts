@@ -46,6 +46,7 @@ String.prototype.format = function (formatting: string): string
 function formatText(text: string, formatting: string = "§c"): string
 {
 	var words = text.split(" ");
+	formatting = ' ' + formatting || ' §c';
 	text = "";
 	for (var i = 0; i < words.length; i++)
 	{
@@ -161,7 +162,7 @@ class Score
 		command("scoreboard players enable " + player + " " + this.name);
 	}
 
-	test(player: string, callback: Function, min: number = 1, max: number = 2147483648): void
+	test(player: string, callback: Function, min: number = 1, max: number = 2147483647): void
 	{
 		validate("scoreboard players test " + player + " " + this.name + " " + min + " " + max, callback);
 	}
@@ -188,7 +189,7 @@ class Score
 	getPlayer(min: number, max?: number): PlayerArray
 	{
 		var reference = this.getSelector(min, max);
-		return new PlayerArray(this.name, reference.toString());
+		return new PlayerArray(this.name+"A", reference.toString());
 	}
 }
 class Team

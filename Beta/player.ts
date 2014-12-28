@@ -1,4 +1,5 @@
 /// <reference path="base.ts"/>
+/// <reference path="vanillaCommands.ts"/>
 /// <reference path="tellraw.ts"/>
 
 enum GameMode
@@ -129,30 +130,30 @@ class PlayerArray extends Player
 	name: string;
 	arrayScore: Score;
 
-	constructor(name: string = Naming.next('array'), selector = Selector.allPlayer(), createObjective: boolean = true)
+	constructor(name: string = Naming.next('array'), selector?: string, createObjective: boolean = true)
 	{
+		if (typeof selector != 'undefined')
+			this.arrayScore.set(selector, 1);
+		selector = selector || Selector.allPlayer();
+
 		super(selector.toString());
 
 		this.name = name;
 
-		var arrayScore;
 		if (createObjective)
-			arrayScore = new Score(name, "dummy");
+			this.arrayScore = new Score(name, "dummy");
 		else
-			arrayScore = new Score(name);
+			this.arrayScore = new Score(name);
 
-		if (typeof selector != 'undefined')
-			arrayScore.set(selector, 1);
-
-		Player.call(this, arrayScore.getSelector(1));
+		Player.call(this, this.arrayScore.getSelector(1));
 	}
 
-	addPlayer(selector: Selector = this.getSelector()): void
+	addPlayer(selector: string = this.getSelector().toString()): void
 	{
 		this.arrayScore.set(selector.toString(), 1);
 	}
 
-	removePlayer(selector: Selector = this.getSelector()): void
+	removePlayer(selector: string = this.getSelector().toString()): void
 	{
 		this.arrayScore.set(selector.toString(), 0);
 	}

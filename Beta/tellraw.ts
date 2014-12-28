@@ -89,7 +89,7 @@ class TellrawClickableExtra extends TellrawExtra
 
 		super.setClickEvent("run_command", "/trigger " + options.name + "E add 1");
 
-		var scoreEvent = new ScoreChangeEvent(new Score(options.name, "trigger"), options);
+		var scoreEvent = new ScoreChangeEvent("trigger");
 		EventHandler.events[<string>(options.name)] = scoreEvent;
 
 		var score = new Score(options.name + "E", "trigger", undefined, false);

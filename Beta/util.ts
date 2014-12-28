@@ -88,7 +88,12 @@ class Timer
 
 	constructor(callback: Function, options: TimerOptions = { time: 10, useScoreboard: false, hardTickLength: 10, callAsync: false, scoreName: Naming.next("timer") })
 	{
+		options.time = options.time || 10;
+		options.useScoreboard = options.useScoreboard || (options.time > 40) ? true : false;
+		options.hardTickLength = options.hardTickLength || 10;
+		options.scoreName = options.scoreName || Naming.next("timer");
 		this.options = options;
+
 		this.callback = callback;
 
 		if (options.useScoreboard !== false)
