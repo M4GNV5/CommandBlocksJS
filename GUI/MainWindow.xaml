@@ -1,7 +1,7 @@
 ﻿<Window x:Class="CommandBlocksJS.Cmd.GUI.MainWindow"
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-		Title="MainWindow" Height="470" Width="661" MinHeight="256" MinWidth="452">
+		Title="CommandBlocksJS Generator" Height="470" Width="661" MinHeight="256" MinWidth="452">
 	<Window.Resources>
 		<Style x:Key="Flat" TargetType="Button">
 			<Setter Property="OverridesDefaultStyle" Value="True" />
