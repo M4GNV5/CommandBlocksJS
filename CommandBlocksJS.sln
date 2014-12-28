@@ -24,22 +24,24 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI", "GUI\GUI.csproj", "{F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TypeScript Source", "TypeScript Source", "{CC21623E-5062-4395-B7DB-E10BFBE66189}"
 	ProjectSection(SolutionItems) = preProject
-		Beta\base.ts = Beta\base.ts
-		Beta\events.ts = Beta\events.ts
-		Beta\outputParser.ts = Beta\outputParser.ts
-		Beta\player.ts = Beta\player.ts
-		Beta\runtimeVariables.ts = Beta\runtimeVariables.ts
-		Beta\tellraw.ts = Beta\tellraw.ts
-		Beta\test.ts = Beta\test.ts
-		Beta\tilenames.ts = Beta\tilenames.ts
-		Beta\util.ts = Beta\util.ts
-		Beta\vanillaCommands.ts = Beta\vanillaCommands.ts
+		Core\base.ts = Core\base.ts
+		Core\events.ts = Core\events.ts
+		Core\outputParser.ts = Core\outputParser.ts
+		Core\player.ts = Core\player.ts
+		Core\runtimeVariables.ts = Core\runtimeVariables.ts
+		Core\tellraw.ts = Core\tellraw.ts
+		Core\test.ts = Core\test.ts
+		Core\tilenames.ts = Core\tilenames.ts
+		Core\util.ts = Core\util.ts
+		Core\vanillaCommands.ts = Core\vanillaCommands.ts
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example", "Example", "{B43733F6-14BE-4D9F-91C2-BD20B324E764}"
 	ProjectSection(SolutionItems) = preProject
-		Beta\Example\example.ts = Beta\Example\example.ts
+		Core\Example\example.ts = Core\Example\example.ts
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Debugger", "Debugger\Debugger.csproj", "{9B283186-BAA8-406C-8800-78DF1CD25B48}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +83,16 @@ Global
 		{FCDB301D-B8E9-486D-BB14-95EE8D0776ED}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{FCDB301D-B8E9-486D-BB14-95EE8D0776ED}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{FCDB301D-B8E9-486D-BB14-95EE8D0776ED}.Release|x86.ActiveCfg = Release|Any CPU
+		{9B283186-BAA8-406C-8800-78DF1CD25B48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B283186-BAA8-406C-8800-78DF1CD25B48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B283186-BAA8-406C-8800-78DF1CD25B48}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{9B283186-BAA8-406C-8800-78DF1CD25B48}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{9B283186-BAA8-406C-8800-78DF1CD25B48}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9B283186-BAA8-406C-8800-78DF1CD25B48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B283186-BAA8-406C-8800-78DF1CD25B48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B283186-BAA8-406C-8800-78DF1CD25B48}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9B283186-BAA8-406C-8800-78DF1CD25B48}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{9B283186-BAA8-406C-8800-78DF1CD25B48}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
