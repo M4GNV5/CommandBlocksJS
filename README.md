@@ -59,8 +59,6 @@ EventHandler.setEventListener('ondeath', function(player)
 });
 ```
 
-For more Examples see https://github.com/M4GV5/CommandBlocksJS/tree/master/src/Examples
-
 
 
 ##Used Libraries
