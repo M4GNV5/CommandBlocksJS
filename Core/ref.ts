@@ -1,0 +1,10 @@
+/// <reference path="base.ts"/>
+/// <reference path="events.ts"/>
+/// <reference path="util.ts"/>
+/// <reference path="vanillaCommands.ts"/>
+/// <reference path="outputParser.ts"/>
+/// <reference path="player.ts"/>
+/// <reference path="runtimeVariables.ts"/>
+/// <reference path="tellraw.ts"/>
+/// <reference path="test.ts"/>
+/// <reference path="tilenames.ts"/>

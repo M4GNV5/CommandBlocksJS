@@ -1,4 +1,5 @@
 //#base.ts
+/// <reference path="ref.ts"/>
 
 interface CsApi
 {

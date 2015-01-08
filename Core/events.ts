@@ -1,8 +1,5 @@
 ﻿//#events.ts
-
-/// <reference path="util.ts"/>
-/// <reference path="vanillaCommands.ts"/>
-/// <reference path="runtimeVariables.ts"/>
+/// <reference path="ref.ts"/>
 
 class McEvent
 {

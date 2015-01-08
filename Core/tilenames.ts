@@ -1,4 +1,5 @@
 //#tilenames.ts
+/// <reference path="ref.ts"/>
 
 enum TileNames
 {

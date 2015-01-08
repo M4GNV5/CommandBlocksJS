@@ -1,4 +1,5 @@
 //#util.ts
+/// <reference path="ref.ts"/>
 
 //region utility functions
 function callOnce(callback: Function, placeRepeater: boolean = true): void

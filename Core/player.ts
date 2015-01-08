@@ -1,8 +1,5 @@
 //#player.ts
-
-/// <reference path="base.ts"/>
-/// <reference path="vanillaCommands.ts"/>
-/// <reference path="tellraw.ts"/>
+/// <reference path="ref.ts"/>
 
 /**
  * All /gamemode modes represented in Minecraft as of 1.8.

@@ -1,4 +1,5 @@
 //#test.ts
+/// <reference path="ref.ts"/>
 
 function assert(condition: boolean, message = "Assertion failed"): void
 {

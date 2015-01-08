@@ -1,6 +1,5 @@
 //#outputParser.ts
-
-/// <reference path="base.ts"/>
+/// <reference path="ref.ts"/>
 
 /**
  * Start position of structure.

@@ -1,7 +1,5 @@
 //#tellraw.ts
-
-/// <reference path="base.ts"/>
-/// <reference path="player.ts"/>
+/// <reference path="ref.ts"/>
 
 //region tellraw.js
 function tellraw(message, selector: string = Selector.allPlayer()): Tellraw

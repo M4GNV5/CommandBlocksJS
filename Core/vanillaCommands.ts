@@ -1,8 +1,5 @@
 //#vanillaCommands.ts
-
-/// <reference path="base.ts"/>
-/// <reference path="test.ts"/>
-/// <reference path="tellraw.ts"/>
+/// <reference path="ref.ts"/>
 
 //region chat
 

@@ -1,4 +1,5 @@
 //#runtimeVariables.ts
+/// <reference path="ref.ts"/>
 
 class RuntimeInteger
 {
