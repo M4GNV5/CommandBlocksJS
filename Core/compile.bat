@@ -1,3 +1,7 @@
-tsc --out core.js base.ts events.ts outputParser.ts player.ts runtimeVariables.ts tellraw.ts test.ts tilenames.ts util.ts vanillaCommands.ts
+@echo off
+setlocal enabledelayedexpansion
+set ts_files=
+for /R %%f in (*.ts) do set ts_files=!ts_files! %%f
+tsc --out core.js %ts_files%
 pause
 exit

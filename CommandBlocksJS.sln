@@ -44,6 +44,36 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example", "Example", "{B437
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Debugger", "Debugger\Debugger.csproj", "{9B283186-BAA8-406C-8800-78DF1CD25B48}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{50FBEFDE-8757-44F1-BF19-F27B19AA7F26}"
+	ProjectSection(SolutionItems) = preProject
+		Core\API\API.ts = Core\API\API.ts
+		Core\API\HighLevelCommand.ts = Core\API\HighLevelCommand.ts
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Entities", "Entities", "{A4DF07BC-0429-4D16-ADF9-44B0F167488A}"
+	ProjectSection(SolutionItems) = preProject
+		Core\API\Entities\EntityType.ts = Core\API\Entities\EntityType.ts
+		Core\API\Entities\Player.ts = Core\API\Entities\Player.ts
+		Core\API\Entities\Selector.ts = Core\API\Entities\Selector.ts
+		Core\API\Entities\SelectorArgument.ts = Core\API\Entities\SelectorArgument.ts
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scoreboard", "Scoreboard", "{ED42D77F-FE73-471D-B92C-FB619B1A5583}"
+	ProjectSection(SolutionItems) = preProject
+		Core\API\Scoreboard\DisplaySlots.ts = Core\API\Scoreboard\DisplaySlots.ts
+		Core\API\Scoreboard\Objective.ts = Core\API\Scoreboard\Objective.ts
+		Core\API\Scoreboard\ObjectiveTypes.ts = Core\API\Scoreboard\ObjectiveTypes.ts
+		Core\API\Scoreboard\Team.ts = Core\API\Scoreboard\Team.ts
+		Core\API\Scoreboard\TeamOptions.ts = Core\API\Scoreboard\TeamOptions.ts
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Blocks", "Blocks", "{AB2654CF-940B-4196-B381-C20D23F814D8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Players", "Players", "{2D4BB405-DE9F-4E33-9624-AEA65108FEB7}"
+	ProjectSection(SolutionItems) = preProject
+		Core\API\Players\GameMode.ts = Core\API\Players\GameMode.ts
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -100,6 +130,11 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B43733F6-14BE-4D9F-91C2-BD20B324E764} = {CC21623E-5062-4395-B7DB-E10BFBE66189}
+		{50FBEFDE-8757-44F1-BF19-F27B19AA7F26} = {CC21623E-5062-4395-B7DB-E10BFBE66189}
+		{A4DF07BC-0429-4D16-ADF9-44B0F167488A} = {50FBEFDE-8757-44F1-BF19-F27B19AA7F26}
+		{ED42D77F-FE73-471D-B92C-FB619B1A5583} = {50FBEFDE-8757-44F1-BF19-F27B19AA7F26}
+		{AB2654CF-940B-4196-B381-C20D23F814D8} = {50FBEFDE-8757-44F1-BF19-F27B19AA7F26}
+		{2D4BB405-DE9F-4E33-9624-AEA65108FEB7} = {50FBEFDE-8757-44F1-BF19-F27B19AA7F26}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = ServerWrapper\ServerWrapper.csproj

@@ -1,17 +1,6 @@
 //#player.ts
 /// <reference path="ref.ts"/>
 
-/**
- * All /gamemode modes represented in Minecraft as of 1.8.
- */
-enum GameMode
-{
-	Survival,
-	Creative,
-	Adventure,
-	Spectator
-}
-
 //region player.js
 
 /**
@@ -38,9 +27,9 @@ class Player
 	/**
 	 * Sets the players gamemode.
 	 */
-	setGameMode(mode: GameMode): void
+	setGameMode(mode: string): void
 	{
-		command("gamemode " + mode.toString() + " " + this.selector);
+		command("gamemode " + mode + " " + this.selector);
 	}
 
 	/**

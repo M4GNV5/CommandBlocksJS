@@ -1,7 +1,5 @@
-/// <reference path="./../../Core/base.ts"/>
-/// <reference path="./../../Core/util.ts"/>
-/// <reference path="./../Entities/Selector.ts"/>
-/// <reference path="ObjectiveTypes.ts"/>
+/// <reference path="../API.ts"/>
+
 import Selector = Entities.Selector;
 
 module Scoreboard
