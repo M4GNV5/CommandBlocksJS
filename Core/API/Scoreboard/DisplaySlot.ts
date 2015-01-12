@@ -1,6 +1,6 @@
 module Scoreboard
 {
-	export enum DisplaySlots
+	export enum DisplaySlot
 	{
 		belowName,
 		sidebar,

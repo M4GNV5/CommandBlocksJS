@@ -11,45 +11,65 @@ module Scoreboard
 		name: string;
 		displayName: string;
 
+		//constructor(type: ObjectiveType, subCriteria?: Items.ItemType, name?: string, displayName?: string)
+		constructor(type: ObjectiveType, subCriteria?: Entities.EntityType, name?: string, displayName?: string)
 		constructor(type: ObjectiveType = ObjectiveType.dummy, subCriteria?: any, name: string = Naming.next("score"), displayName?: string)
 		{
 			this.displayName = displayName || name;
 			this.name = name;
-			this.criteria = type + (subCriteria || "").toString();
+
+			if (subCriteria instanceof Entities.EntityType)
+				this.criteria = (<Entities.EntityType>subCriteria).name;
+			/*else if (subCriteria instanceof Items.ItemType)
+				this.criteria = (<Items.ItemType>subCriteria).name;*/
+			else
+				this.criteria = type + (subCriteria || "").toString();
 
 			command("scoreboard objectives add " + this.name + " " + this.criteria + " " + this.displayName);
 		}
 
-		set(selector: Selector, value: number)
+		set(selector: Selector, value: number): void
 		{
-
+			command("scoreboard players set " + selector + " " + this.name + " " + value);
 		}
-		add(selector: Selector, value: number)
+		add(selector: Selector, value: number): void
 		{
-
+			command("scoreboard players add " + selector + " " + this.name + " " + value);
 		}
-		remove(selector: Selector, value: number)
+		remove(selector: Selector, value: number): void
 		{
-
-		}
-
-		reset(selector?: Selector)
-		{
-			
+			command("scoreboard players remove " + selector + " " + this.name + " " + value);
 		}
 
-		enableTrigger(selector: Selector)
+		static reset(selector: Selector): void
 		{
-
+			command("scoreboard players reset "+selector);
 		}
-		setDisplay(slot: DisplaySlots)
+		reset(selector: Selector): void
 		{
-
+			command("scoreboard players reset " + selector + " " + this.name);
 		}
 
-		test(selector: Selector, valueMin: number, valueMax: number = 2147483647)
+		static setDisplay(slot: DisplaySlot): void
 		{
-			
+			command("scoreboard objectives setdisplay " + slot);
+		}
+		setDisplay(slot: DisplaySlot): void
+		{
+			command("scoreboard objectives setdisplay " + slot + " " + this.name);
+		}
+
+		test(selector: Selector, valueMin: number, valueMax: number = 2147483647): MinecraftCommand
+		{
+			return new MinecraftCommand("scoreboard players test " + selector + " " + valueMin + " " + valueMax);
+		}
+		operation(selector: Selector, otherObjective: Objective = this, otherPlayer: Selector = selector, operation: MathOperation = MathOperation.equals)
+		{
+			command("scoreboard players operation " + selector + " " + this.name + " " + operation.operator + " " + otherPlayer + " " + otherObjective.name);
+		}
+		enableTrigger(selector: Selector): void
+		{
+			command("scoreboard players enable " + selector + " " + this.name);
 		}
 	}
 }
