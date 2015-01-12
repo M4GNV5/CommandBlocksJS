@@ -1,5 +1,4 @@
 //#base.ts
-/// <reference path="ref.ts"/>
 
 interface CsApi
 {
@@ -71,7 +70,7 @@ class OutputHandler
 	functions: Function[] = [function () { }];
 	current: number = 0;
 
-	addFunction(func: Function): number
+	addFunction(func: Function, replaceRedstoneBlock: boolean = true): number
 	{
 		if (this.functions.indexOf(func) == -1)
 		{
@@ -82,8 +81,11 @@ class OutputHandler
 			var last = this.current;
 			this.current = id;
 
-			wire(2);
-			command("setblock ~-3 ~ ~ minecraft:air 0 replace");
+            if (replaceRedstoneBlock)
+            {
+                wire(2);
+                command("setblock ~-3 ~ ~ minecraft:air 0 replace");
+            }
 
 			func();
 
@@ -200,6 +202,14 @@ function call(func: Function, placeRepeater: boolean = true): void
 	outputHandler.addToCurrent('e' + funcId + ';');
 }
 
+function callOnce(callback: Function, placeRepeater: boolean = true): void
+{
+    var funcId = outputHandler.addFunction(callback, false);
+    if (placeRepeater)
+        delay();
+    outputHandler.addToCurrent('e' + funcId + ';');
+}
+
 /**
  * Places a sign (for notes etc.)
  * @param text1 First line of the sign.
@@ -295,66 +305,3 @@ function cbjsWorker(): void
 	api.log("Successfully executed " + outputHandler.functions.length + " functions!");
 }
 //endregion
-
-//region internal helper classes
-/**
- * Class for generating unique names. Useful for scoreboards.
- */
-class Naming
-{
-	static names = {};
-
-	/**
-	 * Generates unique names with ´name´ as prefix. Will start at zero when giving a new name.
-	 * @param name Prefix for unique name.
-	 */
-	static next(name: string): string
-	{
-		this.names[name] = this.names[name] || 0;
-		this.names[name]++;
-		return name + this.names[name];
-	}
-}
-
-class Vector3
-{
-	x: number = 0;
-	y: number = 0;
-	z: number = 0;
-
-	constructor(x, y, z)
-	{
-		this.x = x;
-		this.y = y;
-		this.z = z;
-	}
-
-	toString(separator: string = ' '): string
-	{
-		return this.x + separator + this.y + separator + this.z;
-	}
-
-	add(b: Vector3): Vector3
-	{
-		this.x += b.x;
-		this.y += b.y;
-		this.z += b.z;
-
-		return this;
-	}
-
-	subtract(b: Vector3): Vector3
-	{
-		this.x -= b.x;
-		this.y -= b.y;
-		this.z -= b.z;
-
-		return this;
-	}
-
-	clone(): Vector3
-	{
-		return new Vector3(this.x, this.y, this.z);
-	}
-}
-//endredion

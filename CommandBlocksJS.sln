@@ -5,87 +5,49 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cmd", "Cmd\Cmd.csproj", "{99187E44-6CFD-4E68-9D13-8C3633DE275A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4291A28F-40A0-40E3-AFC1-AE368F4E375E}"
-	ProjectSection(SolutionItems) = preProject
-		Core\base.js = Core\base.js
-		Core\events.js = Core\events.js
-		Core\outputParser.js = Core\outputParser.js
-		Core\player.js = Core\player.js
-		Core\runtimeVariables.js = Core\runtimeVariables.js
-		Core\tellraw.js = Core\tellraw.js
-		Core\tilenames.js = Core\tilenames.js
-		Core\util.js = Core\util.js
-		Core\vanillaCommands.js = Core\vanillaCommands.js
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerWrapper", "ServerWrapper\ServerWrapper.csproj", "{445B2616-CF1E-4B20-B283-D183F787B0A2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI", "GUI\GUI.csproj", "{FCDB301D-B8E9-486D-BB14-95EE8D0776ED}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TypeScript Source", "TypeScript Source", "{CC21623E-5062-4395-B7DB-E10BFBE66189}"
-	ProjectSection(SolutionItems) = preProject
-		Core\base.ts = Core\base.ts
-		Core\events.ts = Core\events.ts
-		Core\outputParser.ts = Core\outputParser.ts
-		Core\player.ts = Core\player.ts
-		Core\ref.ts = Core\ref.ts
-		Core\runtimeVariables.ts = Core\runtimeVariables.ts
-		Core\tellraw.ts = Core\tellraw.ts
-		Core\test.ts = Core\test.ts
-		Core\tilenames.ts = Core\tilenames.ts
-		Core\util.ts = Core\util.ts
-		Core\vanillaCommands.ts = Core\vanillaCommands.ts
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example", "Example", "{B43733F6-14BE-4D9F-91C2-BD20B324E764}"
-	ProjectSection(SolutionItems) = preProject
-		Core\Example\example.ts = Core\Example\example.ts
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Debugger", "Debugger\Debugger.csproj", "{9B283186-BAA8-406C-8800-78DF1CD25B48}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{50FBEFDE-8757-44F1-BF19-F27B19AA7F26}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{DE6CC377-1C19-4CF2-8E56-A4202C8AD93B}"
 	ProjectSection(SolutionItems) = preProject
-		Core\API\API.ts = Core\API\API.ts
-		Core\API\base.ts = Core\API\base.ts
-		Core\API\HighLevelCommand.ts = Core\API\HighLevelCommand.ts
-		Core\API\MinecraftCommand.ts = Core\API\MinecraftCommand.ts
+		Core\API.ts = Core\API.ts
+		Core\base.ts = Core\base.ts
+		Core\MinecraftCommand.ts = Core\MinecraftCommand.ts
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Entities", "Entities", "{A4DF07BC-0429-4D16-ADF9-44B0F167488A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Entities", "Entities", "{63BAB7E1-AD52-44E7-8D76-509B955B21F3}"
 	ProjectSection(SolutionItems) = preProject
-		Core\API\Entities\EntityType.ts = Core\API\Entities\EntityType.ts
-		Core\API\Entities\Player.ts = Core\API\Entities\Player.ts
-		Core\API\Entities\Selector.ts = Core\API\Entities\Selector.ts
-		Core\API\Entities\SelectorArgument.ts = Core\API\Entities\SelectorArgument.ts
-		Core\API\Entities\SelectorTarget.ts = Core\API\Entities\SelectorTarget.ts
+		Core\Entities\EntityType.ts = Core\Entities\EntityType.ts
+		Core\Entities\Player.ts = Core\Entities\Player.ts
+		Core\Entities\Selector.ts = Core\Entities\Selector.ts
+		Core\Entities\SelectorArgument.ts = Core\Entities\SelectorArgument.ts
+		Core\Entities\SelectorTarget.ts = Core\Entities\SelectorTarget.ts
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scoreboard", "Scoreboard", "{ED42D77F-FE73-471D-B92C-FB619B1A5583}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Players", "Players", "{8B7B6015-8903-42E7-AD07-C7238F2CA20C}"
 	ProjectSection(SolutionItems) = preProject
-		Core\API\Scoreboard\DisplaySlot.ts = Core\API\Scoreboard\DisplaySlot.ts
-		Core\API\Scoreboard\MathOperation.ts = Core\API\Scoreboard\MathOperation.ts
-		Core\API\Scoreboard\Objective.ts = Core\API\Scoreboard\Objective.ts
-		Core\API\Scoreboard\ObjectiveType.ts = Core\API\Scoreboard\ObjectiveType.ts
-		Core\API\Scoreboard\Team.ts = Core\API\Scoreboard\Team.ts
-		Core\API\Scoreboard\Visibility.ts = Core\API\Scoreboard\Visibility.ts
+		Core\Players\GameMode.ts = Core\Players\GameMode.ts
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Blocks", "Blocks", "{AB2654CF-940B-4196-B381-C20D23F814D8}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Players", "Players", "{2D4BB405-DE9F-4E33-9624-AEA65108FEB7}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Runtime", "Runtime", "{8A1B9DD5-8CC4-4EE9-B078-C97B79B3BE25}"
 	ProjectSection(SolutionItems) = preProject
-		Core\API\Players\GameMode.ts = Core\API\Players\GameMode.ts
+		Core\Runtime\Boolean.ts = Core\Runtime\Boolean.ts
+		Core\Runtime\Integer.ts = Core\Runtime\Integer.ts
+		Core\Runtime\String.ts = Core\Runtime\String.ts
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Runtime", "Runtime", "{3401E951-94CB-4E66-A4EC-17DD3018D4E7}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scoreboard", "Scoreboard", "{6CC5FE29-B884-4CA4-923D-FD18DE3290BD}"
 	ProjectSection(SolutionItems) = preProject
-		Core\API\Runtime\Boolean.ts = Core\API\Runtime\Boolean.ts
-		Core\API\Runtime\Integer.ts = Core\API\Runtime\Integer.ts
-		Core\API\Runtime\String.ts = Core\API\Runtime\String.ts
+		Core\Scoreboard\DisplaySlot.ts = Core\Scoreboard\DisplaySlot.ts
+		Core\Scoreboard\MathOperation.ts = Core\Scoreboard\MathOperation.ts
+		Core\Scoreboard\Objective.ts = Core\Scoreboard\Objective.ts
+		Core\Scoreboard\ObjectiveType.ts = Core\Scoreboard\ObjectiveType.ts
+		Core\Scoreboard\Team.ts = Core\Scoreboard\Team.ts
+		Core\Scoreboard\Visibility.ts = Core\Scoreboard\Visibility.ts
 	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Util", "Util", "{58F75021-9BCE-43A5-B1B8-D7EDD4E55CBC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -142,14 +104,10 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{B43733F6-14BE-4D9F-91C2-BD20B324E764} = {CC21623E-5062-4395-B7DB-E10BFBE66189}
-		{50FBEFDE-8757-44F1-BF19-F27B19AA7F26} = {CC21623E-5062-4395-B7DB-E10BFBE66189}
-		{A4DF07BC-0429-4D16-ADF9-44B0F167488A} = {50FBEFDE-8757-44F1-BF19-F27B19AA7F26}
-		{ED42D77F-FE73-471D-B92C-FB619B1A5583} = {50FBEFDE-8757-44F1-BF19-F27B19AA7F26}
-		{AB2654CF-940B-4196-B381-C20D23F814D8} = {50FBEFDE-8757-44F1-BF19-F27B19AA7F26}
-		{2D4BB405-DE9F-4E33-9624-AEA65108FEB7} = {50FBEFDE-8757-44F1-BF19-F27B19AA7F26}
-		{3401E951-94CB-4E66-A4EC-17DD3018D4E7} = {50FBEFDE-8757-44F1-BF19-F27B19AA7F26}
-		{58F75021-9BCE-43A5-B1B8-D7EDD4E55CBC} = {50FBEFDE-8757-44F1-BF19-F27B19AA7F26}
+		{63BAB7E1-AD52-44E7-8D76-509B955B21F3} = {DE6CC377-1C19-4CF2-8E56-A4202C8AD93B}
+		{8B7B6015-8903-42E7-AD07-C7238F2CA20C} = {DE6CC377-1C19-4CF2-8E56-A4202C8AD93B}
+		{8A1B9DD5-8CC4-4EE9-B078-C97B79B3BE25} = {DE6CC377-1C19-4CF2-8E56-A4202C8AD93B}
+		{6CC5FE29-B884-4CA4-923D-FD18DE3290BD} = {DE6CC377-1C19-4CF2-8E56-A4202C8AD93B}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = ServerWrapper\ServerWrapper.csproj
