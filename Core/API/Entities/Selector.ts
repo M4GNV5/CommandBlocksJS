@@ -4,10 +4,10 @@ module Entities
 {
 	export class Selector
 	{
-		char: SelectorType;
+		char: SelectorTarget;
 		private arguments: SelectorArgument[];
 
-		constructor(char: SelectorType = SelectorType.AllPlayers)
+		constructor(char: SelectorTarget = SelectorTarget.AllPlayer)
 		{
 			this.char = char;
 		}
@@ -52,12 +52,12 @@ module Entities
 			}
 		}
 
-		parse(selector: string): Selector
+		static parse(selector: string): Selector
 		{
 			selector = selector.trim();
 			assert(selector[0] == "@", "Selector '" + selector + "' does not start with a @");
 
-			var selectorChar = new SelectorType(selector[1]);
+			var selectorChar = new SelectorTarget(selector[1]);
 			var sel = new Selector(selectorChar);
 
 			var argumentString = selector.substring(3, selector.length - 1);
@@ -85,7 +85,7 @@ module Entities
 				{
 					var val: string;
 					if (this.arguments[name] instanceof Scoreboard.Team)
-						val = (<Scoreboard.Team>this.arguments[name]).name;
+						val = this.arguments[name].stringValue;
 					else
 						val = this.arguments[name].toString();
 
@@ -96,31 +96,6 @@ module Entities
 			}
 
 			return sel;
-		}
-	}
-
-	export class SelectorType
-	{
-		static a = new SelectorType("a");
-		static e = new SelectorType("e");
-		static p = new SelectorType("p");
-		static r = new SelectorType("r");
-
-		static AllPlayers = new SelectorType("a");
-		static All = new SelectorType("a");
-
-		static Entities = new SelectorType("e");
-
-		static Player = new SelectorType("p");
-
-		static RandomPlayer = new SelectorType("r");
-
-		identifier: string;
-
-		constructor(identifier: string)
-		{
-			assert(["a", "e", "p", "r"].indexOf(identifier) != -1, "Invalid identifier!");
-			this.identifier = identifier;
 		}
 	}
 }

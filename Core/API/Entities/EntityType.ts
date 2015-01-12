@@ -1,3 +1,5 @@
+/// <reference path="../API.ts"/>
+
 module Entities
 {
 	export class EntityType
@@ -19,8 +21,6 @@ module Entities
 		static EnderEye = new EntityType("EyeOfEnderSignal");
 		static Potion = new EntityType("ThrownPotion");
 		static ExperienceBottle = new EntityType("ThrownExpBottle");
-		/** Alias for ExperienceBottle */
-		static BottleOEnchanting = new EntityType("ThrownExpBottle");
 		static WitherSkull = new EntityType("WitherSkull");
 		static Firework = new EntityType("FireworksRocketEntity");
 
@@ -67,11 +67,7 @@ module Entities
 		static Wolf = new EntityType("Wolf");
 		static MushroomCow = new EntityType("MushroomCow");
 		static SnowMan = new EntityType("SnowMan");
-		/** Alias for SnowMan */
-		static SnowGolem = new EntityType("SnowMan");
 		static Ocelot = new EntityType("Ocelot");
-		/** Alias for Ocelot */
-		static Ozelot = new EntityType("Ozelot");
 		static IronGolem = new EntityType("VillagerGolem");
 		static Horse = new EntityType("EntityHorse");
 		static Rabbit = new EntityType("Rabbit");
