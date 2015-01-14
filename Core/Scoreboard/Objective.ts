@@ -13,7 +13,7 @@ module Scoreboard
 
 		//constructor(type: ObjectiveType, subCriteria?: Items.ItemType, name?: string, displayName?: string)
 		constructor(type: ObjectiveType, subCriteria?: Entities.EntityType, name?: string, displayName?: string)
-		constructor(type: ObjectiveType = ObjectiveType.dummy, subCriteria?: any, name: string = Naming.next("score"), displayName?: string)
+		constructor(type: ObjectiveType = ObjectiveType.dummy, subCriteria?: any, name: string = Util.Naming.next("score"), displayName?: string)
 		{
 			this.displayName = displayName || name;
 			this.name = name;

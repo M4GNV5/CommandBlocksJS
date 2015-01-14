@@ -20,8 +20,8 @@ module Entities
 
 		setValue(value: any, invert: boolean = false)
 		{
-			assert(typeof value == this.type);
-			assert((!invert) || (["team", "name", "type"].indexOf(this.identifier) != -1));
+			Util.assert(typeof value == this.type);
+			Util.assert((!invert) || (["team", "name", "type"].indexOf(this.identifier) != -1));
 			this.stringValue = (invert ? "!" : "") + this.typeConverter(value);
 			this.value = value;
 		}
@@ -32,6 +32,13 @@ module Entities
 			this.value = value;
 		}
 
+		clone(): SelectorArgument
+		{
+			var other = new SelectorArgument(this.identifier, this.type, this.typeConverter);
+			other.setRaw(this.stringValue);
+			return other;
+		}
+
 		static positionX() { return new SelectorArgument("x", "number", (x) => { return x.toString(); }); }
 		static positionY() { return new SelectorArgument("y", "number", (y) => { return y.toString(); }); }
 		static positionZ() { return new SelectorArgument("z", "number", (z) => { return z.toString(); }); }
@@ -39,14 +46,14 @@ module Entities
 		static radiusMax() { return new SelectorArgument("r", "number", (r) => { return r.toString(); }); }
 		static radiusMin() { return new SelectorArgument("rm", "number", (rm) => { return rm.toString(); }); }
 
-		static gamemode() { return new SelectorArgument("m", "object", (m) => { assert(m instanceof Players.GameMode); return (<Players.GameMode>m).toNumber().toString(); }); }
+		static gamemode() { return new SelectorArgument("m", "object", (m) => { Util.assert(m instanceof Players.GameMode); return (<Players.GameMode>m).toNumber().toString(); }); }
 
 		static count() { return new SelectorArgument("c", "number", (c) => { return c.toString(); }); }
 
 		static levelMax() { return new SelectorArgument("l", "number", (l) => { return l.toString(); }); }
 		static levelMin() { return new SelectorArgument("lm", "number", (lm) => { return lm.toString(); }); }
 
-		static team() { return new SelectorArgument("team", "object", (team) => { assert(team instanceof Scoreboard.Team); return (<Scoreboard.Team>team).name; }); }
+		static team() { return new SelectorArgument("team", "object", (team) => { Util.assert(team instanceof Scoreboard.Team); return (<Scoreboard.Team>team).name; }); }
 
 		static name() { return new SelectorArgument("name", "string"); }
 
@@ -60,7 +67,7 @@ module Entities
 		static rotationYMax() { return new SelectorArgument("ry", "number", (ry) => { return ry.toString(); }); }
 		static rotationYMin() { return new SelectorArgument("rym", "number", (rym) => { return rym.toString(); }); }
 
-		static entityType() { return new SelectorArgument("type", "object", (type) => { assert(type instanceof EntityType); return (<EntityType>type).name; }); }
+		static entityType() { return new SelectorArgument("type", "object", (type) => { Util.assert(type instanceof EntityType); return (<EntityType>type).name; }); }
 
 		static scoreMin(objective: Scoreboard.Objective) { return new SelectorArgument("score_" + objective.name + "_min", "number", (dx) => { return dx.toString(); }); }
 
@@ -111,7 +118,7 @@ module Entities
 							return new SelectorArgument(name, "number", (dx) => { return dx.toString(); });
 						}
 					}
-					assert(false, "Unknown Selector name: " + name);
+					Util.assert(false, "Unknown Selector name: " + name);
 			}
 		}
 	}

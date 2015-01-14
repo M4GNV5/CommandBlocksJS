@@ -16,6 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{DE6CC377-1
 		Core\API.ts = Core\API.ts
 		Core\base.ts = Core\base.ts
 		Core\MinecraftCommand.ts = Core\MinecraftCommand.ts
+		Core\OutputParser.ts = Core\OutputParser.ts
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Entities", "Entities", "{63BAB7E1-AD52-44E7-8D76-509B955B21F3}"
@@ -47,6 +48,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scoreboard", "Scoreboard", 
 		Core\Scoreboard\ObjectiveType.ts = Core\Scoreboard\ObjectiveType.ts
 		Core\Scoreboard\Team.ts = Core\Scoreboard\Team.ts
 		Core\Scoreboard\Visibility.ts = Core\Scoreboard\Visibility.ts
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Util", "Util", "{8BEC446D-8194-4455-BB93-D49D64FB8879}"
+	ProjectSection(SolutionItems) = preProject
+		Core\Util\assert.ts = Core\Util\assert.ts
+		Core\Util\Naming.ts = Core\Util\Naming.ts
+		Core\Util\Vector3.ts = Core\Util\Vector3.ts
 	EndProjectSection
 EndProject
 Global
@@ -108,6 +116,7 @@ Global
 		{8B7B6015-8903-42E7-AD07-C7238F2CA20C} = {DE6CC377-1C19-4CF2-8E56-A4202C8AD93B}
 		{8A1B9DD5-8CC4-4EE9-B078-C97B79B3BE25} = {DE6CC377-1C19-4CF2-8E56-A4202C8AD93B}
 		{6CC5FE29-B884-4CA4-923D-FD18DE3290BD} = {DE6CC377-1C19-4CF2-8E56-A4202C8AD93B}
+		{8BEC446D-8194-4455-BB93-D49D64FB8879} = {DE6CC377-1C19-4CF2-8E56-A4202C8AD93B}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = ServerWrapper\ServerWrapper.csproj

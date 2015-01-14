@@ -6,7 +6,7 @@ module Scoreboard
 	{
 		name: string;
 
-		constructor(name: string = Naming.next("team"), displayName: string = "")
+		constructor(name: string = Util.Naming.next("team"), displayName: string = "")
 		{
 			this.name = name;
 		}

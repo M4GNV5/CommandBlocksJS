@@ -10,7 +10,7 @@ module Runtime
 		index: number;
 		selector: Entities.Selector;
 
-		constructor(value: string = Naming.next("string"))
+		constructor(value: string = Util.Naming.next("string"))
 		{
 			if (typeof String.score == 'undefined')
 				String.score = new Scoreboard.Objective(Scoreboard.ObjectiveType.dummy, undefined, "std.strings", "RuntimeInteger");

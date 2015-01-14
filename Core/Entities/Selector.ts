@@ -5,33 +5,24 @@ module Entities
 	export class Selector
 	{
 		char: SelectorTarget;
-		private arguments: SelectorArgument[];
+		private arguments: { [identifier: string]: SelectorArgument } = {};
 
 		constructor(char: SelectorTarget = SelectorTarget.AllPlayer)
 		{
 			this.char = char;
 		}
 
-		setArgument(argument: SelectorArgument, invert: boolean = false): void
+		setArgument(argument: SelectorArgument): void
 		{
-			for (var i = 0; i < this.arguments.length; i++)
-			{
-				if (this.arguments[i].identifier == argument.identifier)
-					this.arguments[i].setValue(argument.value, invert);
-			}
+			this.arguments[argument.identifier] = argument;
 		}
 
 		getArgument(argument: SelectorArgument): SelectorArgument
 		{
-			for (var i = 0; i < this.arguments.length; i++)
-			{
-				if (this.arguments[i].identifier == argument.identifier)
-					return this.arguments[i];
-			}
-			return null;
+			return this.arguments[argument.identifier];
 		}
 
-		getArguments(): SelectorArgument[]
+		getArguments(): { [identifier: string]: SelectorArgument }
 		{
 			return this.arguments;
 		}
@@ -39,23 +30,30 @@ module Entities
 		merge(other: Selector, ignoreConflicts: boolean = true): void
 		{
 			var otherArgs = other.getArguments();
-			for (var i = 0; i < otherArgs.length; i++)
+			for (var arg in otherArgs)
 			{
-				if (this.getArgument(otherArgs[i]) != null)
+				if (this.getArgument(otherArgs[arg]) != null)
 				{
 					if (ignoreConflicts)
 						continue;
 					else
-						throw "Cannot combine selectors! Both define argument '"+otherArgs[i].identifier+"'";
+						throw "Cannot combine selectors! Both define argument '" + otherArgs[arg].identifier+"'";
 				}
-				this.setArgument(otherArgs[i]);
+				this.setArgument(otherArgs[arg].clone());
 			}
+		}
+
+		clone(): Selector
+		{
+			var other = new Selector(this.char);
+			other.merge(this);
+			return other;
 		}
 
 		static parse(selector: string): Selector
 		{
 			selector = selector.trim();
-			assert(selector[0] == "@", "Selector '" + selector + "' does not start with a @");
+			Util.assert(selector[0] == "@", "Selector '" + selector + "' does not start with @");
 
 			var selectorChar = new SelectorTarget(selector[1]);
 			var sel = new Selector(selectorChar);

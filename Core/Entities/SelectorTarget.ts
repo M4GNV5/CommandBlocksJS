@@ -16,7 +16,7 @@ module Entities
 
 		constructor(identifier: string)
 		{
-			assert(["a", "e", "p", "r"].indexOf(identifier) != -1, "Invalid identifier!");
+			Util.assert(["a", "e", "p", "r"].indexOf(identifier) != -1, "Invalid identifier!");
 			this.identifier = identifier;
 		}
 	}
