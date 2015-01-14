@@ -11,7 +11,7 @@ module Runtime
 
 		constructor(name: string)
 		constructor(selector: Entities.Selector)
-		constructor(selector: any = Util.Naming.next("int"))
+		constructor(selector: any = Util.Naming.next("bool"))
 		{
 			this.base = new Integer(selector);
 		}
