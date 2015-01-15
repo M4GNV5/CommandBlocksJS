@@ -13,6 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Debugger", "Debugger\Debugg
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{DE6CC377-1C19-4CF2-8E56-A4202C8AD93B}"
 	ProjectSection(SolutionItems) = preProject
+		Core\_compile.bat = Core\_compile.bat
 		Core\API.ts = Core\API.ts
 		Core\base.ts = Core\base.ts
 		Core\MinecraftCommand.ts = Core\MinecraftCommand.ts
@@ -55,6 +56,22 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Util", "Util", "{8BEC446D-8
 		Core\Util\assert.ts = Core\Util\assert.ts
 		Core\Util\Naming.ts = Core\Util\Naming.ts
 		Core\Util\Vector3.ts = Core\Util\Vector3.ts
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example", "Example", "{F14C26CD-536A-44C4-879A-2ECCD9FBC47D}"
+	ProjectSection(SolutionItems) = preProject
+		Example\compile.bat = Example\compile.bat
+		Example\Karma.ts = Example\Karma.ts
+		Example\Variables.ts = Example\Variables.ts
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chat", "Chat", "{160F31DF-EF18-482E-98E3-3B36E18C8433}"
+	ProjectSection(SolutionItems) = preProject
+		Core\Chat\Color.ts = Core\Chat\Color.ts
+		Core\Chat\Message.ts = Core\Chat\Message.ts
+		Core\Chat\Tellraw.ts = Core\Chat\Tellraw.ts
+		Core\Chat\TellrawScoreExtra.ts = Core\Chat\TellrawScoreExtra.ts
+		Core\Chat\TellrawSelectorExtra.ts = Core\Chat\TellrawSelectorExtra.ts
 	EndProjectSection
 EndProject
 Global
@@ -117,6 +134,7 @@ Global
 		{8A1B9DD5-8CC4-4EE9-B078-C97B79B3BE25} = {DE6CC377-1C19-4CF2-8E56-A4202C8AD93B}
 		{6CC5FE29-B884-4CA4-923D-FD18DE3290BD} = {DE6CC377-1C19-4CF2-8E56-A4202C8AD93B}
 		{8BEC446D-8194-4455-BB93-D49D64FB8879} = {DE6CC377-1C19-4CF2-8E56-A4202C8AD93B}
+		{160F31DF-EF18-482E-98E3-3B36E18C8433} = {DE6CC377-1C19-4CF2-8E56-A4202C8AD93B}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = ServerWrapper\ServerWrapper.csproj

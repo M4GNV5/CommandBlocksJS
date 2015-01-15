@@ -1,5 +1,5 @@
+@echo off
 for %%f in (".\*.ts") do (
-	tsc %%f
+	tsc -t ES5 %%f
 )
 pause
-exit

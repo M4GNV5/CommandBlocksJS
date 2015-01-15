@@ -9,8 +9,6 @@ class MinecraftCommand
 		this.cmd = cmd;
 	}
 
-	//TODO implement own output parser
-
 	run(): void
 	{
 		command(this.cmd);

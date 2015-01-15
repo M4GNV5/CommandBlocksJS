@@ -4,7 +4,7 @@ module Chat
 {
 	export class Tellraw extends Message
 	{
-		extras: Message[];
+		extras: Message[] = [];
 
 		tell(selector: Entities.Selector)
 		{
@@ -22,7 +22,7 @@ module Chat
 					return value;
 			});
 
-			return new MinecraftCommand(cmd);
+			return new MinecraftCommand(cmd + " " + src);
 		}
 	}
 }

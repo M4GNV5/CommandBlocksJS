@@ -5,9 +5,11 @@ ServerWrapper/obj
 Cmd/bin
 Cmd/obj
 CommandBlocksJS.userprefs
+_compile.bat
 packages/
 *.suo
 *.d.ts
 bin/
 obj/
 Beta/doc/
+Example/*.js

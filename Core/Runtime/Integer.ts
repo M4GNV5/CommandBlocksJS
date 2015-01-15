@@ -18,7 +18,7 @@ module Runtime
 			if (selector instanceof Entities.Selector)
 				this.selector = selector;
 			else
-				this.selector = Entities.Selector.parse(selector.toString());
+				this.selector = new Entities.Player(selector.toString());
 
 			this.set(value);
 		}

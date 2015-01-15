@@ -1,4 +1,4 @@
-/// <reference path="../Core/ref.ts"/>
+/// <reference path="../Core/API.ts"/>
 
 // setup karma scoreboard objective
 // name: karma, type: dummy, displayName: Karma

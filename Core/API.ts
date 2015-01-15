@@ -1,6 +1,10 @@
+/// <reference path="Util/assert.ts"/>
+/// <reference path="Util/Naming.ts"/>
+/// <reference path="Util/Vector3.ts"/>
+
 /// <reference path="Entities/EntityType.ts"/>
-/// <reference path="Entities/Player.ts"/>
 /// <reference path="Entities/Selector.ts"/>
+/// <reference path="Entities/Player.ts"/>
 /// <reference path="Entities/SelectorTarget.ts"/>
 /// <reference path="Entities/SelectorArgument.ts"/>
 
@@ -18,10 +22,6 @@
 /// <reference path="Chat/TellrawSelectorExtra.ts"/>
 
 /// <reference path="Players/GameMode.ts"/>
-
-/// <reference path="Util/assert.ts"/>
-/// <reference path="Util/Naming.ts"/>
-/// <reference path="Util/Vector3.ts"/>
 
 /// <reference path="Runtime/Integer.ts"/>
 /// <reference path="Runtime/Boolean.ts"/>

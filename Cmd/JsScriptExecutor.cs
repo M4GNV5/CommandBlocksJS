@@ -21,12 +21,12 @@ namespace CommandBlocksJS.Cmd
 				jsContext.SetParameter("api", new JsSchematicApi(worldDirectory));
 #if DEBUG
 			jsContext.Run(coreCode);
-			jsContext.Run("var startPosition = new Vector3(" + position.x + ", " + position.y + ", " + position.z + ");");
+			jsContext.Run("var startPosition = new Util.Vector3(" + position.x + ", " + position.y + ", " + position.z + ");");
 #else
 			try
 			{
 				jsContext.Run(coreCode);
-				jsContext.Run("var startPosition = new Vector3(" + position.x + ", " + position.y + ", " + position.z + ");");
+				jsContext.Run("var startPosition = new Util.Vector3(" + position.x + ", " + position.y + ", " + position.z + ");");
 			}
 			catch (JavascriptException e)
 			{
