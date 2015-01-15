@@ -7,7 +7,7 @@ module Util
 		static names: { [index: string]: number } = {};
 
 		/**
-		 * Generates unique names with ´name´ as prefix. Will start at zero when giving a new name.
+		 * Generates unique names with 'name' as prefix. Will start at zero when giving a new name.
 		 * @param name Prefix for unique name.
 		 */
 		static next(name: string): string

@@ -7,7 +7,7 @@ Cmd/obj
 CommandBlocksJS.userprefs
 packages/
 *.suo
-*.sublime-workspace
+*.d.ts
 bin/
 obj/
 Beta/doc/

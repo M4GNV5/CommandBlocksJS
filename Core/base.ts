@@ -1,4 +1,5 @@
 //#base.ts
+/// <reference path="./OutputParser.ts"/>
 
 interface CsApi
 {
@@ -298,8 +299,6 @@ wire(1);
  */
 function cbjsWorker(): void
 {
-	EventHandler.emit("end");
-
 	OutputParser.start();
 
 	api.log("Successfully executed " + outputHandler.functions.length + " functions!");

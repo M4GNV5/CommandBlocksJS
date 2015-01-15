@@ -63,7 +63,7 @@ module Scoreboard
 		{
 			return new MinecraftCommand("scoreboard players test " + selector + " " + valueMin + " " + valueMax);
 		}
-		operation(selector: Selector, otherObjective: Objective = this, otherPlayer: Selector = selector, operation: MathOperation = MathOperation.equals)
+		operation(selector: Selector, otherObjective: Objective = this, otherPlayer: Selector = selector, operation: MathOperation = MathOperation.assign)
 		{
 			command("scoreboard players operation " + selector + " " + this.name + " " + operation.operator + " " + otherPlayer + " " + otherObjective.name);
 		}
