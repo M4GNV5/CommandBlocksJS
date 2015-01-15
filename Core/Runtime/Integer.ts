@@ -79,5 +79,10 @@ module Runtime
 
 			return cmd;
 		}
+
+		toTellrawExtra(): Chat.TellrawScoreExtra
+		{
+			return new Chat.TellrawScoreExtra(Integer.score, this.selector);
+		}
 	}
 }

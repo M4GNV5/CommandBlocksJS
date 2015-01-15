@@ -44,5 +44,10 @@ module Runtime
 
 			return cmd;
 		}
+
+		toTellrawExtra(): Chat.TellrawSelectorExtra
+		{
+			return new Chat.TellrawSelectorExtra(this.selector);
+		}
 	}
 }

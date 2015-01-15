@@ -11,6 +11,12 @@
 /// <reference path="Scoreboard/Team.ts"/>
 /// <reference path="Scoreboard/Visibility.ts"/>
 
+/// <reference path="Chat/Color.ts"/>
+/// <reference path="Chat/Message.ts"/>
+/// <reference path="Chat/Tellraw.ts"/>
+/// <reference path="Chat/TellrawScoreExtra.ts"/>
+/// <reference path="Chat/TellrawSelectorExtra.ts"/>
+
 /// <reference path="Players/GameMode.ts"/>
 
 /// <reference path="Util/assert.ts"/>

@@ -40,5 +40,10 @@ module Runtime
 		{
 			return this.isExact(false, callback);
 		}
+
+		toTellrawExtra(): Chat.TellrawScoreExtra
+		{
+			return this.base.toTellrawExtra();
+		}
 	}
 }
