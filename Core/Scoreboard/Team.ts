@@ -39,18 +39,18 @@ module Scoreboard
 			command("scoreboard teams option " + this.name + " seeFriendlyInvisibles " + value);
 		}
 
-		set color(value: any) //TODO color class
+		set color(value: Chat.Color)
 		{
-			command("scoreboard teams option " + this.name + " color " + value);
+			command("scoreboard teams option " + this.name + " color " + Chat.Color[value]);
 		}
 
 		set nametagVisibility(value: Visibility)
 		{
-			command("scoreboard teams option " + this.name + " nametagVisibility " + value);
+			command("scoreboard teams option " + this.name + " nametagVisibility " + Visibility[value]);
 		}
 		set deathMessageVisibility(value: Visibility)
 		{
-			command("scoreboard teams option " + this.name + " deathMessageVisibility " + value);
+			command("scoreboard teams option " + this.name + " deathMessageVisibility " + Visibility[value]);
 		}
 	}
 }

@@ -82,11 +82,11 @@ class OutputHandler
 			var last = this.current;
 			this.current = id;
 
-            if (replaceRedstoneBlock)
-            {
-                wire(2);
-                command("setblock ~-3 ~ ~ minecraft:air 0 replace");
-            }
+			wire(2);
+			if (replaceRedstoneBlock)
+			{
+				command("setblock ~-3 ~ ~ minecraft:air 0 replace");
+			}
 
 			func();
 

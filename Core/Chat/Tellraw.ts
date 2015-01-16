@@ -4,7 +4,7 @@ module Chat
 {
 	export class Tellraw extends Message
 	{
-		extras: Message[] = [];
+		extra: Message[] = [];
 
 		tell(selector: Entities.Selector)
 		{

@@ -46,8 +46,9 @@ module Runtime
 		operation(operation: Scoreboard.MathOperation, other: any, otherPlayer?: Entities.Selector)
 		{
 			var _other: Scoreboard.Objective;
+			var otherPlayer: Entities.Selector;
 
-			if (other instanceof Number)
+			if (typeof other == "number")
 			{
 				var int = new Runtime.Integer(<number>other);
 				_other = Integer.score;

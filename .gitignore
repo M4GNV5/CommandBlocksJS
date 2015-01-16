@@ -1,15 +1,11 @@
-Core/*.js
-Core/Example/*.js
-ServerWrapper/bin
-ServerWrapper/obj
-Cmd/bin
-Cmd/obj
-CommandBlocksJS.userprefs
-_compile.bat
-packages/
-*.suo
-*.d.ts
+# C# output directories
 bin/
 obj/
-Beta/doc/
-Example/*.js
+
+# nuget directory
+packages/
+
+# unimportant / private / generated files
+*.js
+*.suo
+*.d.ts

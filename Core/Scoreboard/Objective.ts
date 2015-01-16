@@ -23,7 +23,7 @@ module Scoreboard
 			/*else if (subCriteria instanceof Items.ItemType)
 				this.criteria = (<Items.ItemType>subCriteria).name;*/
 			else
-				this.criteria = type + (subCriteria || "").toString();
+				this.criteria = ObjectiveType[type] + (subCriteria || "").toString();
 
 			command("scoreboard objectives add " + this.name + " " + this.criteria + " " + this.displayName);
 		}
@@ -50,13 +50,13 @@ module Scoreboard
 			command("scoreboard players reset " + selector + " " + this.name);
 		}
 
-		static setDisplay(slot: DisplaySlot): void
+		static clearDisplay(slot: DisplaySlot): void
 		{
 			command("scoreboard objectives setdisplay " + slot);
 		}
 		setDisplay(slot: DisplaySlot): void
 		{
-			command("scoreboard objectives setdisplay " + slot + " " + this.name);
+			command("scoreboard objectives setdisplay " + DisplaySlot[slot] + " " + this.name);
 		}
 
 		test(selector: Selector, valueMin: number, valueMax: number = 2147483647): MinecraftCommand

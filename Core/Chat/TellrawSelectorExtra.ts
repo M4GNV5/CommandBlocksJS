@@ -11,6 +11,8 @@ module Chat
 			super();
 
 			this.selector = selector.toString();
+
+			delete this.text;
 		}
 	}
 }

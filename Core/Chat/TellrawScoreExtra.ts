@@ -4,15 +4,17 @@ module Chat
 {
 	export class TellrawScoreExtra extends Message
 	{
-		private objective: string;
-		private name: string;
+		private score: {[index: string]: string};
 
 		constructor(objective: Scoreboard.Objective, player: Entities.Selector)
 		{
 			super();
 
-			this.objective = objective.name;
-			this.name = player.toString();
+			this.score = {};
+			this.score["objective"] = objective.name;
+			this.score["name"] = player.toString();
+
+			delete this.text;
 		}
 	}
 }
