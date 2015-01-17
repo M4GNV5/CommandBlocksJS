@@ -13,18 +13,20 @@ class MinecraftCommand
 	{
 		command(this.cmd);
 	}
+
 	validate(callback: Function): void
 	{
-        sidewards(function ()
-        {
-            queryCommand(this.cmd, false);
-            comparator();
-            call(callback, false);
-        });
+		sidewards(function ()
+		{
+			queryCommand(this.cmd, false);
+			comparator();
+			call(callback, false);
+		});
 	}
+
 	validateSync(): void
 	{
-        queryCommand(this.cmd);
-        comparator();
+		queryCommand(this.cmd);
+		comparator();
 	}
 }

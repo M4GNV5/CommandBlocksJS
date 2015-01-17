@@ -205,10 +205,10 @@ function call(func: Function, placeRepeater: boolean = true): void
 
 function callOnce(callback: Function, placeRepeater: boolean = true): void
 {
-    var funcId = outputHandler.addFunction(callback, false);
-    if (placeRepeater)
-        delay();
-    outputHandler.addToCurrent('e' + funcId + ';');
+	var funcId = outputHandler.addFunction(callback, false);
+	if (placeRepeater)
+		delay();
+	outputHandler.addToCurrent('e' + funcId + ';');
 }
 
 /**
