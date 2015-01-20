@@ -21,6 +21,11 @@
 /// <reference path="Chat/TellrawScoreExtra.ts"/>
 /// <reference path="Chat/TellrawSelectorExtra.ts"/>
 
+/// <reference path="Chat/ClickEventAction.ts"/>
+/// <reference path="Chat/ClickEvent.ts"/>
+/// <reference path="Chat/HoverEventAction.ts"/>
+/// <reference path="Chat/HoverEvent.ts"/>
+
 /// <reference path="Players/GameMode.ts"/>
 
 /// <reference path="Runtime/Integer.ts"/>

@@ -82,13 +82,14 @@ class OutputHandler
 			var last = this.current;
 			this.current = id;
 
-			wire(2);
+			func();
+
 			if (replaceRedstoneBlock)
 			{
-				command("setblock ~-3 ~ ~ minecraft:air 0 replace");
+				var length = this.output[this.current].split(';').length - 1;
+				var cmd = "fill ~ ~-1 ~ ~ ~-" + length + " ~ minecraft:stone 0 replace minecraft:redstone_block";
+				command(cmd);
 			}
-
-			func();
 
 			this.current = last;
 			return id;
@@ -142,10 +143,8 @@ function block(id: number = 1, data: number = 0): void
  * @param text Content of the command block.
  * @param placeRepeater Whether or not to place a repeater before calling the function.
  */
-function command(text: string, placeRepeater: boolean = true): void
+function command(text: string): void
 {
-	if (placeRepeater)
-		delay();
 	outputHandler.addToCurrent('c' + text + ';');
 }
 
@@ -154,10 +153,8 @@ function command(text: string, placeRepeater: boolean = true): void
  * @param text Content of the command block.
  * @param placeRepeater Whether or not to place a repeater before calling the function.
  */
-function queryCommand(text: string, placeRepeater: boolean = true): void
+function queryCommand(text: string): void
 {
-	if (placeRepeater)
-		delay();
 	outputHandler.addToCurrent('q' + text + ';');
 }
 
@@ -195,19 +192,15 @@ function sidewards(func: Function): void
  * @param func JavaScript/TypeScript function.
  * @param placeRepeater Whether or not to place a repeater before calling the function.
  */
-function call(func: Function, placeRepeater: boolean = true): void
+function call(func: Function): void
 {
 	var funcId = outputHandler.addFunction(func);
-	if (placeRepeater)
-		delay();
 	outputHandler.addToCurrent('e' + funcId + ';');
 }
 
-function callOnce(callback: Function, placeRepeater: boolean = true): void
+function callOnce(callback: Function): void
 {
 	var funcId = outputHandler.addFunction(callback, false);
-	if (placeRepeater)
-		delay();
 	outputHandler.addToCurrent('e' + funcId + ';');
 }
 
@@ -291,14 +284,18 @@ function invert(blockId: number = 1, placeRepeater: boolean = true): void
 //endregion
 
 //region main code
-block(143, 5);
-wire(1);
+block(143, 2);
+outputHandler.addToCurrent('e0;');
 
 /**
  * Entry point of every script. Will append automatically.
  */
 function cbjsWorker(): void
 {
+	var length = outputHandler.output[outputHandler.current].split(';').length - 1;
+	var cmd = "fill ~ ~-1 ~ ~-" + length + " ~-1 ~ minecraft:stone 0 replace minecraft:redstone_block";
+	command(cmd);
+
 	OutputParser.start();
 
 	api.log("Successfully executed " + outputHandler.functions.length + " functions!");

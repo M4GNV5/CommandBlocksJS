@@ -18,9 +18,9 @@ class MinecraftCommand
 	{
 		sidewards(function ()
 		{
-			queryCommand(this.cmd, false);
+			queryCommand(this.cmd);
 			comparator();
-			call(callback, false);
+			call(callback);
 		});
 	}
 

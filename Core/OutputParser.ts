@@ -150,10 +150,13 @@ class OutputParser
 				var ePosition = this.functionPositions[source.substring(1)];
 
 				var offX = ePosition.x - this.position.x;
-				var offY = ePosition.y - this.position.y;
+				var offY = ePosition.y - this.position.y - 1;
 				var offZ = ePosition.z - this.position.z;
 
-				var eCommand = "setblock ~" + offX + " ~" + offY + " ~" + offZ + " minecraft:redstone_block 0 replace";
+				var other = outputHandler.output[source.substring(1)];
+				var offX2 = ePosition.x - this.position.x + other.split(';').length - 2;
+
+				var eCommand = "fill ~" + offX + " ~" + offY + " ~" + offZ + " ~" + offX2 + " ~" + offY + " ~" + offZ + " minecraft:redstone_block 0 replace";
 
 				api.placeCommandBlock(eCommand, this.position.x, this.position.y, this.position.z);
 				break;
