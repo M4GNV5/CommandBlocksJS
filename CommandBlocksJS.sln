@@ -60,8 +60,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Util", "Util", "{8BEC446D-8
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example", "Example", "{F14C26CD-536A-44C4-879A-2ECCD9FBC47D}"
 	ProjectSection(SolutionItems) = preProject
-		Example\compile.bat = Example\compile.bat
 		Example\Karma.ts = Example\Karma.ts
+		Example\run_all.bat = Example\run_all.bat
 		Example\Variables.ts = Example\Variables.ts
 	EndProjectSection
 EndProject
@@ -72,6 +72,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chat", "Chat", "{160F31DF-E
 		Core\Chat\Tellraw.ts = Core\Chat\Tellraw.ts
 		Core\Chat\TellrawScoreExtra.ts = Core\Chat\TellrawScoreExtra.ts
 		Core\Chat\TellrawSelectorExtra.ts = Core\Chat\TellrawSelectorExtra.ts
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Event", "Event", "{9A60A67D-38AD-4031-9A05-DE57E55EFAA9}"
+	ProjectSection(SolutionItems) = preProject
+		Core\Chat\ClickEvent.ts = Core\Chat\ClickEvent.ts
+		Core\Chat\ClickEventAction.ts = Core\Chat\ClickEventAction.ts
+		Core\Chat\HoverEvent.ts = Core\Chat\HoverEvent.ts
+		Core\Chat\HoverEventAction.ts = Core\Chat\HoverEventAction.ts
 	EndProjectSection
 EndProject
 Global
@@ -135,6 +143,7 @@ Global
 		{6CC5FE29-B884-4CA4-923D-FD18DE3290BD} = {DE6CC377-1C19-4CF2-8E56-A4202C8AD93B}
 		{8BEC446D-8194-4455-BB93-D49D64FB8879} = {DE6CC377-1C19-4CF2-8E56-A4202C8AD93B}
 		{160F31DF-EF18-482E-98E3-3B36E18C8433} = {DE6CC377-1C19-4CF2-8E56-A4202C8AD93B}
+		{9A60A67D-38AD-4031-9A05-DE57E55EFAA9} = {160F31DF-EF18-482E-98E3-3B36E18C8433}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = ServerWrapper\ServerWrapper.csproj
