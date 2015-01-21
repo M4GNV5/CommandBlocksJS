@@ -2,7 +2,7 @@
 
 module Runtime
 {
-	export class String
+	export class String implements Variable<string>
 	{
 		private static score: Scoreboard.Objective;
 		private static lastIndex: number = 1;

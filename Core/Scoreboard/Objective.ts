@@ -63,9 +63,9 @@ module Scoreboard
 		{
 			return new MinecraftCommand("scoreboard players test " + selector + " " + valueMin + " " + valueMax);
 		}
-		operation(selector: Selector, otherObjective: Objective = this, otherPlayer: Selector = selector, operation: MathOperation = MathOperation.assign)
+		operation(selector: Selector, otherObjective: Objective = this, otherPlayer: Selector = selector, operation: string = "=")
 		{
-			command("scoreboard players operation " + selector + " " + this.name + " " + operation.operator + " " + otherPlayer + " " + otherObjective.name);
+			command("scoreboard players operation " + selector + " " + this.name + " " + operation + " " + otherPlayer + " " + otherObjective.name);
 		}
 		enableTrigger(selector: Selector): void
 		{

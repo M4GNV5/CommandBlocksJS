@@ -11,7 +11,6 @@
 /// <reference path="Scoreboard/DisplaySlot.ts"/>
 /// <reference path="Scoreboard/Objective.ts"/>
 /// <reference path="Scoreboard/ObjectiveType.ts"/>
-/// <reference path="Scoreboard/MathOperation.ts"/>
 /// <reference path="Scoreboard/Team.ts"/>
 /// <reference path="Scoreboard/Visibility.ts"/>
 
@@ -28,7 +27,11 @@
 
 /// <reference path="Players/GameMode.ts"/>
 
+/// <reference path="Runtime/Variable.ts"/>
+/// <reference path="Runtime/Number.ts"/>
+/// <reference path="Runtime/NumberSetMode.ts"/>
 /// <reference path="Runtime/Integer.ts"/>
+/// <reference path="Runtime/Fraction.ts"/>
 /// <reference path="Runtime/Boolean.ts"/>
 /// <reference path="Runtime/String.ts"/>
 

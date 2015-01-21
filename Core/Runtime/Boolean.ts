@@ -2,7 +2,7 @@
 
 module Runtime
 {
-	export class Boolean
+	export class Boolean implements Variable<boolean>
 	{
 		static trueValue = 1;
 		static falseValue = 0;
