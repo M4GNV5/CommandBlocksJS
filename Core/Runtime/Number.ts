@@ -4,12 +4,6 @@ module Runtime
 {
 	export interface Number extends Variable<number>
 	{
-		Score: Scoreboard.Objective;
-		Selector: Entities.Selector;
-
-		operation(operator: string, other: number): void;
-		operation(operator: string, other: Number): void;
-
 		set(value: number, mode?: NumberSetMode): void;
 		set(value: Number, mode?: NumberSetMode): void;
 
@@ -26,5 +20,9 @@ module Runtime
 		divide(other: Number): void;
 
 		swap(other: Number): void;
+
+		clone(cloneName?: string): Number;
+
+		toInteger(): Integer;
 	}
 }

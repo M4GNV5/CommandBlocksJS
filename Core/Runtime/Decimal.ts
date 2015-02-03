@@ -2,35 +2,23 @@
 
 module Runtime
 {
-	export class Integer implements Number
+	export class Decimal implements Number
 	{
-		private static score: Scoreboard.Objective;
+		static accuracy = 10000;
 
-		get Score(): Scoreboard.Objective
+		private value: Integer;
+
+		private name: string;
+
+		constructor(startValue?: Integer, name?: string)
+		constructor(startValue?: number, name?: string, intialize?: boolean)
+		constructor(startValue: any = 0, name: string = Util.Naming.next("decimal"), intialize: boolean = true)
 		{
-			return Integer.score;
-		}
-
-		private selector: Entities.Selector;
-
-		get Selector(): Entities.Selector
-		{
-			return this.selector;
-		}
-
-		constructor(value?: number, name?: string, intialize?: boolean)
-		constructor(value?: number, selector?: Entities.Selector, intialize?: boolean)
-		constructor(value: number = 0, selector: any = Util.Naming.next("int"), intialize: boolean = true)
-		{
-			if (typeof Integer.score == 'undefined')
-				Integer.score = new Scoreboard.Objective(Scoreboard.ObjectiveType.dummy, undefined, "std.integer", "RuntimeInteger");
-
-			if (selector instanceof Entities.Selector)
-				this.selector = selector;
+			if (typeof startValue == 'number')
+				this.value = new Integer(startValue, name, intialize);
 			else
-				this.selector = new Entities.Player(selector.toString());
-
-			this.set(value);
+				this.value = <Integer>startValue;
+			this.name = name;
 		}
 
 		set(value: number, mode?: NumberSetMode): void;
@@ -38,7 +26,7 @@ module Runtime
 		set(value: any, mode: NumberSetMode = NumberSetMode.assign): void
 		{
 			if (typeof value == 'number' && mode == NumberSetMode.assign)
-				this.Score.set(this.selector, value);
+				this.value.set(value * Decimal.accuracy);
 			else if (mode == NumberSetMode.assign)
 				this.operation("=", value);
 			else if (mode == NumberSetMode.divisionRemainder)
@@ -54,7 +42,7 @@ module Runtime
 		add(value: any): void
 		{
 			if (typeof value == 'number')
-				this.Score.add(this.selector, value);
+				this.value.add(value * Decimal.accuracy);
 			else
 				this.operation("+=", <Number>value);
 		}
@@ -64,7 +52,7 @@ module Runtime
 		remove(value: any): void
 		{
 			if (typeof value == 'number')
-				this.Score.remove(this.selector, value);
+				this.value.remove(value * Decimal.accuracy);
 			else
 				this.operation("-=", <Number>value);
 		}
@@ -85,19 +73,13 @@ module Runtime
 
 		swap(other: Number): void
 		{
-			this.operation("><", other);
+			this.value.swap(other);
 		}
 
-		reset(): void
+		clone(cloneName?: string): Decimal
 		{
-			this.Score.reset(this.selector);
-		}
-
-		clone(cloneName?: string): Integer
-		{
-			var clone = new Integer(0, cloneName, false);
-			clone.set(this);
-			return clone;
+			var copy = this.value.clone();
+			return new Decimal(copy, cloneName);
 		}
 
 		operation(operation: string, other: number)
@@ -106,11 +88,17 @@ module Runtime
 		{
 			var _other: Integer;
 			if (typeof other == 'number')
-				_other = new Integer(<number>other, "const"+other);
+			{
+				var val = other * Decimal.accuracy;
+				_other = new Integer(val, "const" + val);
+			}
 			else
+			{
 				_other = (<Number>other).toInteger();
+				_other.multiplicate(Decimal.accuracy);
+			}
 
-			this.Score.operation(this.selector, this.Score, _other.Selector, operation);
+			this.value.operation(operation, _other);
 		}
 
 		isExact(value: number, callback?: Function): MinecraftCommand
@@ -120,22 +108,24 @@ module Runtime
 
 		isBetween(min: number = 0, max?: number, callback?: Function): MinecraftCommand
 		{
-			var cmd = this.Score.test(this.selector, min, max);
+			min *= Decimal.accuracy;
+			if (typeof max != 'undefined')
+				max *= Decimal.accuracy;
 
-			if (typeof callback == 'function')
-				cmd.validate(callback);
-
-			return cmd;
+			return this.value.isBetween(min, max, callback);
 		}
 
 		toInteger(): Integer
 		{
-			return this;
+			var out = new Integer(0, this.name + "O", false);
+			out.set(this.value);
+			out.divide(Decimal.accuracy);
+			return out;
 		}
 
 		toTellrawExtra(): Chat.TellrawScoreExtra
 		{
-			return new Chat.TellrawScoreExtra(this.Score, this.selector);
+			return this.toInteger().toTellrawExtra();
 		}
 	}
 }

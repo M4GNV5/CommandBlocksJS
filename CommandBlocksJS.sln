@@ -37,6 +37,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Runtime", "Runtime", "{8A1B9DD5-8CC4-4EE9-B078-C97B79B3BE25}"
 	ProjectSection(SolutionItems) = preProject
 		Core\Runtime\Boolean.ts = Core\Runtime\Boolean.ts
+		Core\Runtime\Decimal.ts = Core\Runtime\Decimal.ts
 		Core\Runtime\Fraction.ts = Core\Runtime\Fraction.ts
 		Core\Runtime\Integer.ts = Core\Runtime\Integer.ts
 		Core\Runtime\Number.ts = Core\Runtime\Number.ts

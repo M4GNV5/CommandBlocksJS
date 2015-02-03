@@ -32,6 +32,7 @@
 /// <reference path="Runtime/NumberSetMode.ts"/>
 /// <reference path="Runtime/Integer.ts"/>
 /// <reference path="Runtime/Fraction.ts"/>
+/// <reference path="Runtime/Decimal.ts"/>
 /// <reference path="Runtime/Boolean.ts"/>
 /// <reference path="Runtime/String.ts"/>
 

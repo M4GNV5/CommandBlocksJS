@@ -71,7 +71,7 @@ class OutputHandler
 	functions: Function[] = [function () { }];
 	current: number = 0;
 
-	addFunction(func: Function, replaceRedstoneBlock: boolean = true): number
+	addFunction(func: Function, replaceRedstoneBlocks: boolean = true): number
 	{
 		if (this.functions.indexOf(func) == -1)
 		{
@@ -84,17 +84,26 @@ class OutputHandler
 
 			func();
 
-			if (replaceRedstoneBlock)
-			{
-				var length = this.output[this.current].split(';').length - 1;
-				var cmd = "fill ~ ~-1 ~ ~ ~-" + length + " ~ minecraft:stone 0 replace minecraft:redstone_block";
-				command(cmd);
-			}
+			this.addCallHelperCommands(id, replaceRedstoneBlocks);
 
 			this.current = last;
 			return id;
 		}
 		return this.functions.indexOf(func);
+	}
+
+	addCallHelperCommands(id: number, replaceRedstoneBlocks: boolean = true): void
+	{
+		var length = this.output[this.current].split(';').length - 1;
+		var cmd: string;
+		if (replaceRedstoneBlocks)
+		{
+			cmd = "cfill ~-1 ~-1 ~ ~" + length + " ~-1 ~ minecraft:stone 0 replace minecraft:redstone_block;";
+			this.output[id] = cmd + this.output[id];
+			length++;
+		}
+		cmd = "cfill ~ ~-1 ~ ~" + length + " ~-1 ~ minecraft:redstone_block 0;";
+		this.output[id] = cmd + this.output[id];
 	}
 
 	removeFunction(func: Function): void
@@ -284,17 +293,14 @@ function invert(blockId: number = 1, placeRepeater: boolean = true): void
 //endregion
 
 //region main code
-block(143, 2);
-outputHandler.addToCurrent('e0;');
-
 /**
  * Entry point of every script. Will append automatically.
  */
 function cbjsWorker(): void
 {
-	var length = outputHandler.output[outputHandler.current].split(';').length - 1;
-	var cmd = "fill ~ ~-1 ~ ~-" + length + " ~-1 ~ minecraft:stone 0 replace minecraft:redstone_block";
-	command(cmd);
+	var id = outputHandler.current;
+	outputHandler.addCallHelperCommands(id);
+	outputHandler.output[id] = "b143_2;" + outputHandler.output[id]; //button
 
 	OutputParser.start();
 

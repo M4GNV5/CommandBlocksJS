@@ -61,7 +61,7 @@ module Scoreboard
 
 		test(selector: Selector, valueMin: number, valueMax: number = 2147483647): MinecraftCommand
 		{
-			return new MinecraftCommand("scoreboard players test " + selector + " " + valueMin + " " + valueMax);
+			return new MinecraftCommand("scoreboard players test " + selector + " " + this.name + " " + valueMin + " " + valueMax);
 		}
 		operation(selector: Selector, otherObjective: Objective = this, otherPlayer: Selector = selector, operation: string = "=")
 		{

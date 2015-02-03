@@ -1,19 +1,26 @@
 /// <reference path="../Core/API.ts"/>
 
 var myInt: Runtime.Integer;
+var myFrac: Runtime.Fraction;
 callOnce(function ()
 {
 	myInt = new Runtime.Integer(1);
+	myFrac = new Runtime.Fraction(new Runtime.Integer(3), new Runtime.Integer(8));
 });
-myInt.operation(Scoreboard.MathOperation.multiplication, 2);
 
-var t = new Chat.Tellraw("Current value: ", Chat.Color.red, true);
+myInt.multiplicate(2);
 
-var extra = myInt.toTellrawExtra();
-extra.Color = Chat.Color.gold;
-extra.bold = true;
-t.extra.push(extra);
+myFrac.multiplicate(2);
+myFrac.isBetween(5, undefined, function ()
+{
+	myFrac.reduceToLowest();
+});
 
-t.extra.push(new Chat.Message("\nPro tip: Try pressing the button again!", Chat.Color.green, false, true));
+var tellraw = new Chat.Tellraw("Current values:\n");
+tellraw.extra.push(
+	myInt.toTellrawExtra(),
+	new Chat.Message("\n")
+	);
+tellraw.extra = tellraw.extra.concat(myFrac.toExactTellrawExtra());
+tellraw.tell(new Entities.Player("@a"));
 
-t.tell(new Entities.Selector(Entities.SelectorTarget.AllPlayer));

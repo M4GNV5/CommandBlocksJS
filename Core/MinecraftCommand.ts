@@ -16,9 +16,10 @@ class MinecraftCommand
 
 	validate(callback: Function): void
 	{
+		var cmd = this.cmd;
 		sidewards(function ()
 		{
-			queryCommand(this.cmd);
+			queryCommand(cmd);
 			comparator();
 			call(callback);
 		});
