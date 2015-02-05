@@ -17,9 +17,11 @@ class MinecraftCommand
 	validate(callback: Function): void
 	{
 		var cmd = this.cmd;
+		var escapedCmd = cmd.replace(/"/g, '\\"');
+		command('setblock ~1 ~1 ~2 minecraft:command_block 0 replace {Command:"setblock ~ ~-1 ~-2 minecraft:command_block 0 replace {Command:\\"' + escapedCmd + '\\"}"}');
 		sidewards(function ()
 		{
-			queryCommand(cmd);
+			command(cmd);
 			comparator();
 			call(callback);
 		});
@@ -27,7 +29,7 @@ class MinecraftCommand
 
 	validateSync(): void
 	{
-		queryCommand(this.cmd);
+		command(this.cmd);
 		comparator();
 	}
 }
