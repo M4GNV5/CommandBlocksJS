@@ -144,6 +144,17 @@ class OutputParser
 
 				api.placeCommandBlock(eCommand, this.position.x, this.position.y, this.position.z);
 				break;
+			case 't': //t for T imeout
+				var id = source.split('_')[0].substring(1);
+				var timeout = source.split('_')[1] || 1;
+
+				var ePosition = this.functionPositions[id];
+				var offX = ePosition.x - this.position.x;
+				var offY = ePosition.y - this.position.y - 1;
+				var offZ = ePosition.z - this.position.z;
+
+				OutputParser.parseCall('csummon ArmorStand ~' + offX + ' ~' + offY + ' ~' + offZ + ' {CustomName:"function' + id + '",Marker:1}');
+				break;
 			case 'n': //n for N ote (sign)
 				var lines = source.substring(1).split('_');
 				var signDirection = lines[lines.length - 1];

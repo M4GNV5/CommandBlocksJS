@@ -213,6 +213,23 @@ function callOnce(callback: Function): void
 	outputHandler.addToCurrent('e' + funcId + ';');
 }
 
+function setTimeout(callback: any, time: number = 1, timeInSeconds: boolean = true): void
+{
+	var func: Function;
+	if (typeof callback == 'function')
+		func = <Function>callback;
+	else
+		func = function () { eval(callback.toString()); };
+
+	if (timeInSeconds)
+		time *= 20;
+
+	var funcId = outputHandler.addFunction(func);
+	time++;
+	outputHandler.addToCurrent('t' + funcId + '_' + time + ';');
+	command('scoreboard players set @e[name=function' + funcId + '] setTimeout ' + time);
+}
+
 /**
  * Places a sign (for notes etc.)
  * @param text1 First line of the sign.
@@ -293,6 +310,16 @@ function invert(blockId: number = 1, placeRepeater: boolean = true): void
 //endregion
 
 //region main code
+function timeoutFunctionsTick()
+{
+	command("scoreboard players remove @e[score_setTimeout_min=2] setTimeout 1");
+	command("execute @e[score_setTimeout=1] ~ ~ ~ setblock ~ ~ ~ minecraft:redstone_block");
+	command("kill @e[score_setTimeout=1]");
+	call(timeoutFunctionsTick);
+}
+command("scoreboard objectives add setTimeout dummy");
+call(timeoutFunctionsTick);
+
 /**
  * Entry point of every script. Will append automatically.
  */
