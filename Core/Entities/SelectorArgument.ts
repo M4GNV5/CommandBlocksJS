@@ -55,7 +55,7 @@ module Entities
 
 		static team() { return new SelectorArgument("team", "object", (team) => { Util.assert(team instanceof Scoreboard.Team); return (<Scoreboard.Team>team).name; }); }
 
-		static name() { return new SelectorArgument("name", "string"); }
+		static playerName() { return new SelectorArgument("name", "string"); } //funtion.name is reserved
 
 		static diameterX() { return new SelectorArgument("dx", "number", (dx) => { return dx.toString(); }); }
 		static diameterY() { return new SelectorArgument("dy", "number", (dy) => { return dy.toString(); }); }
@@ -93,7 +93,7 @@ module Entities
 
 				case "team": return SelectorArgument.team();
 
-				case "name": return SelectorArgument.name();
+				case "name": return SelectorArgument.playerName();
 
 				case "dx": return SelectorArgument.diameterX();
 				case "dy": return SelectorArgument.diameterY();
