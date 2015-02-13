@@ -13,20 +13,18 @@ module Runtime
 		constructor(value: string = Util.Naming.next("string"))
 		{
 			if (typeof String.score == 'undefined')
-				String.score = new Scoreboard.Objective(Scoreboard.ObjectiveType.dummy, undefined, "std.strings", "RuntimeInteger");
+				String.score = new Scoreboard.Objective(Scoreboard.ObjectiveType.dummy, undefined, "stdStrings", "RuntimeInteger");
 
 			this.index = String.lastIndex;
 
-			callOnce(function ()
-			{
-				command('summon ArmorStand ~ ~1 ~ {CustomName:"' + value + '",NoGravity:true,Invincible:1,PersistenceRequired:1}');
+			this.selector = Entities.Selector.parse("@e[score_stdStrings_min=" + this.index + ",score_stdStrings=" + this.index + "]");
 
-				var sel = Entities.Selector.parse('@e[type=ArmorStand,name=' + value + ',r=5]');
+			command('kill ' + this.selector.toString());
+			command('summon ArmorStand ~ ~1 ~ {CustomName:"' + value + '",NoGravity:true,Invincible:1,PersistenceRequired:1}');
 
-				String.score.set(sel, String.lastIndex);
-				String.lastIndex++;
-			});
-			delay(4);
+			var sel = Entities.Selector.parse('@e[type=ArmorStand,name=' + value + ',r=5]');
+			String.score.set(sel, String.lastIndex);
+			String.lastIndex++;
 		}
 
 		set(value: string): void

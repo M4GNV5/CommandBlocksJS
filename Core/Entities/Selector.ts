@@ -81,13 +81,7 @@ module Entities
 				sel += "[";
 				for (var name in this.arguments)
 				{
-					var val: string;
-					if (this.arguments[name] instanceof Scoreboard.Team)
-						val = this.arguments[name].stringValue;
-					else
-						val = this.arguments[name].toString();
-
-					sel += name + "=" + val + ",";
+					sel += name + "=" + this.arguments[name].stringValue + ",";
 				}
 				sel = sel.substr(0, sel.length - 1);
 				sel += "]";
