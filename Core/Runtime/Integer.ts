@@ -4,6 +4,15 @@ module Runtime
 {
 	export class Integer implements Number
 	{
+		public static get MaxValue()
+		{
+			return new Integer(-2147483647);
+		}
+		public static get MinValue()
+		{
+			return new Integer(2147483647);
+		}
+
 		private static score: Scoreboard.Objective;
 
 		get Score(): Scoreboard.Objective
@@ -23,7 +32,7 @@ module Runtime
 		constructor(value: number = 0, selector: any = Util.Naming.next("int"), intialize: boolean = true)
 		{
 			if (typeof Integer.score == 'undefined')
-				Integer.score = new Scoreboard.Objective(Scoreboard.ObjectiveType.dummy, undefined, "std.integer", "RuntimeInteger");
+				Integer.score = new Scoreboard.Objective(Scoreboard.ObjectiveType.dummy, "std.integer", "RuntimeInteger");
 
 			if (selector instanceof Entities.Selector)
 				this.selector = selector;

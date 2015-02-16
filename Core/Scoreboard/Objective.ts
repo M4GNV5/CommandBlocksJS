@@ -11,19 +11,12 @@ module Scoreboard
 		name: string;
 		displayName: string;
 
-		//constructor(type: ObjectiveType, subCriteria?: Items.ItemType, name?: string, displayName?: string)
-		constructor(type: ObjectiveType, subCriteria?: Entities.EntityType, name?: string, displayName?: string)
-		constructor(type: ObjectiveType = ObjectiveType.dummy, subCriteria?: any, name: string = Util.Naming.next("score"), displayName?: string)
+		constructor(criteria: ObjectiveType = ObjectiveType.dummy, name: string = Util.Naming.next("score"), displayName?: string)
 		{
 			this.displayName = displayName || name;
 			this.name = name;
 
-			if (subCriteria instanceof Entities.EntityType)
-				this.criteria = (<Entities.EntityType>subCriteria).name;
-			/*else if (subCriteria instanceof Items.ItemType)
-				this.criteria = (<Items.ItemType>subCriteria).name;*/
-			else
-				this.criteria = ObjectiveType[type] + (subCriteria || "").toString();
+			this.criteria = criteria.value;
 
 			command("scoreboard objectives add " + this.name + " " + this.criteria + " " + this.displayName);
 		}

@@ -13,7 +13,7 @@ module Runtime
 		constructor(value: string = Util.Naming.next("string"))
 		{
 			if (typeof String.score == 'undefined')
-				String.score = new Scoreboard.Objective(Scoreboard.ObjectiveType.dummy, undefined, "stdStrings", "RuntimeInteger");
+				String.score = new Scoreboard.Objective(Scoreboard.ObjectiveType.dummy, "stdStrings", "RuntimeInteger");
 
 			this.index = String.lastIndex;
 
