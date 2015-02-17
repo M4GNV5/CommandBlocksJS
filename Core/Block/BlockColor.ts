@@ -1,6 +1,6 @@
 module Block
 {
-	export enum WoolColor
+	export enum BlockColor
 	{
 		white = 0,
 		orange,
