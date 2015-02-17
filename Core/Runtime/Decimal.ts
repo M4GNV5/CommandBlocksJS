@@ -4,7 +4,17 @@ module Runtime
 {
 	export class Decimal implements Number
 	{
-		static accuracy = 10000;
+		public static get Pi()
+		{
+			return new Decimal(3.14, Util.Naming.next("pi"));
+		}
+		public static get Euler()
+		{
+			return new Decimal(2.72, Util.Naming.next("euler"));
+		}
+
+		private static compileTimeAccuracy = 100;
+		private static accuracy: Integer;
 
 		private value: Integer;
 
@@ -14,10 +24,18 @@ module Runtime
 		constructor(startValue?: number, name?: string, intialize?: boolean)
 		constructor(startValue: any = 0, name: string = Util.Naming.next("decimal"), intialize: boolean = true)
 		{
+			if (typeof Decimal.accuracy == 'undefined')
+				Decimal.accuracy = new Integer(Decimal.compileTimeAccuracy, "decimalAccuracy");
+
 			if (typeof startValue == 'number')
-				this.value = new Integer(startValue, name, intialize);
+			{
+				this.value = new Integer(startValue * Decimal.compileTimeAccuracy, name, intialize);
+			}
 			else
+			{
 				this.value = <Integer>startValue;
+				this.value.multiplicate(Decimal.accuracy);
+			}
 			this.name = name;
 		}
 
@@ -26,15 +44,18 @@ module Runtime
 		set(value: any, mode: NumberSetMode = NumberSetMode.assign): void
 		{
 			if (typeof value == 'number' && mode == NumberSetMode.assign)
-				this.value.set(value * Decimal.accuracy);
+				this.value.set(value * Decimal.compileTimeAccuracy);
 			else if (mode == NumberSetMode.assign)
-				this.operation("=", value);
+				this.operation("=", value, false);
 			else if (mode == NumberSetMode.divisionRemainder)
 				this.operation("%=", value);
 			else if (mode == NumberSetMode.smallerOne)
 				this.operation("<", value);
 			else if (mode == NumberSetMode.biggerOne)
 				this.operation(">", value);
+
+			if (mode == NumberSetMode.assign)
+				this.operation("*=", Decimal.accuracy, false);
 		}
 
 		add(value: number): void;
@@ -42,7 +63,7 @@ module Runtime
 		add(value: any): void
 		{
 			if (typeof value == 'number')
-				this.value.add(value * Decimal.accuracy);
+				this.value.add(value * Decimal.compileTimeAccuracy);
 			else
 				this.operation("+=", <Number>value);
 		}
@@ -52,7 +73,7 @@ module Runtime
 		remove(value: any): void
 		{
 			if (typeof value == 'number')
-				this.value.remove(value * Decimal.accuracy);
+				this.value.remove(value * Decimal.compileTimeAccuracy);
 			else
 				this.operation("-=", <Number>value);
 		}
@@ -61,14 +82,26 @@ module Runtime
 		multiplicate(value: Number): void;
 		multiplicate(value: any): void
 		{
-			this.operation("*=", value);
+			if (value instanceof Decimal)
+			{
+				this.operation("*=", (<Decimal>value).value, false);
+				this.operation("/=", Decimal.accuracy, false);
+			}
+			else
+				this.operation("*=", value);
 		}
 
 		divide(value: number): void;
 		divide(value: Number): void;
 		divide(value: any): void
 		{
-			this.operation("/=", value);
+			if (value instanceof Decimal)
+			{
+				this.operation("*=", (<Decimal>value).value, false);
+				this.operation("/=", Decimal.accuracy, false);
+			}
+			else
+				this.operation("/=", value);
 		}
 
 		swap(other: Number): void
@@ -82,20 +115,24 @@ module Runtime
 			return new Decimal(copy, cloneName);
 		}
 
-		operation(operation: string, other: number)
-		operation(operation: string, other: Number)
-		operation(operation: string, other: any)
+		operation(operation: string, other: number, convertToDecimal?: boolean)
+		operation(operation: string, other: Number, convertToDecimal?: boolean)
+		operation(operation: string, other: any, convertToDecimal: boolean = true)
 		{
-			var _other: Integer;
+			var _other: Number;
 			if (typeof other == 'number')
 			{
-				var val = other * Decimal.accuracy;
-				_other = new Integer(val, "const" + val);
+				_other = new Integer(<number>other, "const" + other);
 			}
 			else
 			{
 				_other = (<Number>other).toInteger();
-				_other.multiplicate(Decimal.accuracy);
+
+				if (convertToDecimal)
+				{
+					_other = _other.clone();
+					_other.multiplicate(Decimal.accuracy);
+				}
 			}
 
 			this.value.operation(operation, _other);
@@ -108,9 +145,9 @@ module Runtime
 
 		isBetween(min: number = 0, max?: number, callback?: Function): MinecraftCommand
 		{
-			min *= Decimal.accuracy;
+			min *= Decimal.compileTimeAccuracy;
 			if (typeof max != 'undefined')
-				max *= Decimal.accuracy;
+				max *= Decimal.compileTimeAccuracy;
 
 			return this.value.isBetween(min, max, callback);
 		}
@@ -126,6 +163,18 @@ module Runtime
 		toTellrawExtra(): Chat.TellrawScoreExtra
 		{
 			return this.toInteger().toTellrawExtra();
+		}
+		toExactTellrawExtra(): Chat.Message[]
+		{
+			var cp = this.value.clone(this.name + "O2");
+			cp.set(Decimal.accuracy, NumberSetMode.divisionRemainder);
+
+			var messages = [];
+			messages[0] = this.toTellrawExtra();
+			messages[1] = new Chat.Message(",");
+			messages[2] = cp.toTellrawExtra();
+
+			return messages;
 		}
 	}
 }

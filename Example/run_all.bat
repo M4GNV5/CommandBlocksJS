@@ -15,6 +15,6 @@ call run.bat Variables
 echo.
 echo.
 echo.
-call run.bat Karma
+call run.bat CircleCalculations
 
 pause

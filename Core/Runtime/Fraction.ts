@@ -4,6 +4,19 @@ module Runtime
 {
 	export class Fraction implements Number
 	{
+		public static get Pi()
+		{
+			var numerator = new Integer(355);
+			var denominator = new Integer(113);
+			return new Fraction(numerator, denominator, Util.Naming.next("pi"));
+		}
+		public static get Euler()
+		{
+			var numerator = new Integer(27182);
+			var denominator = new Integer(10000);
+			return new Fraction(numerator, denominator, Util.Naming.next("euler"));
+		}
+
 		numerator: Number;
 		denominator: Number;
 
