@@ -1,29 +1,46 @@
 /// <reference path="../Core/API.ts"/>
 
-var radius = new Runtime.Integer(3);
+//start at radius
+var startRadius = 1;
+//stop at radius
+var stopRadius = 20;
 
-var circumference = new Runtime.Decimal();
-var area = new Runtime.Decimal();
+var radius = new Runtime.Integer(startRadius);
+call(calculateNext);
 
-var pi = Runtime.Decimal.Pi;
+function calculateNext()
+{
+	var circumference = new Runtime.Decimal();
+	var area = new Runtime.Decimal();
 
-circumference.set(radius);
-circumference.multiplicate(pi);
-circumference.multiplicate(2);
+	var pi = Runtime.Decimal.Pi;
 
-area.set(radius);
-area.multiplicate(area);
-area.multiplicate(pi);
+	// C = 2 * pi * r
+	circumference.set(radius);
+	circumference.multiplicate(pi);
+	circumference.multiplicate(2);
 
-var tellraw = new Chat.Tellraw("Radius:           ");
-tellraw.extra.push(
-	radius.toTellrawExtra(),
-	new Chat.Message("\nCircumference: "));
+	// A = r * r * pi
+	area.set(radius);
+	area.multiplicate(area);
+	area.multiplicate(pi);
 
-tellraw.extra = tellraw.extra.concat(circumference.toExactTellrawExtra());
+	// output current values
+	Chat.Tellraw.create(
+		"r = ",
+		radius.toTellrawExtra(),
+		", C = ",
+		circumference.toExactTellrawExtra(),
+		", A = ",
+		area.toExactTellrawExtra()
+	).tell(new Entities.Player("@a"));
 
-tellraw.extra.push(new Chat.Message("\nArea:             "));
-tellraw.extra = tellraw.extra.concat(area.toExactTellrawExtra());
+	//add one to radius
+	radius.add(1);
 
-
-tellraw.tell(new Entities.Player("@a"));
+	//if radius is still in range calculate next circle
+	radius.isBetween(startRadius, stopRadius, function ()
+	{
+		call(calculateNext);
+	});
+}
