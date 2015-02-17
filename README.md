@@ -1,64 +1,69 @@
 #CommandBlocksJS
-CommandBlocksJS executes Javascript code and translates it to Commandblock logic.
+CommandBlocksJS allows you to program commandblocks logic in typescript/javascript. The major benefit in using CommandBlocksJS instead of building the blocks yourself is that you can create complex logic a lot faster that than you could in minecraft. Furthermore you can 'build' stuff like countdown timers in 4 lines of code where you would need ~10 minutes to write all the commands ingame.
 
 ##Documentation
-moved to the [Wiki](https://github.com/M4GV5/CommandBlocksJS/wiki)
+**cooming soon**
 
-**Note** there is a [Quick Start](https://github.com/M4GV5/CommandBlocksJS/wiki/Quick-Start) page for those who cant wait to write their first script
+###Legacy Documentation (<2.0)
+[Here](https://github.com/M4GV5/CommandBlocksJS/wiki)
+There also is a [Quick Start](https://github.com/M4GV5/CommandBlocksJS/wiki/Quick-Start) page for those who cant wait to write their first script (with version 1.3)
 
 ##Examples
-The most Basic example is a simple auto-announcer nearly every server has one:
+
 ```javascript
-timer(1200, //Timer tick in deciseconds
-    function() //function to execute every 120 seconds
-    {
-        //say message
-        say("Some message that will annoy everybody after 6 minutes");
-    }
-);
-```
-The Output commandblocks look like this:
+//
+//https://github.com/M4GNV5/CommandBlocksJS/blob/master/Example/CircleCalculations.ts
+//
 
-[![Cmd](http://i.imgur.com/lJ5MrJ6.png)]()
+/// <reference path="../Core/API.ts"/>
 
-Of Course you can do much more complex stuff like this:
-```javascript
-//setup karma scoreboard objective
-//name: karma, type: dummy, displayName: Karma
-var karma = new Score("karma", "dummy", "Karma");
-//set display slot to sidebar
-karma.setDisplay("sidebar");
+//start at radius
+var startRadius = 1;
+//stop at radius
+var stopRadius = 20;
 
-//subscribe to the 'onentitykill' event
-EventHandler.setEventListener('onentitykill', function(player)
+var radius = new Runtime.Integer(startRadius);
+var timer = new Util.Timer(calculateNext, 1);
+timer.start();
+
+function calculateNext()
 {
-    //tell the player he just earned karma
-    tellraw(player.getSelector(), "You just earned one Karma".format(Formatting.red));
-    //add 1 karma
-    karma.add(player.getSelector(), 1);
-});
-//subscribe to the 'ondeath' event
-EventHandler.setEventListener('ondeath', function(player)
-{
-    //save selector of the dead player in local variable
-    var playerSelector = player.getSelector();
+	var circumference = new Runtime.Decimal();
+	var area = new Runtime.Decimal();
 
-    //setup tellraw command that tells him his karma
-    var karmaMessage = new Tellraw();
-    //Add Text 'The Player <name> had a Karma of <valua>'
-    karmaMessage.addText("The Player ");
-    karmaMessage.addSelector(playerSelector);
-    karmaMessage.addText(" had a Karma of ");
-	karmaMessage.addScore(playerSelector, "karma");
-	
-	//tell the message to everybody
-	karmaMessage.tell("@a");
+	var pi = Runtime.Decimal.Pi;
 
-    //reset karma
-    karma.set(playerSelector, 0);
-});
+	// C = 2 * pi * r
+	circumference.set(radius);
+	circumference.multiplicate(pi);
+	circumference.multiplicate(2);
+
+	// A = r * r * pi
+	area.set(radius);
+	area.multiplicate(area);
+	area.multiplicate(pi);
+
+	// output current values
+	Chat.Tellraw.create(
+		"r = ",
+		radius.toTellrawExtra(),
+		", C = ",
+		circumference.toExactTellrawExtra(),
+		", A = ",
+		area.toExactTellrawExtra()
+	).tell(new Entities.Player("@a"));
+
+	//add one to radius
+	radius.add(1);
+
+	radius.isBetween(stopRadius, undefined, function ()
+	{
+		timer.stop();
+	});
+}
 ```
-
+###Output
+[![Cmd](http://i.imgur.com/lloEG6U.png)]()
 
 
 ##Used Libraries
