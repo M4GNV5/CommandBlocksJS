@@ -59,6 +59,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Util", "Util", "{8BEC446D-8
 	ProjectSection(SolutionItems) = preProject
 		Core\Util\assert.ts = Core\Util\assert.ts
 		Core\Util\Naming.ts = Core\Util\Naming.ts
+		Core\Util\Timer.ts = Core\Util\Timer.ts
 		Core\Util\Vector3.ts = Core\Util\Vector3.ts
 	EndProjectSection
 EndProject
@@ -84,6 +85,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Event", "Event", "{9A60A67D
 		Core\Chat\ClickEventAction.ts = Core\Chat\ClickEventAction.ts
 		Core\Chat\HoverEvent.ts = Core\Chat\HoverEvent.ts
 		Core\Chat\HoverEventAction.ts = Core\Chat\HoverEventAction.ts
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Block", "Block", "{39C411A5-E65D-450D-A864-363C63F7021F}"
+	ProjectSection(SolutionItems) = preProject
+		Core\Block\BlockHandle.ts = Core\Block\BlockHandle.ts
+		Core\Block\SetBlockHandling.ts = Core\Block\SetBlockHandling.ts
+		Core\Block\WoolColor.ts = Core\Block\WoolColor.ts
 	EndProjectSection
 EndProject
 Global
@@ -148,6 +156,7 @@ Global
 		{8BEC446D-8194-4455-BB93-D49D64FB8879} = {DE6CC377-1C19-4CF2-8E56-A4202C8AD93B}
 		{160F31DF-EF18-482E-98E3-3B36E18C8433} = {DE6CC377-1C19-4CF2-8E56-A4202C8AD93B}
 		{9A60A67D-38AD-4031-9A05-DE57E55EFAA9} = {160F31DF-EF18-482E-98E3-3B36E18C8433}
+		{39C411A5-E65D-450D-A864-363C63F7021F} = {DE6CC377-1C19-4CF2-8E56-A4202C8AD93B}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = ServerWrapper\ServerWrapper.csproj

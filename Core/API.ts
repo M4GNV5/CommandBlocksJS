@@ -40,6 +40,8 @@
 /// <reference path="Block/SetBlockHandling.ts"/>
 /// <reference path="Block/WoolColor.ts"/>
 
+/// <reference path="Util/Timer.ts"/>
+
 /// <reference path="./MinecraftCommand.ts"/>
 
 /// <reference path="./base.ts"/>
