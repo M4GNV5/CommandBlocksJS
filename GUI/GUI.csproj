@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{FCDB301D-B8E9-486D-BB14-95EE8D0776ED}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CommandBlocksJS.GUI</RootNamespace>
     <AssemblyName>CommandblocksJS.GUI</AssemblyName>
