@@ -16,7 +16,7 @@ module Util
 		constructor(callback: Function, delay: number = 20, start: boolean = false)
 		{
 			var name = Naming.next("timer");
-			this.delay = new Runtime.Integer(-1, name);
+			this.delay = new Runtime.Integer(delay, name);
 			this.isRunning = new Runtime.Integer(0, name + "Running");
 
 			var that = this;
