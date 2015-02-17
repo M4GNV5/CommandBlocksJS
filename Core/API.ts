@@ -36,6 +36,10 @@
 /// <reference path="Runtime/Boolean.ts"/>
 /// <reference path="Runtime/String.ts"/>
 
+/// <reference path="Block/BlockHandle.ts"/>
+/// <reference path="Block/SetBlockHandling.ts"/>
+/// <reference path="Block/WoolColor.ts"/>
+
 /// <reference path="./MinecraftCommand.ts"/>
 
 /// <reference path="./base.ts"/>

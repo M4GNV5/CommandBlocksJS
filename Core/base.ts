@@ -334,3 +334,22 @@ function cbjsWorker(): void
 	api.log("Successfully executed " + outputHandler.functions.length + " functions!");
 }
 //endregion
+
+interface String
+{
+	format(...args : any[]): string;
+}
+
+if (!String.prototype.format)
+{
+	String.prototype.format = function (...args: any[])
+	{
+		return this.replace(/{(\d+)}/g, function (match, n)
+		{
+			return typeof args[n] != 'undefined'
+				? args[n]
+				: match
+				;
+		});
+	};
+}
