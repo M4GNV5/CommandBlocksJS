@@ -38,7 +38,20 @@
 
 /// <reference path="Block/BlockHandle.ts"/>
 /// <reference path="Block/SetBlockHandling.ts"/>
-/// <reference path="Block/WoolColor.ts"/>
+/// <reference path="Block/BlockColor.ts"/>
+/// <reference path="Block/BlockMaterial.ts"/>
+/// <reference path="Block/CobblestoneWall.ts"/>
+/// <reference path="Block/Dirt.ts"/>
+/// <reference path="Block/DoublePlant.ts"/>
+/// <reference path="Block/MonsterEgg.ts"/>
+/// <reference path="Block/QuartzBlock.ts"/>
+/// <reference path="Block/RedFlower.ts"/>
+/// <reference path="Block/Sandstone.ts"/>
+/// <reference path="Block/Slab.ts"/>
+/// <reference path="Block/Sponge.ts"/>
+/// <reference path="Block/Stone.ts"/>
+/// <reference path="Block/Stonebrick.ts"/>
+/// <reference path="Block/WoodType.ts"/>
 
 /// <reference path="Util/Timer.ts"/>
 
