@@ -199,7 +199,6 @@ function sidewards(func: Function): void
 /**
  * Adds the function to the structure and calls the redstone.
  * @param func JavaScript/TypeScript function.
- * @param placeRepeater Whether or not to place a repeater before calling the function.
  */
 function call(func: Function): void
 {
@@ -213,7 +212,10 @@ function callOnce(callback: Function): void
 	outputHandler.addToCurrent('e' + funcId + ';');
 }
 
-function setTimeout(callback: any, time: number = 1, timeInSeconds: boolean = true): void
+var setTimeoutScore: Scoreboard.Objective;
+function setTimeout(callback: any, time?: number, timeInSeconds?: boolean): void
+function setTimeout(callback: any, time?: Runtime.Number, timeInSeconds?: boolean): void
+function setTimeout(callback: any, time: any = 1, timeInSeconds: boolean = false): void
 {
 	var func: Function;
 	if (typeof callback == 'function')
@@ -221,13 +223,26 @@ function setTimeout(callback: any, time: number = 1, timeInSeconds: boolean = tr
 	else
 		func = function () { eval(callback.toString()); };
 
-	if (timeInSeconds)
-		time *= 20;
-
 	var funcId = outputHandler.addFunction(func);
-	time++;
+	var sel = Entities.Selector.parse('@e[name=function' + funcId + ']');
+
 	outputHandler.addToCurrent('t' + funcId + '_' + time + ';');
-	command('scoreboard players set @e[name=function' + funcId + '] setTimeout ' + time);
+
+	if (typeof time == 'number')
+	{
+		if (timeInSeconds)
+			time *= 20;
+		setTimeoutScore.set(sel, <number>time);
+	}
+	else
+	{
+		var _time = (<Runtime.Number>time).toInteger();
+
+		if (timeInSeconds)
+			_time.multiplicate(20);
+
+		setTimeoutScore.operation(sel, _time.Score, _time.Selector, "=");
+	}
 }
 
 /**
@@ -312,12 +327,12 @@ function invert(blockId: number = 1, placeRepeater: boolean = true): void
 //region main code
 function timeoutFunctionsTick()
 {
-	command("scoreboard players remove @e[score_setTimeout_min=2] setTimeout 1");
-	command("execute @e[score_setTimeout=1] ~ ~ ~ setblock ~ ~ ~ minecraft:redstone_block");
-	command("kill @e[score_setTimeout=1]");
+	setTimeoutScore.remove(Entities.Selector.parse("@e[score_setTimeout_min=1]"), 1);
+	command("execute @e[score_setTimeout=0] ~ ~ ~ setblock ~ ~ ~ minecraft:redstone_block");
+	command("kill @e[score_setTimeout=0]");
 	call(timeoutFunctionsTick);
 }
-command("scoreboard objectives add setTimeout dummy");
+setTimeoutScore = new Scoreboard.Objective(Scoreboard.ObjectiveType.dummy, "setTimeout");
 call(timeoutFunctionsTick);
 
 /**
