@@ -6,7 +6,8 @@ var startRadius = 1;
 var stopRadius = 20;
 
 var radius = new Runtime.Integer(startRadius);
-call(calculateNext);
+var timer = new Util.Timer(calculateNext, 1);
+timer.start();
 
 function calculateNext()
 {
@@ -38,9 +39,8 @@ function calculateNext()
 	//add one to radius
 	radius.add(1);
 
-	//if radius is still in range calculate next circle
-	radius.isBetween(startRadius, stopRadius, function ()
+	radius.isBetween(stopRadius + 1, undefined, function ()
 	{
-		call(calculateNext);
+		timer.stop();
 	});
 }
