@@ -231,7 +231,9 @@ function setTimeout(callback: any, time: any = 1, timeInSeconds: boolean = false
 	if (typeof time == 'number')
 	{
 		if (timeInSeconds)
-			time *= 20;
+			time *= 1000;
+		time /= 50;
+		time = Math.round(time);
 		setTimeoutScore.set(sel, <number>time);
 	}
 	else
