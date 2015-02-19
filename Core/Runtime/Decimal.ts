@@ -171,7 +171,7 @@ module Runtime
 
 			var messages = [];
 			messages[0] = this.toTellrawExtra();
-			messages[1] = new Chat.Message(",");
+			messages[1] = new Chat.Message(".");
 			messages[2] = cp.toTellrawExtra();
 
 			return messages;

@@ -27,9 +27,15 @@ class MinecraftCommand
 		});
 	}
 
-	validateSync(): void
+	validateOnce(callback: Function): void
 	{
-		command(this.cmd);
-		comparator();
+		var cmd = this.cmd;
+
+		sidewards(function ()
+		{
+			command(cmd);
+			comparator();
+			call(callback);
+		});
 	}
 }
