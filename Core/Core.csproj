@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <ProjectGuid>{2AAF7F56-EE73-4559-A4C4-3E5968E38F13}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <OutputPath>bin</OutputPath>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <TypeScriptToolsVersion>1.0</TypeScriptToolsVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>Core</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\WebApplications\Microsoft.WebApplication.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\WebApplications\Microsoft.WebApplication.targets')" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>49311</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:49311/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
+    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <TypeScriptRemoveComments>true</TypeScriptRemoveComments>
+    <TypeScriptSourceMap>false</TypeScriptSourceMap>
+  </PropertyGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="API.ts" />
+    <TypeScriptCompile Include="base.ts" />
+    <TypeScriptCompile Include="Block\BlockColor.ts" />
+    <TypeScriptCompile Include="Block\BlockHandle.ts" />
+    <TypeScriptCompile Include="Block\BlockMaterial.ts" />
+    <TypeScriptCompile Include="Block\CobblestoneWall.ts" />
+    <TypeScriptCompile Include="Block\Dirt.ts" />
+    <TypeScriptCompile Include="Block\DoublePlant.ts" />
+    <TypeScriptCompile Include="Block\MonsterEgg.ts" />
+    <TypeScriptCompile Include="Block\QuartzBlock.ts" />
+    <TypeScriptCompile Include="Block\RedFlower.ts" />
+    <TypeScriptCompile Include="Block\Sandstone.ts" />
+    <TypeScriptCompile Include="Block\SetBlockHandling.ts" />
+    <TypeScriptCompile Include="Block\Slab.ts" />
+    <TypeScriptCompile Include="Block\Sponge.ts" />
+    <TypeScriptCompile Include="Block\Stone.ts" />
+    <TypeScriptCompile Include="Block\Stonebrick.ts" />
+    <TypeScriptCompile Include="Block\WoodType.ts" />
+    <TypeScriptCompile Include="Chat\ClickEvent.ts" />
+    <TypeScriptCompile Include="Chat\ClickEventAction.ts" />
+    <TypeScriptCompile Include="Chat\Color.ts" />
+    <TypeScriptCompile Include="Chat\HoverEvent.ts" />
+    <TypeScriptCompile Include="Chat\HoverEventAction.ts" />
+    <TypeScriptCompile Include="Chat\Message.ts" />
+    <TypeScriptCompile Include="Chat\Tellraw.ts" />
+    <TypeScriptCompile Include="Chat\TellrawScoreExtra.ts" />
+    <TypeScriptCompile Include="Chat\TellrawSelectorExtra.ts" />
+    <TypeScriptCompile Include="Entities\EntityType.ts" />
+    <TypeScriptCompile Include="Entities\Player.ts" />
+    <TypeScriptCompile Include="Entities\Selector.ts" />
+    <TypeScriptCompile Include="Entities\SelectorArgument.ts" />
+    <TypeScriptCompile Include="Entities\SelectorTarget.ts" />
+    <TypeScriptCompile Include="MinecraftCommand.ts" />
+    <TypeScriptCompile Include="OutputParser.ts" />
+    <TypeScriptCompile Include="Players\GameMode.ts" />
+    <TypeScriptCompile Include="Runtime\Boolean.ts" />
+    <TypeScriptCompile Include="Runtime\Decimal.ts" />
+    <TypeScriptCompile Include="Runtime\Fraction.ts" />
+    <TypeScriptCompile Include="Runtime\Integer.ts" />
+    <TypeScriptCompile Include="Runtime\Number.ts" />
+    <TypeScriptCompile Include="Runtime\NumberSetMode.ts" />
+    <TypeScriptCompile Include="Runtime\String.ts" />
+    <TypeScriptCompile Include="Runtime\Variable.ts" />
+    <TypeScriptCompile Include="Scoreboard\DisplaySlot.ts" />
+    <TypeScriptCompile Include="Scoreboard\Objective.ts" />
+    <TypeScriptCompile Include="Scoreboard\ObjectiveType.ts" />
+    <TypeScriptCompile Include="Scoreboard\Team.ts" />
+    <TypeScriptCompile Include="Scoreboard\Visibility.ts" />
+    <TypeScriptCompile Include="Util\assert.ts" />
+    <TypeScriptCompile Include="Util\Naming.ts" />
+    <TypeScriptCompile Include="Util\Timer.ts" />
+    <TypeScriptCompile Include="Util\Vector3.ts" />
+  </ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <TypeScriptOutFile>core.js</TypeScriptOutFile>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+</Project>

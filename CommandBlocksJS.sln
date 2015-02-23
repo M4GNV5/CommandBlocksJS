@@ -11,58 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI", "GUI\GUI.csproj", "{F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Debugger", "Debugger\Debugger.csproj", "{9B283186-BAA8-406C-8800-78DF1CD25B48}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{DE6CC377-1C19-4CF2-8E56-A4202C8AD93B}"
-	ProjectSection(SolutionItems) = preProject
-		Core\_compile.bat = Core\_compile.bat
-		Core\API.ts = Core\API.ts
-		Core\base.ts = Core\base.ts
-		Core\MinecraftCommand.ts = Core\MinecraftCommand.ts
-		Core\OutputParser.ts = Core\OutputParser.ts
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Entities", "Entities", "{63BAB7E1-AD52-44E7-8D76-509B955B21F3}"
-	ProjectSection(SolutionItems) = preProject
-		Core\Entities\EntityType.ts = Core\Entities\EntityType.ts
-		Core\Entities\Player.ts = Core\Entities\Player.ts
-		Core\Entities\Selector.ts = Core\Entities\Selector.ts
-		Core\Entities\SelectorArgument.ts = Core\Entities\SelectorArgument.ts
-		Core\Entities\SelectorTarget.ts = Core\Entities\SelectorTarget.ts
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Players", "Players", "{8B7B6015-8903-42E7-AD07-C7238F2CA20C}"
-	ProjectSection(SolutionItems) = preProject
-		Core\Players\GameMode.ts = Core\Players\GameMode.ts
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Runtime", "Runtime", "{8A1B9DD5-8CC4-4EE9-B078-C97B79B3BE25}"
-	ProjectSection(SolutionItems) = preProject
-		Core\Runtime\Boolean.ts = Core\Runtime\Boolean.ts
-		Core\Runtime\Decimal.ts = Core\Runtime\Decimal.ts
-		Core\Runtime\Fraction.ts = Core\Runtime\Fraction.ts
-		Core\Runtime\Integer.ts = Core\Runtime\Integer.ts
-		Core\Runtime\Number.ts = Core\Runtime\Number.ts
-		Core\Runtime\NumberSetMode.ts = Core\Runtime\NumberSetMode.ts
-		Core\Runtime\String.ts = Core\Runtime\String.ts
-		Core\Runtime\Variable.ts = Core\Runtime\Variable.ts
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scoreboard", "Scoreboard", "{6CC5FE29-B884-4CA4-923D-FD18DE3290BD}"
-	ProjectSection(SolutionItems) = preProject
-		Core\Scoreboard\DisplaySlot.ts = Core\Scoreboard\DisplaySlot.ts
-		Core\Scoreboard\Objective.ts = Core\Scoreboard\Objective.ts
-		Core\Scoreboard\ObjectiveType.ts = Core\Scoreboard\ObjectiveType.ts
-		Core\Scoreboard\Team.ts = Core\Scoreboard\Team.ts
-		Core\Scoreboard\Visibility.ts = Core\Scoreboard\Visibility.ts
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Util", "Util", "{8BEC446D-8194-4455-BB93-D49D64FB8879}"
-	ProjectSection(SolutionItems) = preProject
-		Core\Util\assert.ts = Core\Util\assert.ts
-		Core\Util\Naming.ts = Core\Util\Naming.ts
-		Core\Util\Timer.ts = Core\Util\Timer.ts
-		Core\Util\Vector3.ts = Core\Util\Vector3.ts
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example", "Example", "{F14C26CD-536A-44C4-879A-2ECCD9FBC47D}"
 	ProjectSection(SolutionItems) = preProject
 		Example\CircleCalculations.ts = Example\CircleCalculations.ts
@@ -70,29 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example", "Example", "{F14C
 		Example\Variables.ts = Example\Variables.ts
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chat", "Chat", "{160F31DF-EF18-482E-98E3-3B36E18C8433}"
-	ProjectSection(SolutionItems) = preProject
-		Core\Chat\Color.ts = Core\Chat\Color.ts
-		Core\Chat\Message.ts = Core\Chat\Message.ts
-		Core\Chat\Tellraw.ts = Core\Chat\Tellraw.ts
-		Core\Chat\TellrawScoreExtra.ts = Core\Chat\TellrawScoreExtra.ts
-		Core\Chat\TellrawSelectorExtra.ts = Core\Chat\TellrawSelectorExtra.ts
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Event", "Event", "{9A60A67D-38AD-4031-9A05-DE57E55EFAA9}"
-	ProjectSection(SolutionItems) = preProject
-		Core\Chat\ClickEvent.ts = Core\Chat\ClickEvent.ts
-		Core\Chat\ClickEventAction.ts = Core\Chat\ClickEventAction.ts
-		Core\Chat\HoverEvent.ts = Core\Chat\HoverEvent.ts
-		Core\Chat\HoverEventAction.ts = Core\Chat\HoverEventAction.ts
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Block", "Block", "{39C411A5-E65D-450D-A864-363C63F7021F}"
-	ProjectSection(SolutionItems) = preProject
-		Core\Block\BlockHandle.ts = Core\Block\BlockHandle.ts
-		Core\Block\SetBlockHandling.ts = Core\Block\SetBlockHandling.ts
-		Core\Block\WoolColor.ts = Core\Block\WoolColor.ts
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{2AAF7F56-EE73-4559-A4C4-3E5968E38F13}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -144,19 +70,19 @@ Global
 		{9B283186-BAA8-406C-8800-78DF1CD25B48}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{9B283186-BAA8-406C-8800-78DF1CD25B48}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{9B283186-BAA8-406C-8800-78DF1CD25B48}.Release|x86.ActiveCfg = Release|Any CPU
+		{2AAF7F56-EE73-4559-A4C4-3E5968E38F13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AAF7F56-EE73-4559-A4C4-3E5968E38F13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AAF7F56-EE73-4559-A4C4-3E5968E38F13}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2AAF7F56-EE73-4559-A4C4-3E5968E38F13}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2AAF7F56-EE73-4559-A4C4-3E5968E38F13}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2AAF7F56-EE73-4559-A4C4-3E5968E38F13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AAF7F56-EE73-4559-A4C4-3E5968E38F13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AAF7F56-EE73-4559-A4C4-3E5968E38F13}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2AAF7F56-EE73-4559-A4C4-3E5968E38F13}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{2AAF7F56-EE73-4559-A4C4-3E5968E38F13}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{63BAB7E1-AD52-44E7-8D76-509B955B21F3} = {DE6CC377-1C19-4CF2-8E56-A4202C8AD93B}
-		{8B7B6015-8903-42E7-AD07-C7238F2CA20C} = {DE6CC377-1C19-4CF2-8E56-A4202C8AD93B}
-		{8A1B9DD5-8CC4-4EE9-B078-C97B79B3BE25} = {DE6CC377-1C19-4CF2-8E56-A4202C8AD93B}
-		{6CC5FE29-B884-4CA4-923D-FD18DE3290BD} = {DE6CC377-1C19-4CF2-8E56-A4202C8AD93B}
-		{8BEC446D-8194-4455-BB93-D49D64FB8879} = {DE6CC377-1C19-4CF2-8E56-A4202C8AD93B}
-		{160F31DF-EF18-482E-98E3-3B36E18C8433} = {DE6CC377-1C19-4CF2-8E56-A4202C8AD93B}
-		{9A60A67D-38AD-4031-9A05-DE57E55EFAA9} = {160F31DF-EF18-482E-98E3-3B36E18C8433}
-		{39C411A5-E65D-450D-A864-363C63F7021F} = {DE6CC377-1C19-4CF2-8E56-A4202C8AD93B}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = ServerWrapper\ServerWrapper.csproj
