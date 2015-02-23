@@ -39,7 +39,7 @@ function calculateNext()
 	//add one to radius
 	radius.add(1);
 
-	radius.isBetween(stopRadius + 1, undefined, function ()
+	radius.isBetween(stopRadius, undefined, function ()
 	{
 		timer.stop();
 	});

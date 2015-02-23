@@ -85,7 +85,16 @@
     <TypeScriptCompile Include="Entities\SelectorArgument.ts" />
     <TypeScriptCompile Include="Entities\SelectorTarget.ts" />
     <TypeScriptCompile Include="MinecraftCommand.ts" />
-    <TypeScriptCompile Include="OutputParser.ts" />
+    <TypeScriptCompile Include="Output\Block.ts" />
+    <TypeScriptCompile Include="Output\Commandblock.ts" />
+    <TypeScriptCompile Include="Output\CbjsFunction.ts" />
+    <TypeScriptCompile Include="Output\FunctionCall.ts" />
+    <TypeScriptCompile Include="Output\FunctionTimeout.ts" />
+    <TypeScriptCompile Include="Output\Manager.ts" />
+    <TypeScriptCompile Include="Output\OutputBlock.ts" />
+    <TypeScriptCompile Include="Output\OutputBlockContainer.ts" />
+    <TypeScriptCompile Include="Output\Sidewards.ts" />
+    <TypeScriptCompile Include="Output\Sign.ts" />
     <TypeScriptCompile Include="Players\GameMode.ts" />
     <TypeScriptCompile Include="Runtime\Boolean.ts" />
     <TypeScriptCompile Include="Runtime\Decimal.ts" />

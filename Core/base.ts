@@ -1,6 +1,3 @@
-//#base.ts
-/// <reference path="./OutputParser.ts"/>
-
 interface CsApi
 {
 	/**
@@ -61,13 +58,11 @@ declare var api: CsApi;
  */
 class OutputHandler
 {
-	static instance: OutputHandler;
-
 	constructor()
 	{
 	}
 
-	output: string[] = [''];
+	output: Output.OutputBlockContainer[] = [new Output.CbjsFunction()];
 	functions: Function[] = [function () { }];
 	current: number = 0;
 
@@ -77,7 +72,7 @@ class OutputHandler
 		{
 			this.functions.push(func);
 			var id = this.functions.indexOf(func);
-			this.output[id] = '';
+			this.output[id] = new Output.CbjsFunction();
 
 			var last = this.current;
 			this.current = id;
@@ -94,16 +89,20 @@ class OutputHandler
 
 	addCallHelperCommands(id: number, replaceRedstoneBlocks: boolean = true): void
 	{
-		var length = this.output[this.current].split(';').length - 1;
+		var length = this.output[this.current].member.length;
 		var cmd: string;
+		var member: Output.OutputBlock[];
+
 		if (replaceRedstoneBlocks)
 		{
-			cmd = "cfill ~-1 ~-1 ~ ~" + length + " ~-1 ~ minecraft:stone 0 replace minecraft:redstone_block;";
-			this.output[id] = cmd + this.output[id];
+			cmd = "fill ~-1 ~-1 ~ ~" + length + " ~-1 ~ minecraft:stone 0 replace minecraft:redstone_block";
+			member = [new Output.Commandblock(cmd)];
+			this.output[id].member = member.concat(this.output[id].member);
 			length++;
 		}
-		cmd = "cfill ~ ~-1 ~ ~" + length + " ~-1 ~ minecraft:redstone_block 0;";
-		this.output[id] = cmd + this.output[id];
+		cmd = "fill ~ ~-1 ~ ~" + length + " ~-1 ~ minecraft:redstone_block 0";
+		member = [new Output.Commandblock(cmd)];
+		this.output[id].member = member.concat(this.output[id].member);
 	}
 
 	removeFunction(func: Function): void
@@ -118,9 +117,9 @@ class OutputHandler
 		this.output.splice(id, 1);
 	}
 
-	addToCurrent(code: string): void
+	addToCurrent(block: Output.OutputBlock): void
 	{
-		this.output[this.current] += code;
+		this.output[this.current].member.push(block);
 	}
 }
 
@@ -144,7 +143,7 @@ var direction: number = 1;
  */
 function block(id: number = 1, data: number = 0): void
 {
-	outputHandler.addToCurrent('b' + id + '_' + data + ';');
+	outputHandler.addToCurrent(new Output.Block(id, data));
 }
 
 /**
@@ -154,17 +153,7 @@ function block(id: number = 1, data: number = 0): void
  */
 function command(text: string): void
 {
-	outputHandler.addToCurrent('c' + text + ';');
-}
-
-/**
- * Querys a command block.
- * @param text Content of the command block.
- * @param placeRepeater Whether or not to place a repeater before calling the function.
- */
-function queryCommand(text: string): void
-{
-	outputHandler.addToCurrent('q' + text + ';');
+	outputHandler.addToCurrent(new Output.Commandblock(text));
 }
 
 /**
@@ -174,11 +163,11 @@ function queryCommand(text: string): void
 function sidewards(func: Function): void
 {
 	direction++;
-	var code = 's';
+	var _sidewards = new Output.Sidewards();
 	var oldManager = outputHandler;
 	var newManager = new function ()
 	{
-		this.addToCurrent = function (data) { code += data.replace(/;/g, '|'); }
+		this.addToCurrent = function (data) { _sidewards.member.push(data); }
 		this.addFunction = function (func)
 		{
 			direction--;
@@ -192,7 +181,8 @@ function sidewards(func: Function): void
 	outputHandler = newManager;
 	func();
 	outputHandler = oldManager;
-	outputHandler.addToCurrent(code + ';');
+
+	outputHandler.addToCurrent(_sidewards);
 	direction--;
 }
 
@@ -203,13 +193,13 @@ function sidewards(func: Function): void
 function call(func: Function): void
 {
 	var funcId = outputHandler.addFunction(func);
-	outputHandler.addToCurrent('e' + funcId + ';');
+	outputHandler.addToCurrent(new Output.FunctionCall(funcId));
 }
 
 function callOnce(callback: Function): void
 {
 	var funcId = outputHandler.addFunction(callback, false);
-	outputHandler.addToCurrent('e' + funcId + ';');
+	outputHandler.addToCurrent(new Output.FunctionCall(funcId));
 }
 
 var setTimeoutScore: Scoreboard.Objective;
@@ -226,7 +216,7 @@ function setTimeout(callback: any, time: any = 1, timeInSeconds: boolean = false
 	var funcId = outputHandler.addFunction(func);
 	var sel = Entities.Selector.parse('@e[name=function' + funcId + ']');
 
-	outputHandler.addToCurrent('t' + funcId + '_' + time + ';');
+	outputHandler.addToCurrent(new Output.FunctionTimeout(funcId));
 
 	if (typeof time == 'number')
 	{
@@ -257,7 +247,7 @@ function setTimeout(callback: any, time: any = 1, timeInSeconds: boolean = false
  */
 function sign(text1: string = "", text2: string = "", text3: string = "", text4: string = "", direc: number = direction * 4): void
 {
-	outputHandler.addToCurrent('n' + text1 + text2 + text3 + text4 + '_' + direc + ';');
+	outputHandler.addToCurrent(new Output.Sign(text1, text2, text3, text4, direc));
 }
 //enregion
 
@@ -344,9 +334,12 @@ function cbjsWorker(): void
 {
 	var id = outputHandler.current;
 	outputHandler.addCallHelperCommands(id);
-	outputHandler.output[id] = "b143_2;" + outputHandler.output[id]; //button
 
-	OutputParser.start();
+	var member: Output.OutputBlock[] = [new Output.Block(143, 2)];
+	outputHandler.output[id].member = member.concat(outputHandler.output[id].member);
+
+	Output.Manager.functions = outputHandler.output;
+	Output.Manager.start();
 
 	api.log("Successfully executed " + outputHandler.functions.length + " functions!");
 }

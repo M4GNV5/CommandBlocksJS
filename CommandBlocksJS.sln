@@ -13,8 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Debugger", "Debugger\Debugg
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example", "Example", "{F14C26CD-536A-44C4-879A-2ECCD9FBC47D}"
 	ProjectSection(SolutionItems) = preProject
+		Example\Blockhandles.ts = Example\Blockhandles.ts
 		Example\CircleCalculations.ts = Example\CircleCalculations.ts
-		Example\run_all.bat = Example\run_all.bat
 		Example\Variables.ts = Example\Variables.ts
 	EndProjectSection
 EndProject

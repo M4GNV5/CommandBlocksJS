@@ -55,6 +55,17 @@
 
 /// <reference path="Util/Timer.ts"/>
 
+/// <reference path="Output/OutputBlock.ts"/>
+/// <reference path="Output/OutputBlockContainer.ts"/>
+/// <reference path="Output/Block.ts"/>
+/// <reference path="Output/CbjsFunction.ts"/>
+/// <reference path="Output/Commandblock.ts"/>
+/// <reference path="Output/FunctionCall.ts"/>
+/// <reference path="Output/FunctionTimeout.ts"/>
+/// <reference path="Output/Manager.ts"/>
+/// <reference path="Output/Sidewards.ts"/>
+/// <reference path="Output/Sign.ts"/>
+
 /// <reference path="./MinecraftCommand.ts"/>
 
 /// <reference path="./base.ts"/>
