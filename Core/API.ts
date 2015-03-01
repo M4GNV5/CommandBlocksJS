@@ -35,6 +35,7 @@
 /// <reference path="Runtime/Decimal.ts"/>
 /// <reference path="Runtime/Boolean.ts"/>
 /// <reference path="Runtime/String.ts"/>
+/// <reference path="Runtime/Callback.ts"/>
 
 /// <reference path="Block/BlockHandle.ts"/>
 /// <reference path="Block/SetBlockHandling.ts"/>

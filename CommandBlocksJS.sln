@@ -14,8 +14,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example", "Example", "{F14C26CD-536A-44C4-879A-2ECCD9FBC47D}"
 	ProjectSection(SolutionItems) = preProject
 		Example\Blockhandles.ts = Example\Blockhandles.ts
+		Example\Callbacks.ts = Example\Callbacks.ts
 		Example\CircleCalculations.ts = Example\CircleCalculations.ts
-		Example\Variables.ts = Example\Variables.ts
+		Example\Fibonacci.ts = Example\Fibonacci.ts
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{2AAF7F56-EE73-4559-A4C4-3E5968E38F13}"

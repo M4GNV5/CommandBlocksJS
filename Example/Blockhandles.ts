@@ -8,6 +8,9 @@ function fill(x, y, w, h, color)
 	handle.fill(x, 8 + y, 0, x + w - 1, 8 + y + h - 1, 0);
 }
 
+// pretty ugly code but the output looks nice:
+// http://i.imgur.com/bJkpFjW.png
+
 fill(0, 0, 16, 9, Block.BlockColor.cyan);
 
 fill(0, 2, 2, 1, Block.BlockColor.green);

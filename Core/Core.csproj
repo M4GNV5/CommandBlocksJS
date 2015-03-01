@@ -97,6 +97,7 @@
     <TypeScriptCompile Include="Output\Sign.ts" />
     <TypeScriptCompile Include="Players\GameMode.ts" />
     <TypeScriptCompile Include="Runtime\Boolean.ts" />
+    <TypeScriptCompile Include="Runtime\Callback.ts" />
     <TypeScriptCompile Include="Runtime\Decimal.ts" />
     <TypeScriptCompile Include="Runtime\Fraction.ts" />
     <TypeScriptCompile Include="Runtime\Integer.ts" />
