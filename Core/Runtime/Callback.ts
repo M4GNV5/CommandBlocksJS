@@ -20,6 +20,7 @@ module Runtime
 
 		set(value: Function): void
 		{
+			this.removeAll();
 			this.add(value);
 		}
 		add(func: Function): void
@@ -30,10 +31,15 @@ module Runtime
 			var sel = Entities.Selector.parse("@e[name=function{0}]".format(id));
 			Callback.score.set(sel, this.value);
 		}
+
 		remove(func: Function): void
 		{
 			var id = outputHandler.addFunction(func);
-			command("kill @e[name=function{0}]".format(id));
+			command("kill @e[score_callback_min={0},score_callback={0},name=function{1}]".format(this.value, id));
+		}
+		removeAll(): void
+		{
+			command("kill @e[score_callback_min={0},score_callback={0}]".format(this.value));
 		}
 
 		emit(): void
