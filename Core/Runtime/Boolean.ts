@@ -11,9 +11,10 @@ module Runtime
 
 		constructor(name: string)
 		constructor(selector: Entities.Selector)
-		constructor(selector: any = Util.Naming.next("bool"))
+		constructor(startValue: boolean = false, selector: any = Util.Naming.next("bool"))
 		{
-			this.base = new Integer(selector);
+			var value = startValue ? 1 : 0;
+			this.base = new Integer(value, selector);
 		}
 
 		set(value: boolean): void
