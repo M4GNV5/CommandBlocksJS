@@ -127,7 +127,7 @@ module Runtime
 			return this.isBetween(value, value, callback);
 		}
 
-		isBetween(min: number = 0, max?: number, callback?: Function): MinecraftCommand
+		isBetween(min: number = -2147483648, max: number = 2147483647, callback?: Function): MinecraftCommand
 		{
 			var cmd = this.Score.test(this.selector, min, max);
 

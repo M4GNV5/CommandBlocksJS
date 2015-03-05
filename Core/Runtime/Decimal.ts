@@ -45,17 +45,16 @@ module Runtime
 		{
 			if (typeof value == 'number' && mode == NumberSetMode.assign)
 				this.value.set(value * Decimal.compileTimeAccuracy);
+			else if (mode == NumberSetMode.assign && value instanceof Decimal)
+				this.operation("=", (<Decimal>value).value, false);
 			else if (mode == NumberSetMode.assign)
-				this.operation("=", value, false);
+				this.operation("=", value);
 			else if (mode == NumberSetMode.divisionRemainder)
 				this.operation("%=", value);
 			else if (mode == NumberSetMode.smallerOne)
 				this.operation("<", value);
 			else if (mode == NumberSetMode.biggerOne)
 				this.operation(">", value);
-
-			if (mode == NumberSetMode.assign)
-				this.operation("*=", Decimal.accuracy, false);
 		}
 
 		add(value: number): void;
@@ -143,7 +142,7 @@ module Runtime
 			return this.isBetween(value, value, callback);
 		}
 
-		isBetween(min: number = 0, max?: number, callback?: Function): MinecraftCommand
+		isBetween(min: number = -21474836.48, max: number = 21474836.47, callback?: Function): MinecraftCommand
 		{
 			min *= Decimal.compileTimeAccuracy;
 			if (typeof max != 'undefined')

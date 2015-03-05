@@ -52,7 +52,7 @@ module Scoreboard
 			command("scoreboard objectives setdisplay " + DisplaySlot[slot] + " " + this.name);
 		}
 
-		test(selector: Selector, valueMin: number, valueMax: number = 2147483647): MinecraftCommand
+		test(selector: Selector, valueMin: number = -2147483648, valueMax: number = 2147483647): MinecraftCommand
 		{
 			return new MinecraftCommand("scoreboard players test " + selector + " " + this.name + " " + valueMin + " " + valueMax);
 		}
