@@ -13,12 +13,7 @@ module Runtime
 			return new Integer(2147483647);
 		}
 
-		private static score: Scoreboard.Objective;
-
-		get Score(): Scoreboard.Objective
-		{
-			return Integer.score;
-		}
+		static score: Scoreboard.Objective;
 
 		private selector: Entities.Selector;
 
@@ -31,9 +26,6 @@ module Runtime
 		constructor(value?: number, selector?: Entities.Selector, intialize?: boolean)
 		constructor(value: number = 0, selector: any = Util.Naming.next("int"), intialize: boolean = true)
 		{
-			if (typeof Integer.score == 'undefined')
-				Integer.score = new Scoreboard.Objective(Scoreboard.ObjectiveType.dummy, "std.integer", "RuntimeInteger");
-
 			if (selector instanceof Entities.Selector)
 				this.selector = selector;
 			else
@@ -47,7 +39,7 @@ module Runtime
 		set(value: any, mode: NumberSetMode = NumberSetMode.assign): void
 		{
 			if (typeof value == 'number' && mode == NumberSetMode.assign)
-				this.Score.set(this.selector, value);
+				Integer.score.set(this.selector, value);
 			else if (mode == NumberSetMode.assign)
 				this.operation("=", value);
 			else if (mode == NumberSetMode.divisionRemainder)
@@ -63,7 +55,7 @@ module Runtime
 		add(value: any): void
 		{
 			if (typeof value == 'number')
-				this.Score.add(this.selector, value);
+				Integer.score.add(this.selector, value);
 			else
 				this.operation("+=", <Number>value);
 		}
@@ -73,7 +65,7 @@ module Runtime
 		remove(value: any): void
 		{
 			if (typeof value == 'number')
-				this.Score.remove(this.selector, value);
+				Integer.score.remove(this.selector, value);
 			else
 				this.operation("-=", <Number>value);
 		}
@@ -99,7 +91,7 @@ module Runtime
 
 		reset(): void
 		{
-			this.Score.reset(this.selector);
+			Integer.score.reset(this.selector);
 		}
 
 		clone(cloneName?: string): Integer
@@ -119,7 +111,7 @@ module Runtime
 			else
 				_other = (<Number>other).toInteger();
 
-			this.Score.operation(this.selector, this.Score, _other.Selector, operation);
+			Integer.score.operation(this.selector, Integer.score, _other.Selector, operation);
 		}
 
 		isExact(value: number, callback?: Function): MinecraftCommand
@@ -129,7 +121,7 @@ module Runtime
 
 		isBetween(min: number = -2147483648, max: number = 2147483647, callback?: Function): MinecraftCommand
 		{
-			var cmd = this.Score.test(this.selector, min, max);
+			var cmd = Integer.score.test(this.selector, min, max);
 
 			if (typeof callback == 'function')
 				cmd.validate(callback);
@@ -144,7 +136,7 @@ module Runtime
 
 		toTellrawExtra(): Chat.TellrawScoreExtra
 		{
-			return new Chat.TellrawScoreExtra(this.Score, this.selector);
+			return new Chat.TellrawScoreExtra(Integer.score, this.selector);
 		}
 	}
 }

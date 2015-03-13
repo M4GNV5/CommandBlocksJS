@@ -3,10 +3,10 @@
 /// <reference path="Util/Vector3.ts"/>
 
 /// <reference path="Entities/EntityType.ts"/>
-/// <reference path="Entities/Selector.ts"/>
-/// <reference path="Entities/Player.ts"/>
 /// <reference path="Entities/SelectorTarget.ts"/>
 /// <reference path="Entities/SelectorArgument.ts"/>
+/// <reference path="Entities/Selector.ts"/>
+/// <reference path="Entities/Player.ts"/>
 
 /// <reference path="Scoreboard/DisplaySlot.ts"/>
 /// <reference path="Scoreboard/Objective.ts"/>
@@ -20,11 +20,6 @@
 /// <reference path="Chat/TellrawScoreExtra.ts"/>
 /// <reference path="Chat/TellrawSelectorExtra.ts"/>
 
-/// <reference path="Chat/ClickEventAction.ts"/>
-/// <reference path="Chat/ClickEvent.ts"/>
-/// <reference path="Chat/HoverEventAction.ts"/>
-/// <reference path="Chat/HoverEvent.ts"/>
-
 /// <reference path="Players/GameMode.ts"/>
 
 /// <reference path="Runtime/Variable.ts"/>
@@ -36,6 +31,9 @@
 /// <reference path="Runtime/Boolean.ts"/>
 /// <reference path="Runtime/String.ts"/>
 /// <reference path="Runtime/Callback.ts"/>
+
+/// <reference path="Chat/Events/ClickEvent.ts"/>
+/// <reference path="Chat/Events/HoverEvent.ts"/>
 
 /// <reference path="Block/BlockHandle.ts"/>
 /// <reference path="Block/SetBlockHandling.ts"/>
@@ -63,6 +61,7 @@
 /// <reference path="Output/Commandblock.ts"/>
 /// <reference path="Output/FunctionCall.ts"/>
 /// <reference path="Output/FunctionTimeout.ts"/>
+/// <reference path="Output/NestedCall.ts"/>
 /// <reference path="Output/Manager.ts"/>
 /// <reference path="Output/Sidewards.ts"/>
 /// <reference path="Output/Sign.ts"/>

@@ -22,7 +22,8 @@ module Chat
 			return Color[this.color];
 		}
 
-		//TODO events
+		clickEvent: ClickEvent;
+		hoverEvent: HoverEvent;
 
 		constructor(text: string = "",
 			color: Color = Color.white,
@@ -30,7 +31,9 @@ module Chat
 			italic: boolean = false,
 			obfuscated: boolean = false,
 			underlined: boolean = false,
-			strikethrough: boolean = false
+			strikethrough: boolean = false,
+			clickEvent?: ClickEvent,
+			hoverEvent?: HoverEvent
 		)
 		{
 			this.text = text;
@@ -40,6 +43,9 @@ module Chat
 			this.obfuscated = obfuscated;
 			this.underlined = underlined;
 			this.strikethrough = strikethrough;
+
+			this.clickEvent = clickEvent;
+			this.hoverEvent = hoverEvent;
 		}
 	}
 }

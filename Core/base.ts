@@ -188,6 +188,7 @@ function sidewards(func: Function): void
 
 /**
  * Adds the function to the structure and calls the redstone.
+ * Deprecated!
  * @param func JavaScript/TypeScript function.
  */
 function call(func: Function): void
@@ -233,7 +234,7 @@ function setTimeout(callback: any, time: any = 1, timeInSeconds: boolean = false
 		if (timeInSeconds)
 			_time.multiplicate(20);
 
-		setTimeoutScore.operation(sel, _time.Score, _time.Selector, "=");
+		setTimeoutScore.operation(sel, Runtime.Integer.score, _time.Selector, "=");
 	}
 }
 
@@ -320,12 +321,15 @@ function invert(blockId: number = 1, placeRepeater: boolean = true): void
 function timeoutFunctionsTick()
 {
 	setTimeoutScore.remove(Entities.Selector.parse("@e[score_setTimeout_min=1]"), 1);
-	command("execute @e[score_setTimeout=0] ~ ~ ~ setblock ~ ~ ~ minecraft:redstone_block");
-	command("kill @e[score_setTimeout=0]");
+	command("execute @e[score_setTimeout=0,c=1] ~ ~ ~ setblock ~ ~ ~ minecraft:redstone_block");
+	command("kill @e[score_setTimeout=0,c=1]");
 	call(timeoutFunctionsTick);
 }
 setTimeoutScore = new Scoreboard.Objective(Scoreboard.ObjectiveType.dummy, "setTimeout");
 call(timeoutFunctionsTick);
+
+Runtime.String.score = new Scoreboard.Objective(Scoreboard.ObjectiveType.dummy, "stdStrings", "RuntimeString");
+Runtime.Integer.score = new Scoreboard.Objective(Scoreboard.ObjectiveType.dummy, "stdInteger", "RuntimeInteger");
 
 /**
  * Entry point of every script. Will append automatically.

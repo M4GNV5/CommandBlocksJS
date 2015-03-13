@@ -70,11 +70,9 @@
     <TypeScriptCompile Include="Block\Stone.ts" />
     <TypeScriptCompile Include="Block\Stonebrick.ts" />
     <TypeScriptCompile Include="Block\WoodType.ts" />
-    <TypeScriptCompile Include="Chat\ClickEvent.ts" />
-    <TypeScriptCompile Include="Chat\ClickEventAction.ts" />
+    <TypeScriptCompile Include="Chat\Events\ClickEvent.ts" />
     <TypeScriptCompile Include="Chat\Color.ts" />
-    <TypeScriptCompile Include="Chat\HoverEvent.ts" />
-    <TypeScriptCompile Include="Chat\HoverEventAction.ts" />
+    <TypeScriptCompile Include="Chat\Events\HoverEvent.ts" />
     <TypeScriptCompile Include="Chat\Message.ts" />
     <TypeScriptCompile Include="Chat\Tellraw.ts" />
     <TypeScriptCompile Include="Chat\TellrawScoreExtra.ts" />
@@ -91,6 +89,7 @@
     <TypeScriptCompile Include="Output\FunctionCall.ts" />
     <TypeScriptCompile Include="Output\FunctionTimeout.ts" />
     <TypeScriptCompile Include="Output\Manager.ts" />
+    <TypeScriptCompile Include="Output\NestedCall.ts" />
     <TypeScriptCompile Include="Output\OutputBlock.ts" />
     <TypeScriptCompile Include="Output\OutputBlockContainer.ts" />
     <TypeScriptCompile Include="Output\Sidewards.ts" />
@@ -111,6 +110,7 @@
     <TypeScriptCompile Include="Scoreboard\Team.ts" />
     <TypeScriptCompile Include="Scoreboard\Visibility.ts" />
     <TypeScriptCompile Include="Util\assert.ts" />
+    <TypeScriptCompile Include="Util\Event.ts" />
     <TypeScriptCompile Include="Util\Naming.ts" />
     <TypeScriptCompile Include="Util\Timer.ts" />
     <TypeScriptCompile Include="Util\Vector3.ts" />

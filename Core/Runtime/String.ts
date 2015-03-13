@@ -4,7 +4,7 @@ module Runtime
 {
 	export class String implements Variable<string>
 	{
-		private static score: Scoreboard.Objective;
+		static score: Scoreboard.Objective;
 		private static lastIndex: number = 1;
 
 		index: number;
@@ -12,9 +12,6 @@ module Runtime
 
 		constructor(value: string = Util.Naming.next("string"))
 		{
-			if (typeof String.score == 'undefined')
-				String.score = new Scoreboard.Objective(Scoreboard.ObjectiveType.dummy, "stdStrings", "RuntimeInteger");
-
 			this.index = String.lastIndex;
 
 			this.selector = Entities.Selector.parse("@e[score_stdStrings_min=" + this.index + ",score_stdStrings=" + this.index + "]");

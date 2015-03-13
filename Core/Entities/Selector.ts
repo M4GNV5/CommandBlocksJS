@@ -4,6 +4,25 @@ module Entities
 {
 	export class Selector
 	{
+		static get AllPlayer()
+		{
+			return new Entities.Selector(SelectorTarget.AllPlayer);
+		}
+		static get NearestPlayer()
+		{
+			return new Entities.Selector(SelectorTarget.NearestPlayer);
+		}
+		static get RandomEntity()
+		{
+			return new Entities.Selector(SelectorTarget.RandomPlayer);
+		}
+		static get Entity()
+		{
+			return new Entities.Selector(SelectorTarget.Entities);
+		}
+
+
+
 		char: SelectorTarget;
 		private arguments: { [identifier: string]: SelectorArgument } = {};
 
@@ -58,15 +77,18 @@ module Entities
 			var selectorChar = new SelectorTarget(selector[1]);
 			var sel = new Selector(selectorChar);
 
-			var argumentString = selector.substring(3, selector.length - 1);
-			var argumentArray = argumentString.split(',');
-
-			for (var i = 0; i < argumentArray.length; i++)
+			if (selector.length > 2)
 			{
-				var argumentSplit = argumentArray[i].split('=');
-				var arg = SelectorArgument.parse(argumentSplit[0]);
-				arg.setRaw(argumentSplit[1]);
-				sel.setArgument(arg);
+				var argumentString = selector.substring(3, selector.length - 1);
+				var argumentArray = argumentString.split(',');
+
+				for (var i = 0; i < argumentArray.length; i++)
+				{
+					var argumentSplit = argumentArray[i].split('=');
+					var arg = SelectorArgument.parse(argumentSplit[0]);
+					arg.setRaw(argumentSplit[1]);
+					sel.setArgument(arg);
+				}
 			}
 
 			return sel;

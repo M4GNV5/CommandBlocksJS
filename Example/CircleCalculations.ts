@@ -9,6 +9,8 @@ var radius = new Runtime.Integer(startRadius);
 var timer = new Util.Timer(calculateNext, 1);
 timer.start();
 
+command("scoreboard objectives setdisplay sidebar stdInteger");
+
 function calculateNext()
 {
 	var circumference = new Runtime.Decimal();
