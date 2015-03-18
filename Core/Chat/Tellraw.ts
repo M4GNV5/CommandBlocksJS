@@ -36,6 +36,9 @@ module Chat
 
 			var src = JSON.stringify(this, (key, value) =>
 			{
+				if (value instanceof CallbackClickEvent)
+					(<CallbackClickEvent>value).intialize();
+
 				if (value instanceof Entities.Selector)
 					return value.toString();
 				else

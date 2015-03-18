@@ -11,14 +11,14 @@ module Scoreboard
 		name: string;
 		displayName: string;
 
-		constructor(criteria: ObjectiveType = ObjectiveType.dummy, name: string = Util.Naming.next("score"), displayName?: string)
+		constructor(criteria: ObjectiveType = ObjectiveType.dummy, name: string = Util.Naming.next("score"), displayName: string = name, addObjective: boolean = true)
 		{
-			this.displayName = displayName || name;
 			this.name = name;
 
 			this.criteria = criteria.value;
 
-			command("scoreboard objectives add " + this.name + " " + this.criteria + " " + this.displayName);
+			if(addObjective)
+				command("scoreboard objectives add " + this.name + " " + this.criteria + " " + this.displayName);
 		}
 
 		set(selector: Selector, value: number): void

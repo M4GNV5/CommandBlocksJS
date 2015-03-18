@@ -13,7 +13,7 @@ module Runtime
 			return new Integer(2147483647);
 		}
 
-		static score: Scoreboard.Objective;
+		static score: Scoreboard.Objective = new Scoreboard.Objective(Scoreboard.ObjectiveType.dummy, "stdInteger", "RuntimeInteger", false);
 
 		private selector: Entities.Selector;
 
@@ -26,6 +26,8 @@ module Runtime
 		constructor(value?: number, selector?: Entities.Selector, intialize?: boolean)
 		constructor(value: number = 0, selector: any = Util.Naming.next("int"), intialize: boolean = true)
 		{
+			usedLibs["integer"] = true;
+
 			if (selector instanceof Entities.Selector)
 				this.selector = selector;
 			else

@@ -70,6 +70,7 @@
     <TypeScriptCompile Include="Block\Stone.ts" />
     <TypeScriptCompile Include="Block\Stonebrick.ts" />
     <TypeScriptCompile Include="Block\WoodType.ts" />
+    <TypeScriptCompile Include="Chat\Events\CallbackClickEvent.ts" />
     <TypeScriptCompile Include="Chat\Events\ClickEvent.ts" />
     <TypeScriptCompile Include="Chat\Color.ts" />
     <TypeScriptCompile Include="Chat\Events\HoverEvent.ts" />
@@ -111,6 +112,7 @@
     <TypeScriptCompile Include="Scoreboard\Visibility.ts" />
     <TypeScriptCompile Include="Util\assert.ts" />
     <TypeScriptCompile Include="Util\Event.ts" />
+    <TypeScriptCompile Include="Util\Math.ts" />
     <TypeScriptCompile Include="Util\Naming.ts" />
     <TypeScriptCompile Include="Util\Timer.ts" />
     <TypeScriptCompile Include="Util\Vector3.ts" />

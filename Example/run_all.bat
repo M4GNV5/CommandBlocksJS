@@ -1,5 +1,9 @@
 @echo off
 
+call run.bat Calculator
+echo.
+echo.
+echo.
 call run.bat CircleCalculations
 echo.
 echo.

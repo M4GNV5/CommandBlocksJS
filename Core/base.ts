@@ -188,7 +188,6 @@ function sidewards(func: Function): void
 
 /**
  * Adds the function to the structure and calls the redstone.
- * Deprecated!
  * @param func JavaScript/TypeScript function.
  */
 function call(func: Function): void
@@ -203,11 +202,13 @@ function callOnce(callback: Function): void
 	outputHandler.addToCurrent(new Output.FunctionCall(funcId));
 }
 
-var setTimeoutScore: Scoreboard.Objective;
+var setTimeoutScore: Scoreboard.Objective = new Scoreboard.Objective(Scoreboard.ObjectiveType.dummy, "setTimeout", undefined, false);
 function setTimeout(callback: any, time?: number, timeInSeconds?: boolean): void
 function setTimeout(callback: any, time?: Runtime.Number, timeInSeconds?: boolean): void
 function setTimeout(callback: any, time: any = 1, timeInSeconds: boolean = false): void
 {
+	usedLibs["setTimeout"] = true;
+
 	var func: Function;
 	if (typeof callback == 'function')
 		func = <Function>callback;
@@ -318,6 +319,8 @@ function invert(blockId: number = 1, placeRepeater: boolean = true): void
 //endregion
 
 //region main code
+var usedLibs: { [index: string]: boolean } = {};
+
 function timeoutFunctionsTick()
 {
 	setTimeoutScore.remove(Entities.Selector.parse("@e[score_setTimeout_min=1]"), 1);
@@ -325,17 +328,58 @@ function timeoutFunctionsTick()
 	command("kill @e[score_setTimeout=0,c=1]");
 	call(timeoutFunctionsTick);
 }
-setTimeoutScore = new Scoreboard.Objective(Scoreboard.ObjectiveType.dummy, "setTimeout");
-call(timeoutFunctionsTick);
+function callbackClickEventHelper()
+{
+	var cbScore = Chat.CallbackClickEvent.score;
+	var armorstandSel = Entities.Selector.parse("@e[type=ArmorStand,score_callbackClick_min=1]");
+	var playerSel = Entities.Selector.parse("@e[type=Player,score_callbackClick_min=1,c=1]");
+	cbScore.operation(armorstandSel, cbScore, playerSel, "-=");
 
-Runtime.String.score = new Scoreboard.Objective(Scoreboard.ObjectiveType.dummy, "stdStrings", "RuntimeString");
-Runtime.Integer.score = new Scoreboard.Objective(Scoreboard.ObjectiveType.dummy, "stdInteger", "RuntimeInteger");
+	command("execute @e[score_callbackClick_min=0,score_callbackClick=0,type=ArmorStand] ~ ~ ~ setblock ~ ~ ~ minecraft:redstone_block 0 replace");
+
+	cbScore.enableTrigger(Entities.Selector.AllPlayer);
+
+	var ids = Chat.CallbackClickEvent.clickEventCallbacks;
+	for (var i = 0; i < ids.length; i++)
+	{
+		cbScore.set(Entities.Selector.parse("@e[name=function{0}]".format(ids[i])), ids[i]);
+	}
+
+	cbScore.set(Entities.Selector.AllPlayer, 0);
+
+	call(callbackClickEventHelper);
+}
+
 
 /**
  * Entry point of every script. Will append automatically.
  */
 function cbjsWorker(): void
 {
+	var current = outputHandler.output[outputHandler.current];
+	var currentOut = current.member;
+	current.member = [];
+
+	if (usedLibs["integer"])
+		Runtime.Integer.score = new Scoreboard.Objective(Scoreboard.ObjectiveType.dummy, "stdInteger", "RuntimeInteger");
+	if (usedLibs["string"])
+		Runtime.String.score = new Scoreboard.Objective(Scoreboard.ObjectiveType.dummy, "stdStrings", "RuntimeString");
+
+	if (usedLibs["setTimeout"])
+	{
+		setTimeoutScore = new Scoreboard.Objective(Scoreboard.ObjectiveType.dummy, "setTimeout");
+		call(timeoutFunctionsTick);
+	}
+
+	if (usedLibs["callbackClickEvent"])
+	{
+		Chat.CallbackClickEvent.score = new Scoreboard.Objective(Scoreboard.ObjectiveType.trigger, "callbackClick");
+		call(callbackClickEventHelper);
+	}
+
+	current.member = current.member.concat(currentOut);
+
+
 	var id = outputHandler.current;
 	outputHandler.addCallHelperCommands(id);
 

@@ -4,7 +4,7 @@ module Chat
 {
 	export class TellrawScoreExtra extends Message
 	{
-		private score: {[index: string]: string};
+		private score: { [index: string]: string };
 
 		constructor(objective: Scoreboard.Objective, player: Entities.Selector)
 		{

@@ -44,14 +44,14 @@ module Runtime
 
 		emit(): void
 		{
-			command("execute @e[score_callback_min={0},score_callback={0}] ~ ~ ~ setblock ~ ~ ~ minecraft:redstone_block".format(this.identifierValue));
+			command("execute @e[score_callback_min={0},score_callback={0}] ~ ~ ~ setblock ~ ~ ~ minecraft:redstone_block 0 replace".format(this.identifierValue));
 		}
 
 		isExact(value: Function, callback?: Function): MinecraftCommand
 		{
-			return this.isListener(value, callback);
+			return this.hasListener(value, callback);
 		}
-		isListener(value: Function, callback?: Function): MinecraftCommand
+		hasListener(value: Function, callback?: Function): MinecraftCommand
 		{
 			var id = outputHandler.addFunction(value);
 			var cmd = new MinecraftCommand("testfor @e[score_callback_min={0},score_callback={0},name=function{1}]".format(this.identifierValue, id));

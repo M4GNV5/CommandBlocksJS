@@ -34,6 +34,7 @@
 
 /// <reference path="Chat/Events/ClickEvent.ts"/>
 /// <reference path="Chat/Events/HoverEvent.ts"/>
+/// <reference path="Chat/Events/CallbackClickEvent.ts"/>
 
 /// <reference path="Block/BlockHandle.ts"/>
 /// <reference path="Block/SetBlockHandling.ts"/>
@@ -53,6 +54,7 @@
 /// <reference path="Block/WoodType.ts"/>
 
 /// <reference path="Util/Timer.ts"/>
+/// <reference path="Util/Math.ts"/>
 
 /// <reference path="Output/OutputBlock.ts"/>
 /// <reference path="Output/OutputBlockContainer.ts"/>

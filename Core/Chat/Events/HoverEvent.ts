@@ -2,7 +2,7 @@
 
 module Chat
 {
-	export class HoverEvent extends Runtime.Callback
+	export class HoverEvent
 	{
 		static showText(text: string) { return new HoverEvent("show_text", text); }
 		static showItem(item: string) { return new HoverEvent("show_item", item); }
@@ -16,8 +16,6 @@ module Chat
 		{
 			this.action = action;
 			this.value = value;
-
-			super();
 		}
 	}
 }

@@ -4,7 +4,7 @@ module Runtime
 {
 	export class String implements Variable<string>
 	{
-		static score: Scoreboard.Objective;
+		static score: Scoreboard.Objective = new Scoreboard.Objective(Scoreboard.ObjectiveType.dummy, "stdStrings", "RuntimeString", false);
 		private static lastIndex: number = 1;
 
 		index: number;
@@ -12,12 +12,14 @@ module Runtime
 
 		constructor(value: string = Util.Naming.next("string"))
 		{
+			usedLibs["string"] = true;
+
 			this.index = String.lastIndex;
 
 			this.selector = Entities.Selector.parse("@e[score_stdStrings_min=" + this.index + ",score_stdStrings=" + this.index + "]");
 
 			command('kill ' + this.selector.toString());
-			command('summon ArmorStand ~ ~1 ~ {CustomName:"' + value + '",NoGravity:true,Invincible:1,PersistenceRequired:1}');
+			command('summon ArmorStand ~ ~1 ~ {CustomName:"' + value + '",NoGravity:true,Invincible:true,PersistenceRequired:true}');
 
 			var sel = Entities.Selector.parse('@e[type=ArmorStand,name=' + value + ',r=5]');
 			String.score.set(sel, String.lastIndex);

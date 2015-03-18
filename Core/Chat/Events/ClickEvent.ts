@@ -2,7 +2,7 @@
 
 module Chat
 {
-	export class ClickEvent extends Runtime.Callback
+	export class ClickEvent
 	{
 		static runCommand(cmd: string) { return new ClickEvent("run_command", cmd); }
 		static openUrl(url: string) { return new ClickEvent("open_url", url); }
@@ -16,8 +16,6 @@ module Chat
 		{
 			this.action = action;
 			this.value = value;
-
-			super();
 		}
 	}
 }

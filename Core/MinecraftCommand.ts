@@ -16,6 +16,8 @@ class MinecraftCommand
 
 	validate(callback?: Function, otherwise?: Function): void
 	{
+		usedLibs["integer"] = true;
+
 		var name = Util.Naming.next("validate");
 		command('summon ArmorStand ~ ~1 ~ {CustomName:"{0}",NoGravity:1,Invincible:1,PersistenceRequired:1}'.format(name));
 		command('scoreboard players set @e[name={0}] stdInteger 0'.format(name));
