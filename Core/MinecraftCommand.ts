@@ -17,26 +17,28 @@ class MinecraftCommand
 	validate(callback?: Function, otherwise?: Function): void
 	{
 		usedLibs["integer"] = true;
+		usedLibs["setTimeout"] = true;
 
 		var name = Util.Naming.next("validate");
-		command('summon ArmorStand ~ ~1 ~ {CustomName:"{0}",NoGravity:1,Invincible:1,PersistenceRequired:1}'.format(name));
-		command('scoreboard players set @e[name={0}] stdInteger 0'.format(name));
-		command('stats block ~1 ~ ~ set SuccessCount @e[name={0}] stdInteger'.format(name));
-		command(this.cmd);
+		var sel = Entities.Selector.parse("@e[name={0}]".format(name));
 
-		var id: number;
+		command('summon ArmorStand ~ ~1 ~ {CustomName:"{0}",NoGravity:true,Invincible:true,PersistenceRequired:true}'.format(name));
+		Runtime.Integer.score.set(sel, 0);
+		command('stats block ~1 ~ ~ set SuccessCount {0} stdInteger'.format(sel.toString()));
+		command(this.cmd);
 
 		if (typeof callback != 'undefined')
 		{
-			id = outputHandler.addFunction(callback);
-			outputHandler.addToCurrent(new Output.NestedCall(id, 'execute @e[name={0},score_stdInteger_min=1] ~4 ~-1 ~ %call%'.format(name)));
+			var id = outputHandler.addFunction(callback);
+			var _cmd = 'execute @e[name={0},score_stdInteger_min=1] ~4 ~-1 ~ summon ArmorStand ~%X ~%Y ~%Z {CustomName:"call",NoGravity:true,Invincible:true,PersistenceRequired:true}'.format(name);
+			outputHandler.addToCurrent(new Output.FunctionCall(id, _cmd));
 		}
 		if (typeof otherwise != 'undefined')
 		{
-			id = outputHandler.addFunction(otherwise);
-			outputHandler.addToCurrent(new Output.NestedCall(id, 'execute @e[name={0},score_stdInteger=0] ~5 ~-1 ~ %call%'.format(name)));
+			var id = outputHandler.addFunction(otherwise);
+			var _cmd = 'execute @e[name={0},score_stdInteger=0] ~5 ~-1 ~ summon ArmorStand ~%X ~%Y ~%Z {CustomName:"call",NoGravity:true,Invincible:true,PersistenceRequired:true}'.format(name);
+			outputHandler.addToCurrent(new Output.FunctionCall(id, _cmd));
 		}
-
 
 		command('kill @e[name={0}]'.format(name));
 	}

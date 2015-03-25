@@ -1,5 +1,9 @@
 @echo off
 
+call run.bat TriangleCalculations
+echo.
+echo.
+echo.
 call run.bat Calculator
 echo.
 echo.

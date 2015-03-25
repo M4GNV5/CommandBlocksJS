@@ -20,7 +20,7 @@ function createNumButton(i: number): Chat.Message
 	return button;
 }
 
-var numButtons: Chat.Message[] = []
+var numButtons: Chat.Message[] = [];
 for (var i = 0; i < 10; i++)
 {
 	numButtons[i] = createNumButton(i);
@@ -104,9 +104,11 @@ specialButtons["="].clickEvent = new Chat.CallbackClickEvent(function ()
 	operator.isExact("pow", function ()
 	{
 		Chat.Tellraw.create("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCalculating please wait...").tell(Entities.Selector.AllPlayer);
-		Util.Math.pow(first, current, (value) =>
+
+		var result = new Runtime.Integer();
+		Util.Math.pow(first, current, result, function()
 		{
-			current.set(value);
+			current.set(result);
 			first.set(0);
 			operator.set("X");
 

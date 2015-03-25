@@ -88,9 +88,7 @@
     <TypeScriptCompile Include="Output\Commandblock.ts" />
     <TypeScriptCompile Include="Output\CbjsFunction.ts" />
     <TypeScriptCompile Include="Output\FunctionCall.ts" />
-    <TypeScriptCompile Include="Output\FunctionTimeout.ts" />
     <TypeScriptCompile Include="Output\Manager.ts" />
-    <TypeScriptCompile Include="Output\NestedCall.ts" />
     <TypeScriptCompile Include="Output\OutputBlock.ts" />
     <TypeScriptCompile Include="Output\OutputBlockContainer.ts" />
     <TypeScriptCompile Include="Output\Sidewards.ts" />

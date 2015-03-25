@@ -26,7 +26,7 @@ module Chat
 
 			command("kill @e[type=ArmorStand,name=function{0}]".format(id));
 
-			outputHandler.addToCurrent(new Output.FunctionTimeout(id));
+			outputHandler.addToCurrent(new Output.FunctionCall(id, Output.FunctionCall.timeoutCommand.format(id)));
 
 			CallbackClickEvent.clickEventCallbacks.push(id);
 		}

@@ -26,7 +26,7 @@ module Runtime
 		add(func: Function): void
 		{
 			var id = outputHandler.addFunction(func);
-			outputHandler.addToCurrent(new Output.FunctionTimeout(id));
+			outputHandler.addToCurrent(new Output.FunctionCall(id, Output.FunctionCall.timeoutCommand.format(id)));
 
 			var sel = Entities.Selector.parse("@e[name=function{0}]".format(id));
 			Callback.score.set(sel, this.identifierValue);

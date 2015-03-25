@@ -1,3 +1,13 @@
+/// <reference path="Output/OutputBlock.ts"/>
+/// <reference path="Output/OutputBlockContainer.ts"/>
+/// <reference path="Output/Block.ts"/>
+/// <reference path="Output/CbjsFunction.ts"/>
+/// <reference path="Output/Commandblock.ts"/>
+/// <reference path="Output/FunctionCall.ts"/>
+/// <reference path="Output/Manager.ts"/>
+/// <reference path="Output/Sidewards.ts"/>
+/// <reference path="Output/Sign.ts"/>
+
 /// <reference path="Util/assert.ts"/>
 /// <reference path="Util/Naming.ts"/>
 /// <reference path="Util/Vector3.ts"/>
@@ -13,6 +23,10 @@
 /// <reference path="Scoreboard/ObjectiveType.ts"/>
 /// <reference path="Scoreboard/Team.ts"/>
 /// <reference path="Scoreboard/Visibility.ts"/>
+
+/// <reference path="./base.ts"/>
+
+/// <reference path="./MinecraftCommand.ts"/>
 
 /// <reference path="Chat/Color.ts"/>
 /// <reference path="Chat/Message.ts"/>
@@ -55,19 +69,3 @@
 
 /// <reference path="Util/Timer.ts"/>
 /// <reference path="Util/Math.ts"/>
-
-/// <reference path="Output/OutputBlock.ts"/>
-/// <reference path="Output/OutputBlockContainer.ts"/>
-/// <reference path="Output/Block.ts"/>
-/// <reference path="Output/CbjsFunction.ts"/>
-/// <reference path="Output/Commandblock.ts"/>
-/// <reference path="Output/FunctionCall.ts"/>
-/// <reference path="Output/FunctionTimeout.ts"/>
-/// <reference path="Output/NestedCall.ts"/>
-/// <reference path="Output/Manager.ts"/>
-/// <reference path="Output/Sidewards.ts"/>
-/// <reference path="Output/Sign.ts"/>
-
-/// <reference path="./MinecraftCommand.ts"/>
-
-/// <reference path="./base.ts"/>

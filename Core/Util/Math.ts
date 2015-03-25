@@ -8,26 +8,73 @@ module Util
 	{
 		private static knownCallbacks = [];
 
-		static pow(base: Runtime.Number, exponent: Runtime.Number, callback: (value: Runtime.Number) => void): void
+		static pow(base: Runtime.Number, exponent: Runtime.Number, result: Runtime.Number, callback?: Function): void
 		{
-			if (this.knownCallbacks.indexOf(callback) == -1)
-				this.knownCallbacks.push(callback);
-			var id = this.knownCallbacks.indexOf(callback);
+			result.set(1);
+			var _exponent = exponent.clone(Util.Naming.next("mathPow"));
+			var repeat = function ()
+			{
+				result.multiplicate(base);
 
-			var value = new Runtime.Integer(0, "mathResult" + id);
+				_exponent.remove(1);
 
-			value.set(base);
-			var _exponent = new Runtime.Integer(0, "mathResult" + id + "E");
-			_exponent.set(exponent);
+				_exponent.isBetween(undefined, 0).validate(callback, repeat);
+			};
+			_exponent.isBetween(undefined, 0).validate(callback, repeat);
+		}
+
+		static sqrt(value: Runtime.Number, result: Runtime.Number, callback?: Function): void
+		{
+			
+		}
+
+		static sin(value: Runtime.Number, result: Runtime.Number, callback?: Function): void
+		{
+			// http://upload.wikimedia.org/math/a/3/b/a3b692cd234b734e121ef24621f3635b.png
+
+			result.set(0);
+			var exponent = new Runtime.Integer(1, Util.Naming.next("mathSin0-"));
+			var factorialPos = new Runtime.Integer(1, Util.Naming.next("mathSin1-"));
+			var factorial = new Runtime.Integer(1, Util.Naming.next("mathSin2-"));
+			var isNegative = new Runtime.Integer(1, Util.Naming.next("mathSin3-"));
 
 			var repeat = function ()
 			{
-				value.multiplicate(base);
-				_exponent.remove(1);
+				var _result = new Runtime.Decimal(0, Util.Naming.next("mathSin4-"));
+				Math.pow(value, exponent, _result, function ()
+				{
+					_result.divide(factorial);
+					_result.multiplicate(isNegative);
 
-				_exponent.isBetween(undefined, 1).validate(function () { callback(value); }, repeat);
-			};
+					result.add(_result);
+
+					isNegative.multiplicate(-1);
+
+					factorialPos.add(1);
+					factorial.multiplicate(factorialPos);
+					factorialPos.add(1);
+					factorial.multiplicate(factorialPos);
+
+					exponent.add(2);
+
+					factorialPos.isBetween(11).validate(callback, repeat);
+				});
+			}
 			call(repeat);
+		}
+
+		static factorial(value: Runtime.Number, result: Runtime.Number, callback?: Function): void
+		{
+			var current = value.clone(Util.Naming.next("mathFactorial"));
+			result.set(1);
+			var repeat = function ()
+			{
+				result.multiplicate(current);
+				current.remove(1);
+
+				current.isBetween(undefined, 0).validate(callback, repeat);
+			};
+			current.isBetween(undefined, 0).validate(callback, repeat);
 		}
 	}
 }

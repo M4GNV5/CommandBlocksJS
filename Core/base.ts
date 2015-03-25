@@ -218,7 +218,7 @@ function setTimeout(callback: any, time: any = 1, timeInSeconds: boolean = false
 	var funcId = outputHandler.addFunction(func);
 	var sel = Entities.Selector.parse('@e[name=function' + funcId + ']');
 
-	outputHandler.addToCurrent(new Output.FunctionTimeout(funcId));
+	outputHandler.addToCurrent(new Output.FunctionCall(funcId, Output.FunctionCall.timeoutCommand.format(funcId)));
 
 	if (typeof time == 'number')
 	{
@@ -326,6 +326,8 @@ function timeoutFunctionsTick()
 	setTimeoutScore.remove(Entities.Selector.parse("@e[score_setTimeout_min=1]"), 1);
 	command("execute @e[score_setTimeout=0,c=1] ~ ~ ~ setblock ~ ~ ~ minecraft:redstone_block");
 	command("kill @e[score_setTimeout=0,c=1]");
+	command("execute @e[name=call,c=1] ~ ~ ~ setblock ~ ~ ~ minecraft:redstone_block");
+	command("kill @e[name=call,c=1]");
 	call(timeoutFunctionsTick);
 }
 function callbackClickEventHelper()
@@ -364,6 +366,9 @@ function cbjsWorker(): void
 		Runtime.Integer.score = new Scoreboard.Objective(Scoreboard.ObjectiveType.dummy, "stdInteger", "RuntimeInteger");
 	if (usedLibs["string"])
 		Runtime.String.score = new Scoreboard.Objective(Scoreboard.ObjectiveType.dummy, "stdStrings", "RuntimeString");
+
+	if (usedLibs["decimal"])
+		Runtime.Decimal.accuracy = new Runtime.Integer(Runtime.Decimal.compileTimeAccuracy, "decimalAccuracy");
 
 	if (usedLibs["setTimeout"])
 	{

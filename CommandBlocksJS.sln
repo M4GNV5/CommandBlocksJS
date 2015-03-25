@@ -17,6 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example", "Example", "{F14C
 		Example\Calculator.ts = Example\Calculator.ts
 		Example\CircleCalculations.ts = Example\CircleCalculations.ts
 		Example\Fibonacci.ts = Example\Fibonacci.ts
+		Example\TriangleCalculations.ts = Example\TriangleCalculations.ts
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{2AAF7F56-EE73-4559-A4C4-3E5968E38F13}"

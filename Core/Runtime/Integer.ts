@@ -33,7 +33,8 @@ module Runtime
 			else
 				this.selector = new Entities.Player(selector.toString());
 
-			this.set(value);
+			if(intialize)
+				this.set(value);
 		}
 
 		set(value: number, mode?: NumberSetMode): void;

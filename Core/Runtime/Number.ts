@@ -23,6 +23,8 @@ module Runtime
 
 		clone(cloneName?: string): Number;
 
+		isBetween(min: number, max: number, callback?: Function): MinecraftCommand
+
 		toInteger(): Integer;
 	}
 }

@@ -4,11 +4,16 @@ module Output
 {
 	export class FunctionCall implements OutputBlock
 	{
-		id: number
+		static timeoutCommand = 'summon ArmorStand ~%X ~%Y ~%Z {CustomName:"function{0}",NoGravity:true,Invincible:true,PersistenceRequired:true}';
+		static callCommand = 'setblock ~%X ~%Y ~%Z minecraft:redstone_block 0 replace';
 
-		constructor(id: number)
+		id: number
+		cmd: string;
+
+		constructor(id: number, cmd: string = FunctionCall.callCommand)
 		{
 			this.id = id;
+			this.cmd = cmd;
 		}
 
 		place(position: Util.Vector3): void
@@ -19,9 +24,11 @@ module Output
 			var offY = ePosition.y - position.y - 1;
 			var offZ = ePosition.z - position.z;
 
-			var eCommand = "setblock ~" + offX + " ~" + offY + " ~" + offZ + " minecraft:redstone_block 0 replace";
+			var _cmd = this.cmd.replace(/%X/g, offX.toString());
+			_cmd = _cmd.replace(/%Y/g, offY.toString());
+			_cmd = _cmd.replace(/%Z/g, offZ.toString());
 
-			api.placeCommandBlock(eCommand, position.x, position.y, position.z);
+			api.placeCommandBlock(_cmd, position.x, position.y, position.z);
 		}
 	}
 }

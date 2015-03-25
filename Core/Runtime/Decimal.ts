@@ -13,8 +13,8 @@ module Runtime
 			return new Decimal(2.72, Util.Naming.next("euler"));
 		}
 
-		private static compileTimeAccuracy = 100;
-		private static accuracy: Integer;
+		static compileTimeAccuracy: number = 100;
+		static accuracy: Integer = new Runtime.Integer(0, "decimalAccuracy", false);
 
 		private value: Integer;
 
@@ -24,8 +24,7 @@ module Runtime
 		constructor(startValue?: number, name?: string, intialize?: boolean)
 		constructor(startValue: any = 0, name: string = Util.Naming.next("decimal"), intialize: boolean = true)
 		{
-			if (typeof Decimal.accuracy == 'undefined')
-				Decimal.accuracy = new Integer(Decimal.compileTimeAccuracy, "decimalAccuracy");
+			usedLibs["decimal"] = true;
 
 			if (typeof startValue == 'number')
 			{
@@ -44,17 +43,19 @@ module Runtime
 		set(value: any, mode: NumberSetMode = NumberSetMode.assign): void
 		{
 			if (typeof value == 'number' && mode == NumberSetMode.assign)
+			{
 				this.value.set(value * Decimal.compileTimeAccuracy);
-			else if (mode == NumberSetMode.assign && value instanceof Decimal)
-				this.operation("=", (<Decimal>value).value, false);
-			else if (mode == NumberSetMode.assign)
-				this.operation("=", value);
-			else if (mode == NumberSetMode.divisionRemainder)
-				this.operation("%=", value);
-			else if (mode == NumberSetMode.smallerOne)
-				this.operation("<", value);
-			else if (mode == NumberSetMode.biggerOne)
-				this.operation(">", value);
+			}
+			else if (value instanceof Decimal)
+			{
+				this.value.set((<Decimal>value).value, mode);
+			}
+			else
+			{
+				var cp = (<Number>value).clone().toInteger();
+				cp.multiplicate(Decimal.accuracy);
+				this.value.set(cp, mode);
+			}
 		}
 
 		add(value: number): void;
@@ -63,8 +64,10 @@ module Runtime
 		{
 			if (typeof value == 'number')
 				this.value.add(value * Decimal.compileTimeAccuracy);
+			else if(value instanceof Decimal)
+				this.value.operation("+=", (<Decimal>value).value);
 			else
-				this.operation("+=", <Number>value);
+				this.value.operation("+=", <Number>value);
 		}
 
 		remove(value: number): void;
@@ -73,8 +76,10 @@ module Runtime
 		{
 			if (typeof value == 'number')
 				this.value.remove(value * Decimal.compileTimeAccuracy);
+			else if (value instanceof Decimal)
+				this.value.operation("-=", (<Decimal>value).value);
 			else
-				this.operation("-=", <Number>value);
+				this.value.operation("-=", <Number>value);
 		}
 
 		multiplicate(value: number): void;
@@ -83,11 +88,13 @@ module Runtime
 		{
 			if (value instanceof Decimal)
 			{
-				this.operation("*=", (<Decimal>value).value, false);
-				this.operation("/=", Decimal.accuracy, false);
+				this.value.operation("*=", (<Decimal>value).value);
+				this.value.operation("/=", Decimal.accuracy);
 			}
 			else
-				this.operation("*=", value);
+			{
+				this.value.operation("*=", value);
+			}
 		}
 
 		divide(value: number): void;
@@ -96,45 +103,30 @@ module Runtime
 		{
 			if (value instanceof Decimal)
 			{
-				this.operation("*=", (<Decimal>value).value, false);
-				this.operation("/=", Decimal.accuracy, false);
+				this.value.operation("*=", (<Decimal>value).value);
+				this.value.operation("/=", Decimal.accuracy);
 			}
 			else
-				this.operation("/=", value);
+			{
+				this.value.operation("/=", value);
+			}
 		}
 
 		swap(other: Number): void
 		{
 			this.value.swap(other);
+
+			if (!(other instanceof Decimal))
+			{
+				other.divide(Decimal.accuracy);
+				this.value.multiplicate(Decimal.accuracy);
+			}
 		}
 
 		clone(cloneName?: string): Decimal
 		{
 			var copy = this.value.clone();
 			return new Decimal(copy, cloneName);
-		}
-
-		operation(operation: string, other: number, convertToDecimal?: boolean)
-		operation(operation: string, other: Number, convertToDecimal?: boolean)
-		operation(operation: string, other: any, convertToDecimal: boolean = true)
-		{
-			var _other: Number;
-			if (typeof other == 'number')
-			{
-				_other = new Integer(<number>other, "const" + other);
-			}
-			else
-			{
-				_other = (<Number>other).toInteger();
-
-				if (convertToDecimal)
-				{
-					_other = _other.clone();
-					_other.multiplicate(Decimal.accuracy);
-				}
-			}
-
-			this.value.operation(operation, _other);
 		}
 
 		isExact(value: number, callback?: Function): MinecraftCommand
