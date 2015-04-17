@@ -14,6 +14,7 @@ module Scoreboard
 		constructor(criteria: ObjectiveType = ObjectiveType.dummy, name: string = Util.Naming.next("score"), displayName: string = name, addObjective: boolean = true)
 		{
 			this.name = name;
+			this.displayName = displayName;
 
 			this.criteria = criteria.value;
 

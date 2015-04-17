@@ -42,16 +42,4 @@ class MinecraftCommand
 
 		command('kill @e[name={0}]'.format(name));
 	}
-
-	validateOnce(callback: Function): void
-	{
-		var cmd = this.cmd;
-
-		sidewards(function ()
-		{
-			command(cmd);
-			comparator();
-			call(callback);
-		});
-	}
 }

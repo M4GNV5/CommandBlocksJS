@@ -9,8 +9,8 @@ module Runtime
 
 		base: Integer;
 
-		constructor(startValue: boolean, name: string)
-		constructor(startValue: boolean, selector: Entities.Selector)
+		constructor(startValue?: boolean, name?: string)
+		constructor(startValue?: boolean, selector?: Entities.Selector)
 		constructor(startValue: boolean = false, selector: any = Util.Naming.next("bool"))
 		{
 			var value = startValue ? 1 : 0;

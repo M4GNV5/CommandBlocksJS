@@ -17,32 +17,47 @@ module Output
 		{
 			this.position = startPosition;
 
-			for (var i = 0; i < Manager.functions.length; i++)
+			var maxLength = 0;
+			for (var i = 0; i < this.functions.length; i++)
 			{
-				this.functionPositions[i] = this.position.clone();
-
-				var sidewards = 2;
-				for (var ii = 0; ii < this.functions[i].member.length; ii++)
+				if (this.functions[i].member.length > maxLength)
 				{
-					if (this.functions[i].member[ii] instanceof Sidewards)
+					maxLength = this.functions[i].member.length;
+				}
+			}
+
+			var usedFuncs: CbjsFunction[] = [];
+			for (var i = 0; i < this.functions.length; i++)
+			{
+				if (usedFuncs.indexOf(this.functions[i]) !== -1)
+					continue;
+
+				this.functionPositions[i] = this.position.clone();
+				var length: number = this.functions[i].member.length;
+				usedFuncs.push(this.functions[i]);
+
+				if (length + 1 < maxLength)
+				{
+					for (var ii = 0; ii < this.functions.length; ii++)
 					{
-						var _sidewards = (<Sidewards>this.functions[i].member[ii]).member.length + 1;
-						if (_sidewards > sidewards)
-						{
-							sidewards = _sidewards;
+						var otherLength = this.functions[ii].member.length;
+
+						if (length + otherLength + 1 < maxLength && usedFuncs.indexOf(this.functions[ii]) === -1)
+						{	
+							usedFuncs.push(this.functions[ii]);
+
+							this.functionPositions[ii] = this.position.clone();
+							this.functionPositions[ii].x += length + 1;
+
+							length += otherLength + 1;
 						}
 					}
 				}
 
-				Manager.updatePosition(
-					function () { Manager.position.z -= sidewards; },
-					function () { Manager.position.z += sidewards; },
-					function () { Manager.position.z -= sidewards; },
-					function () { Manager.position.z += sidewards; }
-					);
+				this.position.z += 2;
 			}
 
-			for (var i = 0; i < Manager.functions.length; i++)
+			for (var i = 0; i < this.functions.length; i++)
 			{
 				this.currentFunction = i;
 				this.position = this.functionPositions[i].clone();
@@ -54,12 +69,7 @@ module Output
 
 		static moveNext()
 		{
-			Manager.updatePosition(
-				function () { Manager.position.x -= 1; },
-				function () { Manager.position.x += 1; },
-				function () { Manager.position.z -= 1; },
-				function () { Manager.position.z += 1; }
-				);
+			this.position.x++;
 		}
 
 		static updatePosition(xMinus: Function, xPlus: Function, zMinus: Function, zPlus: Function): void

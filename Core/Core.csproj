@@ -91,7 +91,6 @@
     <TypeScriptCompile Include="Output\Manager.ts" />
     <TypeScriptCompile Include="Output\OutputBlock.ts" />
     <TypeScriptCompile Include="Output\OutputBlockContainer.ts" />
-    <TypeScriptCompile Include="Output\Sidewards.ts" />
     <TypeScriptCompile Include="Output\Sign.ts" />
     <TypeScriptCompile Include="Players\GameMode.ts" />
     <TypeScriptCompile Include="Runtime\Boolean.ts" />

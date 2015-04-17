@@ -157,36 +157,6 @@ function command(text: string): void
 }
 
 /**
- * Places parallel code to the structure.
- * @param func Function to add. Will be run immediately.
- */
-function sidewards(func: Function): void
-{
-	direction++;
-	var _sidewards = new Output.Sidewards();
-	var oldManager = outputHandler;
-	var newManager = new function ()
-	{
-		this.addToCurrent = function (data) { _sidewards.member.push(data); }
-		this.addFunction = function (func)
-		{
-			direction--;
-			outputHandler = oldManager;
-			var id = outputHandler.addFunction(func);
-			outputHandler = newManager;
-			direction++;
-			return id;
-		}
-	}
-	outputHandler = newManager;
-	func();
-	outputHandler = oldManager;
-
-	outputHandler.addToCurrent(_sidewards);
-	direction--;
-}
-
-/**
  * Adds the function to the structure and calls the redstone.
  * @param func JavaScript/TypeScript function.
  */

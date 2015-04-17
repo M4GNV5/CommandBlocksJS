@@ -5,7 +5,6 @@
 /// <reference path="Output/Commandblock.ts"/>
 /// <reference path="Output/FunctionCall.ts"/>
 /// <reference path="Output/Manager.ts"/>
-/// <reference path="Output/Sidewards.ts"/>
 /// <reference path="Output/Sign.ts"/>
 
 /// <reference path="Util/assert.ts"/>
