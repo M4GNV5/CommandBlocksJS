@@ -4,14 +4,18 @@
 var startRadius = 1;
 //stop at radius
 var stopRadius = 20;
+//step
+var step = 1;
 
-var radius = new Runtime.Integer(startRadius);
-var timer = new Util.Timer(calculateNext, 1);
-timer.start();
+var radius = new Runtime.Decimal(startRadius);
 
-command("scoreboard objectives setdisplay sidebar stdInteger");
+function next()
+{
+	//if radius is between startRadius and stopRadius call calculate
+	radius.isBetween(startRadius, stopRadius, calculate);
+}
 
-function calculateNext()
+function calculate()
 {
 	var circumference = new Runtime.Decimal();
 	var area = new Runtime.Decimal();
@@ -38,11 +42,6 @@ function calculateNext()
 		area.toExactTellrawExtra()
 	).tell(new Entities.Player("@a"));
 
-	//add one to radius
-	radius.add(1);
-
-	radius.isBetween(stopRadius, undefined, function ()
-	{
-		timer.stop();
-	});
+	//add step to radius
+	radius.add(step);
 }

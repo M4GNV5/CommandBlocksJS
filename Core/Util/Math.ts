@@ -25,7 +25,37 @@ module Util
 
 		static sqrt(value: Runtime.Number, result: Runtime.Number, callback?: Function): void
 		{
-			
+			var step = new Runtime.Integer(32768, Util.Naming.next("mathSqrt0-"));
+			result.set(step);
+
+			var repeat = function ()
+			{
+				var square = new Runtime.Integer(1, Util.Naming.next("mathSqrt1-"));
+
+				square.multiplicate(result);
+				square.multiplicate(result);
+
+				square.remove(value);
+
+				step.divide(2);
+
+				var _repeat = function ()
+				{
+					step.isExact(0).validate(callback, repeat);
+				}
+
+				square.isBetween(undefined, -1, function ()
+				{
+					result.add(step);
+					call(_repeat);
+				});
+				square.isBetween(1, undefined, function ()
+				{
+					result.remove(step);
+					call(_repeat);
+				});
+			}
+			call(repeat);
 		}
 
 		static sin(value: Runtime.Number, result: Runtime.Number, callback?: Function): void
