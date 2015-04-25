@@ -6,6 +6,7 @@ obj/
 packages/
 
 # unimportant / private / generated files
+*.js.map
 *.js
 *.suo
 *.d.ts

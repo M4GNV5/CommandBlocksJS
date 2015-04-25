@@ -1,6 +1,5 @@
 ﻿using CommandLine;
 using CommandLine.Text;
-using Noesis.Javascript;
 using System;
 using System.IO;
 
@@ -37,6 +36,10 @@ namespace CommandBlocksJS.Cmd
 
 		public static int Main(string[] args)
 		{
+#if DEBUG
+			args = "-s example.js -w ./world -x 0 -y 4 -z 0".Split(' ');
+#endif
+
 #if !DEBUG
 			try
 			{

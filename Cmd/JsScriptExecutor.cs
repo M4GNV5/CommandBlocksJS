@@ -1,5 +1,7 @@
 ﻿using CommandblocksJS.Cmd;
-using Noesis.Javascript;
+using Jint;
+using Jint.Runtime;
+using Jint.Parser;
 using System;
 using System.IO;
 using System.Text;
@@ -12,39 +14,48 @@ namespace CommandBlocksJS.Cmd
 		{
 			string coreCode = File.ReadAllText(coreJsPath);
 			string usercode = File.ReadAllText(scriptPath);
-
-			JavascriptContext jsContext = new JavascriptContext();
+			Engine jsEngine = new Engine();
 
 			if (!isSchematic)
-				jsContext.SetParameter("api", new JsApi(worldDirectory));
+				jsEngine.SetValue("api", new JsApi(worldDirectory));
 			else
-				jsContext.SetParameter("api", new JsSchematicApi(worldDirectory));
+				jsEngine.SetValue("api", new JsSchematicApi(worldDirectory));
 #if DEBUG
-			jsContext.Run(coreCode);
-			jsContext.Run("var startPosition = new Util.Vector3(" + position.x + ", " + position.y + ", " + position.z + ");");
+			jsEngine.Execute(coreCode);
+			jsEngine.Execute("var startPosition = new Util.Vector3(" + position.x + ", " + position.y + ", " + position.z + ");");
 #else
 			try
 			{
-				jsContext.Run(coreCode);
-				jsContext.Run("var startPosition = new Util.Vector3(" + position.x + ", " + position.y + ", " + position.z + ");");
+				jsEngine.Execute(coreCode);
+				jsEngine.Execute("var startPosition = new Util.Vector3(" + position.x + ", " + position.y + ", " + position.z + ");");
 			}
-			catch (JavascriptException e)
+			catch(ParserException e)
 			{
-				string error = string.Format("Javascripterror: '{0}' at Line {1} Column {2} to {3}", e.Message, e.Line, e.StartColumn, e.EndColumn);
-				throw new SystemException("Error in CommandblockJS Core Javascript code! Please make sure you are using the latest build\n\n" + error);
+				string error = string.Format("Javascripterror: '{0}' at Line {1} Column {2}", e.Description, e.LineNumber, e.Column);
+				throw new SystemException("Error in CommandblockJS Core Javascript code! Please make sure you are using the latest build!\n\n" + error);
+			}
+			catch (JavaScriptException e)
+			{
+				string error = string.Format("Javascripterror: '{0}'", e.Message);
+				throw new SystemException("Error in CommandblockJS Core Javascript code! Please make sure you are using the latest build!\n\n" + error);
 			}
 #endif
 
 #if DEBUG
-			jsContext.Run(usercode + "\n cbjsWorker();");
+			jsEngine.Execute(usercode + "\n cbjsWorker();");
 #else
 			try
 			{
-				jsContext.Run(usercode + "\n cbjsWorker();");
+				jsEngine.Execute(usercode + "\n cbjsWorker();");
 			}
-			catch (JavascriptException e)
+			catch(ParserException e)
 			{
-				string message = string.Format("Javascripterror: '{0}' at Line {1} Column {2} to {3}", e.Message, e.Line, e.StartColumn, e.EndColumn);
+				string message = string.Format("Javascripterror: '{0}' at Line {1} Column {2}", e.Message, e.LineNumber, e.Column);
+				throw new ApplicationException(message);
+			}
+			catch (JavaScriptException e)
+			{
+				string message = string.Format("Javascripterror: '{0}'", e.Message);
 				throw new ApplicationException(message);
 			}
 #endif

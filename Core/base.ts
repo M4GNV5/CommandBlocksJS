@@ -89,7 +89,7 @@ class OutputHandler
 
 	addCallHelperCommands(id: number, replaceRedstoneBlocks: boolean = true): void
 	{
-		var length = this.output[this.current].member.length;
+		var length = this.output[id].member.length;
 		var cmd: string;
 		var member: Output.OutputBlock[];
 
