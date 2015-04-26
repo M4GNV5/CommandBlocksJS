@@ -160,9 +160,17 @@ function command(text: string): void
  * Adds the function to the structure and calls the redstone.
  * @param func JavaScript/TypeScript function.
  */
-function call(func: Function): void
+function call(func: Function, useSetblock: boolean = false): void
 {
 	var funcId = outputHandler.addFunction(func);
+
+	if (!useSetblock)
+	{
+		outputHandler.addToCurrent(new Output.FunctionCall(funcId, Output.FunctionCall.armorstandCallCommand));
+		usedLibs["setTimeout"] = true;
+		return;
+	}
+
 	outputHandler.addToCurrent(new Output.FunctionCall(funcId));
 }
 
@@ -298,7 +306,7 @@ function timeoutFunctionsTick()
 	command("kill @e[score_setTimeout=0,c=1]");
 	command("execute @e[name=call,c=1] ~ ~ ~ setblock ~ ~ ~ minecraft:redstone_block");
 	command("kill @e[name=call,c=1]");
-	call(timeoutFunctionsTick);
+	call(timeoutFunctionsTick, true);
 }
 function callbackClickEventHelper()
 {
@@ -319,7 +327,7 @@ function callbackClickEventHelper()
 
 	cbScore.set(Entities.Selector.AllPlayer, 0);
 
-	call(callbackClickEventHelper);
+	call(callbackClickEventHelper, true);
 }
 
 
@@ -343,7 +351,7 @@ function cbjsWorker(): void
 	if (usedLibs["setTimeout"])
 	{
 		setTimeoutScore = new Scoreboard.Objective(Scoreboard.ObjectiveType.dummy, "setTimeout");
-		call(timeoutFunctionsTick);
+		call(timeoutFunctionsTick, true);
 	}
 
 	if (usedLibs["callbackClickEvent"])

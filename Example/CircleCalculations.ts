@@ -9,11 +9,7 @@ var step = 1;
 
 var radius = new Runtime.Decimal(startRadius);
 
-function next()
-{
-	//if radius is between startRadius and stopRadius call calculate
-	radius.isBetween(startRadius, stopRadius, calculate);
-}
+call(calculate);
 
 function calculate()
 {
@@ -44,4 +40,7 @@ function calculate()
 
 	//add step to radius
 	radius.add(step);
+
+	//if radius is between startRadius and stopRadius call calculate
+	radius.isBetween(startRadius, stopRadius, calculate);
 }

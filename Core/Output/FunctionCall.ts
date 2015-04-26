@@ -5,12 +5,13 @@ module Output
 	export class FunctionCall implements OutputBlock
 	{
 		static timeoutCommand = 'summon ArmorStand ~%X ~%Y ~%Z {CustomName:"function{0}",NoGravity:true,Invincible:true,PersistenceRequired:true}';
-		static callCommand = 'setblock ~%X ~%Y ~%Z minecraft:redstone_block 0 replace';
+		static armorstandCallCommand = 'summon ArmorStand ~%X ~%Y ~%Z {CustomName:"call",NoGravity:true,Invincible:true,PersistenceRequired:true}';
+		static setblockCallCommand = 'setblock ~%X ~%Y ~%Z minecraft:redstone_block 0 replace';
 
 		id: number
 		cmd: string;
 
-		constructor(id: number, cmd: string = FunctionCall.callCommand)
+		constructor(id: number, cmd: string = FunctionCall.setblockCallCommand)
 		{
 			this.id = id;
 			this.cmd = cmd;

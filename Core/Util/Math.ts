@@ -55,7 +55,7 @@ module Util
 					call(_repeat);
 				});
 			}
-			call(repeat);
+			call(repeat, true);
 		}
 
 		static sin(value: Runtime.Number, result: Runtime.Number, callback?: Function): void
@@ -90,7 +90,7 @@ module Util
 					factorialPos.isBetween(11).validate(callback, repeat);
 				});
 			}
-			call(repeat);
+			call(repeat, true);
 		}
 
 		static factorial(value: Runtime.Number, result: Runtime.Number, callback?: Function): void
