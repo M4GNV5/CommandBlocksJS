@@ -1,7 +1,5 @@
 ﻿using CommandblocksJS.Cmd;
-using Jint;
-using Jint.Runtime;
-using Jint.Parser;
+using Noesis.Javascript;
 using System;
 using System.IO;
 using System.Text;
@@ -14,48 +12,38 @@ namespace CommandBlocksJS.Cmd
 		{
 			string coreCode = File.ReadAllText(coreJsPath);
 			string usercode = File.ReadAllText(scriptPath);
-			Engine jsEngine = new Engine();
+			JavascriptContext jsContext = new JavascriptContext();
 
 			if (!isSchematic)
-				jsEngine.SetValue("api", new JsApi(worldDirectory));
+				jsContext.SetParameter("api", new JsApi(worldDirectory));
 			else
-				jsEngine.SetValue("api", new JsSchematicApi(worldDirectory));
+				jsContext.SetParameter("api", new JsSchematicApi(worldDirectory));
 #if DEBUG
-			jsEngine.Execute(coreCode);
-			jsEngine.Execute("var startPosition = new Util.Vector3(" + position.x + ", " + position.y + ", " + position.z + ");");
+			jsContext.Run(coreCode);
+			jsContext.Run("var startPosition = new Util.Vector3(" + position.x + ", " + position.y + ", " + position.z + ");");
 #else
 			try
 			{
-				jsEngine.Execute(coreCode);
-				jsEngine.Execute("var startPosition = new Util.Vector3(" + position.x + ", " + position.y + ", " + position.z + ");");
+				jsContext.Run(coreCode);
+				jsContext.Run(string.Format("var startPosition = new Util.Vector3({0}, {1}, {2});", position.x, position.y, position.z));
 			}
-			catch(ParserException e)
+			catch (JavascriptException e)
 			{
-				string error = string.Format("Javascripterror: '{0}' at Line {1} Column {2}", e.Description, e.LineNumber, e.Column);
-				throw new SystemException("Error in CommandblockJS Core Javascript code! Please make sure you are using the latest build!\n\n" + error);
-			}
-			catch (JavaScriptException e)
-			{
-				string error = string.Format("Javascripterror: '{0}'", e.Message);
+				string error = string.Format("Javascripterror: '{0}' at Line {1} Column {2} to {3}", e.Message, e.Line, e.StartColumn, e.EndColumn);
 				throw new SystemException("Error in CommandblockJS Core Javascript code! Please make sure you are using the latest build!\n\n" + error);
 			}
 #endif
 
 #if DEBUG
-			jsEngine.Execute(usercode + "\n cbjsWorker();");
+			jsContext.Run(usercode + "\n cbjsWorker();");
 #else
 			try
 			{
-				jsEngine.Execute(usercode + "\n cbjsWorker();");
+				jsContext.Run(usercode + "\n cbjsWorker();");
 			}
-			catch(ParserException e)
+			catch(JavascriptException e)
 			{
-				string message = string.Format("Javascripterror: '{0}' at Line {1} Column {2}", e.Message, e.LineNumber, e.Column);
-				throw new ApplicationException(message);
-			}
-			catch (JavaScriptException e)
-			{
-				string message = string.Format("Javascripterror: '{0}'", e.Message);
+				string message = string.Format("Javascripterror: '{0}' at Line {1} Column {2} to {3}", e.Message, e.Line, e.StartColumn, e.EndColumn);
 				throw new ApplicationException(message);
 			}
 #endif
