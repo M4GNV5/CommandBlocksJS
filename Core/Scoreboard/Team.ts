@@ -9,6 +9,7 @@ module Scoreboard
 		constructor(name: string = Util.Naming.next("team"), displayName: string = "")
 		{
 			this.name = name;
+			command("scoreboard teams add " + name + " " + displayName);
 		}
 
 		empty()

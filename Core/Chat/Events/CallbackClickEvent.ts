@@ -14,6 +14,7 @@ module Chat
 		constructor(callback: Function)
 		{
 			usedLibs["callbackClickEvent"] = true;
+			usedLibs["setTimeout"] = true;
 
 			this.callback = callback;
 		}

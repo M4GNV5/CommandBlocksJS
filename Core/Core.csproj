@@ -105,6 +105,7 @@
     <TypeScriptCompile Include="Scoreboard\DisplaySlot.ts" />
     <TypeScriptCompile Include="Scoreboard\Objective.ts" />
     <TypeScriptCompile Include="Scoreboard\ObjectiveType.ts" />
+    <TypeScriptCompile Include="Scoreboard\Score.ts" />
     <TypeScriptCompile Include="Scoreboard\Team.ts" />
     <TypeScriptCompile Include="Scoreboard\Visibility.ts" />
     <TypeScriptCompile Include="Util\assert.ts" />

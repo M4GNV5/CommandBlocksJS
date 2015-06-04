@@ -24,20 +24,20 @@ module Scoreboard
 
 		set(selector: Selector, value: number): void
 		{
-			command("scoreboard players set " + selector + " " + this.name + " " + value);
+			command("scoreboard players set " + selector + " " + this.name + " " + Math.floor(value));
 		}
 		add(selector: Selector, value: number): void
 		{
-			command("scoreboard players add " + selector + " " + this.name + " " + value);
+			command("scoreboard players add " + selector + " " + this.name + " " + Math.floor(value));
 		}
 		remove(selector: Selector, value: number): void
 		{
-			command("scoreboard players remove " + selector + " " + this.name + " " + value);
+			command("scoreboard players remove " + selector + " " + this.name + " " + Math.floor(value));
 		}
 
 		static reset(selector: Selector): void
 		{
-			command("scoreboard players reset "+selector);
+			command("scoreboard players reset " + selector);
 		}
 		reset(selector: Selector): void
 		{
@@ -55,7 +55,7 @@ module Scoreboard
 
 		test(selector: Selector, valueMin: number = -2147483648, valueMax: number = 2147483647): MinecraftCommand
 		{
-			return new MinecraftCommand("scoreboard players test " + selector + " " + this.name + " " + valueMin + " " + valueMax);
+			return new MinecraftCommand("scoreboard players test " + selector + " " + this.name + " " + Math.floor(valueMin) + " " + Math.floor(valueMax));
 		}
 		operation(selector: Selector, otherObjective: Objective = this, otherPlayer: Selector = selector, operation: string = "=")
 		{
