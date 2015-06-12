@@ -100,7 +100,7 @@ module Scoreboard
 			else
 				_other = (<Runtime.Number>other).toInteger();
 
-			this.objective.operation(this.selector, this.objective, _other.Selector, operation);
+			this.objective.operation(this.selector, Runtime.Integer.score, _other.Selector, operation);
 		}
 
 		isExact(value: number, callback?: Function): MinecraftCommand
