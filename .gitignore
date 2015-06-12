@@ -6,8 +6,9 @@ obj/
 packages/
 
 # unimportant / private / generated files
-*.js.map
-*.js
+Core/**/*.js.map
+Core/**/*.js
+Core/**/*.d.ts
+Example/*.js
+NodeCmd/out
 *.suo
-*.d.ts
-Beta/
