@@ -23,8 +23,8 @@ var startRadius = 1;
 var stopRadius = 20;
 
 var radius = new Runtime.Integer(startRadius);
-var timer = new Util.Timer(calculateNext, 1);
-timer.start();
+
+call(calculateNext);
 
 function calculateNext()
 {
@@ -56,10 +56,7 @@ function calculateNext()
 	//add one to radius
 	radius.add(1);
 
-	radius.isBetween(stopRadius, undefined, function ()
-	{
-		timer.stop();
-	});
+	radius.isBetween(startRadius, stopRadius, calculateNext);
 }
 ```
 ###Output
