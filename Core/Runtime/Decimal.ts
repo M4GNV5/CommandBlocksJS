@@ -125,8 +125,9 @@ module Runtime
 
 		clone(cloneName?: string): Decimal
 		{
-			var copy = this.value.clone();
-			return new Decimal(copy, cloneName);
+			var copy = new Decimal(0, cloneName);
+			copy.value.set(this.value);
+			return copy;
 		}
 
 		isExact(value: number, callback?: Function): MinecraftCommand
