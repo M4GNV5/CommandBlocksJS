@@ -50,6 +50,10 @@ module Runtime
 			{
 				this.value.set((<Decimal>value).value, mode);
 			}
+			else if (typeof value == 'number')
+			{
+				this.value.set(value * Decimal.compileTimeAccuracy, mode);
+			}
 			else
 			{
 				var cp = (<Number>value).clone().toInteger();

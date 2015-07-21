@@ -62,35 +62,40 @@ module Util
 		{
 			// http://upload.wikimedia.org/math/a/3/b/a3b692cd234b734e121ef24621f3635b.png
 
-			result.set(0);
-			var exponent = new Runtime.Integer(1, Util.Naming.next("mathSin0-"));
-			var factorialPos = new Runtime.Integer(1, Util.Naming.next("mathSin1-"));
-			var factorial = new Runtime.Integer(1, Util.Naming.next("mathSin2-"));
-			var isNegative = new Runtime.Integer(1, Util.Naming.next("mathSin3-"));
-
-			var repeat = function ()
+			call(function ()
 			{
-				var _result = new Runtime.Decimal(0, Util.Naming.next("mathSin4-"));
-				Math.pow(value, exponent, _result, function ()
-				{
-					_result.divide(factorial);
-					_result.multiplicate(isNegative);
+				result.set(value);
+				var numerator = new Runtime.Decimal(0, Util.Naming.next("mathSin0-"));
+				var fraction = new Runtime.Decimal(0, Util.Naming.next("mathSin1-"));
 
-					result.add(_result);
+				numerator.set(value);
 
-					isNegative.multiplicate(-1);
+				numerator.multiplicate(value);
+				numerator.multiplicate(value);
+				fraction.set(numerator);
+				fraction.divide(6); //3!
+				result.remove(fraction);
 
-					factorialPos.add(1);
-					factorial.multiplicate(factorialPos);
-					factorialPos.add(1);
-					factorial.multiplicate(factorialPos);
+				numerator.multiplicate(value);
+				numerator.multiplicate(value)
+				fraction.set(numerator);
+				fraction.divide(120); //5!
+				result.add(fraction);
 
-					exponent.add(2);
+				numerator.multiplicate(value);
+				numerator.multiplicate(value);
+				fraction.set(numerator);
+				fraction.divide(5040); //7!
+				result.remove(fraction);
 
-					factorialPos.isBetween(11).validate(callback, repeat);
-				});
-			}
-			call(repeat, true);
+				numerator.multiplicate(value);
+				numerator.multiplicate(value);
+				fraction.set(numerator);
+				fraction.divide(362880); //9!
+				result.add(fraction);
+
+				call(callback);
+			});
 		}
 
 		static factorial(value: Runtime.Number, result: Runtime.Number, callback?: Function): void
