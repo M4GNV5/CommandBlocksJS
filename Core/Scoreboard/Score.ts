@@ -86,7 +86,7 @@ module Scoreboard
 		clone(cloneName?: string): Runtime.Integer
 		{
 			var clone = new Runtime.Integer(0, cloneName, false);
-			clone.set(this);
+			Runtime.Integer.score.operation(clone.Selector, this.objective, this.selector, "=");
 			return clone;
 		}
 
@@ -125,7 +125,8 @@ module Scoreboard
 
 		toTellrawExtra(): Chat.TellrawScoreExtra
 		{
-			return new Chat.TellrawScoreExtra(this.objective, this.selector);
+			var clone = this.clone(this.name);
+			return clone.toTellrawExtra();
 		}
 	}
 }

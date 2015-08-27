@@ -342,6 +342,14 @@ function cbjsWorker(): void
 
 	if (usedLibs["integer"])
 		Runtime.Integer.score = new Scoreboard.Objective(Scoreboard.ObjectiveType.dummy, "stdInteger", "RuntimeInteger");
+
+	if (usedLibs["validate"])
+	{
+		outputHandler.addToCurrent(new Output.ValidateIntializer());
+		Runtime.Integer.score.set(Entities.Selector.parse("@e[name=validate]"), 0);
+		command("stats entity @e[name=validate] set SuccessCount @e[name=validate] stdInteger");
+	}
+
 	if (usedLibs["string"])
 		Runtime.String.score = new Scoreboard.Objective(Scoreboard.ObjectiveType.dummy, "stdStrings", "RuntimeString");
 

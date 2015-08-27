@@ -1,5 +1,6 @@
 /// <reference path="Output/OutputBlock.ts"/>
 /// <reference path="Output/OutputBlockContainer.ts"/>
+/// <reference path="Output/ValidateIntializer.ts"/>
 /// <reference path="Output/Block.ts"/>
 /// <reference path="Output/CbjsFunction.ts"/>
 /// <reference path="Output/Commandblock.ts"/>
