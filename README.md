@@ -1,3 +1,5 @@
+##This repository isnt maintained anymore please take a look at [Mooncraft](https://github.com/M4GNV5/MoonCraft) instead
+
 #CommandBlocksJS
 CommandBlocksJS allows you to program commandblocks logic in typescript/javascript. The major benefit in using CommandBlocksJS instead of building the blocks yourself is that you can create complex logic a lot faster that than you could in minecraft. Furthermore you can 'build' stuff like countdown timers in 4 lines of code where you would need ~10 minutes to write all the commands ingame.
 
